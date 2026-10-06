@@ -22,10 +22,13 @@
     <string name="action_help">도움말</string>
     <string name="action_logout">로그아웃</string>
     <string name="action_view_notices">공지 보기</string>
+    <string name="action_close">닫기</string>
     <string name="cd_back">뒤로 가기</string>
     <string name="cd_close">닫기</string>
     <string name="cd_notice">알림</string>
     <string name="cd_camera_verification">청소 인증 촬영</string>
+    <string name="cd_shutter">사진 찍기</string>
+    <string name="cd_flip_camera">카메라 전환</string>
 
     <!-- Login and account guidance -->
     <string name="login_school_account_only">학교 계정으로만 로그인할 수 있어요</string>
@@ -83,6 +86,9 @@
     <string name="area_floor_2">2층</string>
     <string name="area_floor_3">3층</string>
     <string name="area_floor_4">4층</string>
+    <string name="area_description_format">구역 설명 · %1$s</string>
+    <string name="area_member_count">%1$d명이 함께해요</string>
+    <string name="area_member_me">나(%1$s)</string>
     <string name="area_not_assigned_title">아직 배정된 구역이 없어요</string>
     <string name="area_not_assigned_description">선생님이 구역을 배정하면 여기에 보여요</string>
     <string name="area_load_failed">도면을 불러오지 못했어요</string>
@@ -121,6 +127,9 @@
     <string name="camera_gallery_not_available">갤러리 사진은 쓸 수 없어요</string>
     <string name="camera_one_submission_per_day">하루 1번만 제출할 수 있어요</string>
     <string name="camera_take_photo">촬영하기</string>
+    <string name="camera_step_capture">%1$d/%2$d · 촬영</string>
+    <string name="camera_time_remaining">남은 시간 %1$s · %2$s 마감</string>
+    <string name="camera_frame_guide">구역 전체가 프레임 안에 들어오게 맞춰 주세요</string>
     <string name="camera_permission_title">카메라 권한이 필요해요</string>
     <string name="camera_permission_description">갤러리 사진은 쓸 수 없어서 카메라 접근이 필요해요. 설정에서 허용해 주세요</string>
     <string name="camera_open_settings">설정으로 이동</string>
@@ -131,6 +140,12 @@
     <string name="photo_submit_confirmation_description">보낸 뒤에는 오늘 다시 제출할 수 없어요</string>
     <string name="photo_captured">촬영한 사진</string>
     <string name="photo_retake">다시 찍기</string>
+    <string name="photo_submitted_label">제출한 사진</string>
+    <string name="photo_resend_same">같은 사진 다시 보내기</string>
+    <string name="verification_captured_at">촬영 시각</string>
+    <string name="verification_already_submitted_title">오늘은 이미 인증했어요</string>
+    <string name="verification_already_submitted_description">하루 1번만 제출할 수 있어요.\n오늘 %1$s에 보낸 사진을 AI가 확인하고 있어요</string>
+    <string name="verification_view_submitted">제출한 인증 보기</string>
     <string name="photo_send">보내기</string>
     <string name="photo_submitted">사진을 보냈어요</string>
     <string name="photo_review_pending_description">AI가 확인하고 있어요. 결과는 홈에서 알려드려요</string>
@@ -215,6 +230,9 @@
     <string name="format_bonus_minutes">+%1$d분</string>
     <string name="format_photo_progress">촬영 %1$d/%2$d</string>
     <string name="format_application_headcount">%1$d/%2$d명</string>
+    <string name="format_step">%1$d/%2$d</string>
+    <string name="format_floor">%1$d층</string>
+    <string name="format_list_separator">" · "</string>
     <string name="format_time_range">%1$s – %2$s</string>
     <string name="format_grade_class">%1$d학년 %2$d반</string>
     <string name="format_today">오늘 %1$s</string>

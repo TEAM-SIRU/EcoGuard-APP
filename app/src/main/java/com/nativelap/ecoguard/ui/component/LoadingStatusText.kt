@@ -1,4 +1,4 @@
-package com.nativelap.ecoguard.feature.home.view
+package com.nativelap.ecoguard.ui.component
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -11,11 +11,10 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
-import com.nativelap.ecoguard.ui.theme.ThemeMode
 import com.nativelap.ecoguard.ui.theme.extraTypography
 
 @Composable
-fun HomeLoadingStatus(
+fun LoadingStatusText(
     modifier: Modifier = Modifier,
 ) {
     Text(
@@ -30,8 +29,8 @@ fun HomeLoadingStatus(
 
 @Preview(showBackground = true)
 @Composable
-private fun HomeLoadingStatusPreview() {
-    EcoGuardTheme(themeMode = ThemeMode.LIGHT) {
-        HomeLoadingStatus()
+private fun LoadingStatusTextPreview() {
+    EcoGuardTheme {
+        LoadingStatusText()
     }
 }

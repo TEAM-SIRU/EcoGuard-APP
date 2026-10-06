@@ -81,6 +81,10 @@ private val LightExtraColors = AppExtraColors(
     warningTextColor = Color(0xFFB35F00),
     warningAccentColor = Color(0xFFF08C00),
     cardShadowColor = Color(0xFF1A211F),
+    cameraBackgroundColor = Color(0xFF101214),
+    cameraSurfaceColor = Color(0xFF2B2F33),
+    cameraSecondaryTextColor = Color(0xFFC4CAD1),
+    cameraOverlayColor = Color.Black,
 )
 
 private val DarkExtraColors = LightExtraColors

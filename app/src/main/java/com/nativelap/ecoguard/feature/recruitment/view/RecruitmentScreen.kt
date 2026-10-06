@@ -1,6 +1,5 @@
 package com.nativelap.ecoguard.feature.recruitment.view
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -12,15 +11,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.heading
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.recruitment.viewmodel.RecruitmentApplicationStatus
 import com.nativelap.ecoguard.feature.recruitment.viewmodel.RecruitmentScreenEvent
@@ -28,13 +23,12 @@ import com.nativelap.ecoguard.feature.recruitment.viewmodel.RecruitmentUiState
 import com.nativelap.ecoguard.ui.component.BottomCtaBar
 import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
 import com.nativelap.ecoguard.ui.component.EcoSecondaryButton
+import com.nativelap.ecoguard.ui.component.PageTitle
 import com.nativelap.ecoguard.ui.component.SectionDivider
 import com.nativelap.ecoguard.ui.component.TwoLineTextRow
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
-
-private val recruitmentTitleSpacing = 6.dp
 
 @Composable
 fun RecruitmentScreen(
@@ -65,31 +59,19 @@ fun RecruitmentScreen(
                     .fillMaxWidth()
                     .verticalScroll(rememberScrollState()),
             ) {
-                Column(
+                PageTitle(
+                    title = stringResource(R.string.recruitment_title, uiState.semesterName),
+                    subtitle = stringResource(
+                        R.string.recruitment_first_come_policy,
+                        uiState.maxApplicantsPerClass,
+                    ),
                     modifier = Modifier.padding(
                         start = AppSpacing.screenHorizontal,
                         end = AppSpacing.screenHorizontal,
                         top = AppSpacing.md,
                         bottom = AppSpacing.lg,
                     ),
-                    verticalArrangement = Arrangement.spacedBy(recruitmentTitleSpacing),
-                ) {
-                    Text(
-                        text = stringResource(R.string.recruitment_title, uiState.semesterName),
-                        modifier = Modifier.semantics { heading() },
-                        style = MaterialTheme.typography.headlineLarge,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-
-                    Text(
-                        text = stringResource(
-                            R.string.recruitment_first_come_policy,
-                            uiState.maxApplicantsPerClass,
-                        ),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                }
+                )
 
                 RecruitmentInfoTable(
                     recruitment = uiState,

@@ -1,4 +1,4 @@
-package com.nativelap.ecoguard.feature.home.view
+package com.nativelap.ecoguard.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,19 +13,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.nativelap.ecoguard.ui.component.SkeletonPlaceholder
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.ThemeMode
 
-private val homeLoadingBarHeight = 24.dp
-private val homeLoadingTitleSkeletonWidth = 160.dp
-private val homeLoadingMainSkeletonHeight = 156.dp
-private val homeLoadingRowSkeletonHeight = 72.dp
-private val homeLoadingFooterSkeletonWidth = 220.dp
+private val skeletonBarHeight = 24.dp
+private val skeletonTitleSkeletonWidth = 160.dp
+private val skeletonMainSkeletonHeight = 156.dp
+private val skeletonRowSkeletonHeight = 72.dp
+private val skeletonFooterSkeletonWidth = 220.dp
 
+/** 로딩 중 카드 자리를 보여주는 스켈레톤 5개와 로딩 안내 문구. */
 @Composable
-fun HomeLoadingContent(
+fun LoadingSkeletonContent(
     modifier: Modifier = Modifier,
     itemSpacing: Dp = AppSpacing.xl,
 ) {
@@ -35,87 +35,87 @@ fun HomeLoadingContent(
     ) {
         SkeletonPlaceholder(
             modifier = Modifier
-                .widthIn(max = homeLoadingTitleSkeletonWidth)
+                .widthIn(max = skeletonTitleSkeletonWidth)
                 .fillMaxWidth()
-                .height(homeLoadingBarHeight),
+                .height(skeletonBarHeight),
         )
 
         SkeletonPlaceholder(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(homeLoadingMainSkeletonHeight),
+                .height(skeletonMainSkeletonHeight),
         )
 
         SkeletonPlaceholder(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(homeLoadingRowSkeletonHeight),
+                .height(skeletonRowSkeletonHeight),
         )
 
         SkeletonPlaceholder(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(homeLoadingRowSkeletonHeight),
+                .height(skeletonRowSkeletonHeight),
         )
 
         SkeletonPlaceholder(
             modifier = Modifier
-                .widthIn(max = homeLoadingFooterSkeletonWidth)
+                .widthIn(max = skeletonFooterSkeletonWidth)
                 .fillMaxWidth()
-                .height(homeLoadingBarHeight),
+                .height(skeletonBarHeight),
         )
 
-        HomeLoadingStatus()
+        LoadingStatusText()
     }
 }
 
 @Preview(
-    name = "Home loading · 390dp content",
+    name = "Loading skeleton · 390dp content",
     showBackground = true,
     widthDp = 390,
     heightDp = 800,
 )
 @Preview(
-    name = "Home loading · compact content",
+    name = "Loading skeleton · compact content",
     showBackground = true,
     widthDp = 320,
     heightDp = 596,
 )
 @Preview(
-    name = "Home loading · tablet content",
+    name = "Loading skeleton · tablet content",
     showBackground = true,
     widthDp = 840,
     heightDp = 856,
 )
 @Preview(
-    name = "Home loading · larger text content",
+    name = "Loading skeleton · larger text content",
     showBackground = true,
     widthDp = 390,
     heightDp = 800,
     fontScale = 1.5f,
 )
 @Preview(
-    name = "Home loading · compact larger text",
+    name = "Loading skeleton · compact larger text",
     showBackground = true,
     widthDp = 320,
     heightDp = 596,
     fontScale = 1.5f,
 )
 @Preview(
-    name = "Home loading · RTL",
+    name = "Loading skeleton · RTL",
     showBackground = true,
     widthDp = 390,
     heightDp = 800,
     locale = "ar",
 )
 @Composable
-private fun HomeLoadingContentPreview() {
+private fun LoadingSkeletonContentPreview() {
     EcoGuardTheme(themeMode = ThemeMode.LIGHT) {
         Surface(
             modifier = Modifier.fillMaxSize(),
             color = MaterialTheme.colorScheme.surface,
         ) {
-            HomeLoadingContent()
+            LoadingSkeletonContent()
         }
     }
 }

@@ -19,6 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,6 +28,7 @@ import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppIconSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
+import com.nativelap.ecoguard.ui.theme.extraColors
 
 /** 뒤로 가기 버튼과 선택적 가운데 제목을 가진 상세 화면 상단 바. */
 @Composable
@@ -34,6 +36,7 @@ fun EcoBackTopBar(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     title: String? = null,
+    trailingText: String? = null,
 ) {
     Box(
         modifier = modifier
@@ -67,6 +70,17 @@ fun EcoBackTopBar(
                 textAlign = TextAlign.Center,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
+            )
+        }
+
+        if (trailingText != null) {
+            Text(
+                text = trailingText,
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .padding(end = AppSpacing.xs),
+                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+                color = MaterialTheme.extraColors.captionTextColor,
             )
         }
     }
