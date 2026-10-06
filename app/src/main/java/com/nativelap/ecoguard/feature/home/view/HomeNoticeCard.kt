@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -19,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -41,6 +43,7 @@ private val noticeBadgeHorizontalPadding = 10.dp
 private val noticeBadgeVerticalPadding = 3.dp
 private val noticeCardBottomPadding = 18.dp
 private val noticeLinkSpacing = 2.dp
+private val noticeHeaderCompactWidth = 280.dp
 
 @Composable
 fun HomeNoticeCard(
@@ -59,66 +62,64 @@ fun HomeNoticeCard(
             bottom = noticeCardBottomPadding,
         ),
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(AppSpacing.sm),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Box(
-                modifier = Modifier
-                    .size(AppComponentSize.noticeIconFrame)
-                    .clip(RoundedCornerShape(AppRadius.iconFrame)),
-                contentAlignment = Alignment.Center,
+        BoxWithConstraints {
+            // 좁은 폭·큰 글자에서는 제목이 세로로 꺾이지 않도록 NEW 배지를 날짜 아래로 내린다.
+            val isCompactHeader = maxWidth / LocalDensity.current.fontScale < noticeHeaderCompactWidth
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(AppSpacing.sm),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_megaphone),
-                    contentDescription = null,
-                    modifier = Modifier.size(AppIconSize.standard),
-                    tint = MaterialTheme.colorScheme.primary,
-                )
-            }
-
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(noticeTextSpacing),
-            ) {
-                Text(
-                    text = stringResource(R.string.home_notice_title),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-
-                Text(
-                    text = notice.publishedDate,
-                    style = MaterialTheme.extraTypography.captionRegular,
-                    color = MaterialTheme.extraColors.captionTextColor,
-                )
-            }
-
-            if (notice.isNew) {
-                Text(
-                    text = stringResource(R.string.badge_new),
+                Box(
                     modifier = Modifier
-                        .clip(RoundedCornerShape(AppRadius.badge))
-                        .background(MaterialTheme.colorScheme.primary)
-                        .padding(
-                            horizontal = noticeBadgeHorizontalPadding,
-                            vertical = noticeBadgeVerticalPadding,
-                        ),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                )
-            }
+                        .size(AppComponentSize.noticeIconFrame)
+                        .clip(RoundedCornerShape(AppRadius.iconFrame)),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_megaphone),
+                        contentDescription = null,
+                        modifier = Modifier.size(AppIconSize.standard),
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                }
 
-            IconButton(
-                onClick = onCloseClick,
-                modifier = Modifier.size(AppComponentSize.minTouchTarget),
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_close),
-                    contentDescription = stringResource(R.string.cd_close),
-                    modifier = Modifier.size(AppIconSize.small),
-                    tint = MaterialTheme.extraColors.captionTextColor,
-                )
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(noticeTextSpacing),
+                ) {
+                    Text(
+                        text = stringResource(R.string.home_notice_title),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+
+                    Text(
+                        text = notice.publishedDate,
+                        style = MaterialTheme.extraTypography.captionRegular,
+                        color = MaterialTheme.extraColors.captionTextColor,
+                    )
+
+                    if (notice.isNew && isCompactHeader) {
+                        NoticeNewBadge()
+                    }
+                }
+
+                if (notice.isNew && !isCompactHeader) {
+                    NoticeNewBadge()
+                }
+
+                IconButton(
+                    onClick = onCloseClick,
+                    modifier = Modifier.size(AppComponentSize.minTouchTarget),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_close),
+                        contentDescription = stringResource(R.string.cd_close),
+                        modifier = Modifier.size(AppIconSize.small),
+                        tint = MaterialTheme.extraColors.captionTextColor,
+                    )
+                }
             }
         }
 
@@ -165,7 +166,24 @@ fun HomeNoticeCard(
     }
 }
 
+@Composable
+private fun NoticeNewBadge() {
+    Text(
+        text = stringResource(R.string.badge_new),
+        modifier = Modifier
+            .clip(RoundedCornerShape(AppRadius.badge))
+            .background(MaterialTheme.colorScheme.primary)
+            .padding(
+                horizontal = noticeBadgeHorizontalPadding,
+                vertical = noticeBadgeVerticalPadding,
+            ),
+        style = MaterialTheme.typography.labelSmall,
+        color = MaterialTheme.colorScheme.onPrimary,
+    )
+}
+
 @Preview(showBackground = true, backgroundColor = 0xFFF8FAF9, widthDp = 390)
+@Preview(name = "Compact larger text", showBackground = true, backgroundColor = 0xFFF8FAF9, widthDp = 320, fontScale = 1.5f)
 @Composable
 private fun HomeNoticeCardPreview() {
     EcoGuardTheme {
