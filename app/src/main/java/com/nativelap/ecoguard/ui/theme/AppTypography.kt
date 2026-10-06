@@ -158,4 +158,10 @@ val EcoGuardExtraTypography = AppExtraTypography(
         lineHeight = 16.sp,
         letterSpacing = 0.sp,
     ),
+    highlightNumber = pretendardTextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 32.sp,
+        lineHeight = 34.sp,
+        letterSpacing = 0.sp,
+    ),
 )

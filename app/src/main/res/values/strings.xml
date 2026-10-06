@@ -23,6 +23,7 @@
     <string name="action_logout">로그아웃</string>
     <string name="action_view_notices">공지 보기</string>
     <string name="action_close">닫기</string>
+    <string name="action_view_activity_record">활동 기록 보기</string>
     <string name="cd_back">뒤로 가기</string>
     <string name="cd_close">닫기</string>
     <string name="cd_notice">알림</string>
@@ -151,6 +152,8 @@
     <string name="photo_review_pending_description">AI가 확인하고 있어요. 결과는 홈에서 알려드려요</string>
     <string name="photo_status">상태</string>
     <string name="photo_ai_review_pending">AI 검수 중</string>
+    <string name="verification_detail_title">%1$s 인증</string>
+    <string name="result_submitted_summary">%1$s · 오늘 %2$s 제출</string>
     <string name="verification_completed">청소 인증이 완료됐어요</string>
     <string name="verification_completed_description">수고했어요. 활동 시간에 %1$d분을 더했어요</string>
     <string name="verification_submitted_at">제출 시각</string>
@@ -204,7 +207,10 @@
     <string name="appeal_send_failed_description">입력한 내용과 첨부 사진은 유지돼요. 연결을 확인하고 다시 보내 주세요. 중복 접수되지 않도록 이전 제출 상태부터 확인해요.</string>
     <string name="appeal_retry_send">다시 보내기</string>
     <string name="appeal_edit_content">내용 수정하기</string>
-    <string name="appeal_approval_summary">%1$s 인증 · %2$d차 이의신청 선생님이 청소한 내용을 확인했어요. 활동 기록에 %3$d분이 추가됐어요.</string>
+    <string name="appeal_approval_summary">%1$s 인증 · %2$d차 이의신청\n\n선생님이 청소한 내용을 확인했어요.\n활동 기록에 %3$d분이 추가됐어요.</string>
+    <string name="appeal_attempt_summary">%1$s 인증 · %2$d차 이의신청</string>
+    <string name="appeal_attempt">%1$d차</string>
+    <string name="appeal_sent_suffix">%1$s 보냄</string>
 
     <!-- Loading and error states -->
     <string name="common_loading">불러오는 중이에요</string>
@@ -230,6 +236,7 @@
     <string name="format_bonus_minutes">+%1$d분</string>
     <string name="format_photo_progress">촬영 %1$d/%2$d</string>
     <string name="format_application_headcount">%1$d/%2$d명</string>
+    <string name="format_text_count">%1$d/%2$d</string>
     <string name="format_step">%1$d/%2$d</string>
     <string name="format_floor">%1$d층</string>
     <string name="format_list_separator">" · "</string>

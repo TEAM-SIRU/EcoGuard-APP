@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -19,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.ui.theme.AppIconSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
-import com.nativelap.ecoguard.ui.theme.extraColors
 
 /** 색맹 대응을 위해 색·아이콘·텍스트를 함께 표시하는 인증 상태 칩. */
 @Composable
@@ -27,8 +25,9 @@ fun StatusChip(
     type: StatusChipType,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = MaterialTheme.typography.labelSmall,
+    label: String = stringResource(type.labelRes),
 ) {
-    val contentColor = statusChipContentColor(type)
+    val contentColor = type.contentColor()
 
     Row(
         modifier = modifier,
@@ -43,20 +42,10 @@ fun StatusChip(
         )
 
         Text(
-            text = stringResource(type.labelRes),
+            text = label,
             style = textStyle,
             color = contentColor,
         )
-    }
-}
-
-@Composable
-private fun statusChipContentColor(type: StatusChipType): Color {
-    return when (type) {
-        StatusChipType.APPROVED -> MaterialTheme.colorScheme.primary
-        StatusChipType.REVIEWING -> MaterialTheme.extraColors.warningTextColor
-        StatusChipType.REJECTED -> MaterialTheme.colorScheme.error
-        StatusChipType.NOT_SUBMITTED -> MaterialTheme.colorScheme.onSurfaceVariant
     }
 }
 

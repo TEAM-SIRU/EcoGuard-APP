@@ -1,8 +1,10 @@
-package com.nativelap.ecoguard.ui.component
+package com.nativelap.ecoguard.feature.verification.view
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,33 +18,41 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.nativelap.ecoguard.R
+import com.nativelap.ecoguard.ui.component.BottomCtaBar
+import com.nativelap.ecoguard.ui.component.CenteredIconMessage
+import com.nativelap.ecoguard.ui.component.CenteredIconStyle
+import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
+import com.nativelap.ecoguard.ui.component.InfoTableBox
+import com.nativelap.ecoguard.ui.component.PhotoPlaceholder
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
-import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-/**
- * 조회 실패·활동 제외처럼 뒤로 가기, 가운데 안내, 하단 버튼으로 구성된 상태 화면의 공통 뼈대.
- * 여러 feature의 상태 화면이 같은 배치를 쓰므로 Scaffold까지 포함한다.
- */
+private val summaryPhotoHeight = 200.dp
+private val summaryMessageBottomPadding = 32.dp
+
+/** 제출 완료·인증 승인·선생님 확인 중 화면의 공통 뼈대(결과 아이콘, 제출 사진, 정보 표, 하단 버튼). */
 @Composable
-fun StatusMessageLayout(
+internal fun VerificationSummaryLayout(
+    @DrawableRes resultIconRes: Int,
     title: String,
     description: String,
-    onBackClick: () -> Unit,
+    actionText: String,
+    onActionClick: () -> Unit,
     modifier: Modifier = Modifier,
-    highlightText: String? = null,
-    bottomActions: @Composable () -> Unit,
+    infoRows: @Composable ColumnScope.() -> Unit,
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surface,
-        topBar = {
-            EcoBackTopBar(onBackClick = onBackClick)
-        },
         bottomBar = {
             BottomCtaBar {
-                bottomActions()
+                EcoPrimaryButton(
+                    text = actionText,
+                    onClick = onActionClick,
+                )
             }
         },
     ) { innerPadding ->
@@ -65,34 +75,22 @@ fun StatusMessageLayout(
                     ),
                 verticalArrangement = Arrangement.Center,
             ) {
-                StatusMessage(
+                CenteredIconMessage(
+                    iconRes = resultIconRes,
                     title = title,
                     description = description,
-                    highlightText = highlightText,
+                    iconStyle = CenteredIconStyle.HERO,
+                    modifier = Modifier.padding(bottom = summaryMessageBottomPadding),
                 )
+
+                PhotoPlaceholder(
+                    label = stringResource(R.string.photo_submitted_label),
+                    height = summaryPhotoHeight,
+                    modifier = Modifier.padding(bottom = AppSpacing.xl),
+                )
+
+                InfoTableBox(content = infoRows)
             }
-        }
-    }
-}
-
-@Preview(showBackground = true, widthDp = 390, heightDp = 844)
-@Composable
-private fun StatusMessageLayoutPreview() {
-    EcoGuardTheme {
-        StatusMessageLayout(
-            title = "홈을 불러오지 못했어요",
-            description = "네트워크 연결을 확인한 뒤 다시 시도해 주세요.",
-            onBackClick = {},
-        ) {
-            EcoPrimaryButton(
-                text = "다시 시도",
-                onClick = {},
-            )
-
-            EcoSecondaryButton(
-                text = "공지 보기",
-                onClick = {},
-            )
         }
     }
 }

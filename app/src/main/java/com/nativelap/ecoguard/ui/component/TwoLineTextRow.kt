@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -32,6 +33,7 @@ fun TwoLineTextRow(
     subtitle: String,
     modifier: Modifier = Modifier,
     @DrawableRes leadingIconRes: Int? = null,
+    trailingContent: @Composable RowScope.() -> Unit = {},
 ) {
     Row(
         modifier = modifier
@@ -68,6 +70,8 @@ fun TwoLineTextRow(
                 color = MaterialTheme.extraColors.captionTextColor,
             )
         }
+
+        trailingContent()
     }
 }
 

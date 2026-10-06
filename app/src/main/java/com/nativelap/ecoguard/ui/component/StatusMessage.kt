@@ -21,6 +21,7 @@ fun StatusMessage(
     title: String,
     description: String,
     modifier: Modifier = Modifier,
+    highlightText: String? = null,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -32,6 +33,14 @@ fun StatusMessage(
             style = MaterialTheme.extraTypography.statusTitle,
             color = MaterialTheme.colorScheme.onSurface,
         )
+
+        if (highlightText != null) {
+            Text(
+                text = highlightText,
+                style = MaterialTheme.extraTypography.highlightNumber,
+                color = MaterialTheme.colorScheme.primary,
+            )
+        }
 
         Text(
             text = description,

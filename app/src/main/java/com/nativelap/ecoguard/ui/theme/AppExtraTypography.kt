@@ -14,6 +14,7 @@ data class AppExtraTypography(
     val captionRegular: TextStyle,
     val loadingStatus: TextStyle,
     val tabLabel: TextStyle,
+    val highlightNumber: TextStyle,
 )
 
 val LocalAppExtraTypography = staticCompositionLocalOf<AppExtraTypography> {

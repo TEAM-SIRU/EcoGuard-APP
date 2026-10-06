@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppIconSize
@@ -37,12 +38,13 @@ fun EcoSecondaryButton(
     modifier: Modifier = Modifier,
     @DrawableRes leadingIconRes: Int? = null,
     enabled: Boolean = true,
+    minHeight: Dp = AppComponentSize.primaryButtonHeight,
 ) {
     Button(
         onClick = onClick,
         modifier = modifier
             .fillMaxWidth()
-            .heightIn(min = AppComponentSize.primaryButtonHeight),
+            .heightIn(min = minHeight),
         enabled = enabled,
         shape = RoundedCornerShape(AppRadius.button),
         colors = ButtonDefaults.buttonColors(
