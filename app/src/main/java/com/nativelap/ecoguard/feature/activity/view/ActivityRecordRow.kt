@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.activity.viewmodel.ActivityRecordUiModel
@@ -60,7 +61,10 @@ fun ActivityRecordRow(
         modifier = if (isNotSubmitted) {
             modifier
         } else {
-            modifier.clickable(onClick = onClick)
+            modifier.clickable(
+                role = Role.Button,
+                onClick = onClick,
+            )
         },
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(AppSpacing.xs)) {

@@ -7,7 +7,7 @@ object AppComponentSize {
     val toastMinHeight = 56.dp
     val topBarHeight = 56.dp
     val backBarHeight = 52.dp
-    val minTouchTarget = 44.dp
+    val minTouchTarget = 48.dp
     val iconTile = 44.dp
     val noticeIconFrame = 48.dp
     val tabBarHeight = 56.dp

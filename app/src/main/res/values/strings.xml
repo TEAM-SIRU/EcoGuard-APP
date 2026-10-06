@@ -109,6 +109,7 @@
     <string name="recruitment_approved_activity_record">인증이 승인되면 활동 기록에 쌓여요</string>
     <string name="recruitment_simple_photo_verification">사진 1장으로 간단하게 인증</string>
     <string name="recruitment_take_photo_to_submit">청소를 마치고 카메라로 찍어 보내요</string>
+    <string name="recruitment_notice_title">모집 공고</string>
     <string name="recruitment_apply">신청하기</string>
     <string name="recruitment_daily_time">매일 %1$s – %2$s</string>
     <string name="recruitment_class_full">%1$d학년 %2$d반은 자리가 모두 찼어요. 다음 모집을 기다려 주세요</string>

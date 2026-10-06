@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
@@ -119,7 +120,10 @@ private fun AppealHistoryRow(
     TwoLineTextRow(
         title = stringResource(R.string.verification_detail_title, appealHistoryItem.verificationDate),
         subtitle = subtitleParts.joinToString(separator = separator),
-        modifier = Modifier.clickable(onClick = onClick),
+        modifier = Modifier.clickable(
+                role = Role.Button,
+                onClick = onClick,
+            ),
     ) {
         StatusChip(
             type = appealHistoryItem.status,

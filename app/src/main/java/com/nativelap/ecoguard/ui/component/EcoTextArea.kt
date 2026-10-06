@@ -25,6 +25,9 @@ import com.nativelap.ecoguard.ui.theme.extraColors
 import com.nativelap.ecoguard.ui.theme.extraTypography
 
 private val textAreaMinHeight = 140.dp
+
+// 전체 140 − 상하 여백 32 − 글자 수 줄 18 − 간격 8
+private val textAreaInputMinHeight = 82.dp
 private val textAreaBorderWidth = 1.dp
 
 /** 테두리 있는 여러 줄 입력칸. 아래쪽에 글자 수(입력/최대)를 표시하고 최대 길이를 넘기지 않는다. */
@@ -56,12 +59,9 @@ fun EcoTextArea(
         textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface),
         cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
         decorationBox = { innerTextField ->
-            Column(
-                modifier = Modifier
-                    .heightIn(min = textAreaMinHeight)
-                    .padding(AppSpacing.md),
-            ) {
-                Box(modifier = Modifier.weight(1f, fill = false)) {
+            Column(modifier = Modifier.padding(AppSpacing.md)) {
+                // 입력 길이에 따라 늘어나되, 비어 있을 때도 Figma 높이(140)를 유지한다.
+                Box(modifier = Modifier.heightIn(min = textAreaInputMinHeight)) {
                     if (value.isEmpty()) {
                         Text(
                             text = placeholder,
@@ -73,10 +73,9 @@ fun EcoTextArea(
                     innerTextField()
                 }
 
-                Box(modifier = Modifier.weight(1f))
-
                 Text(
                     text = stringResource(R.string.format_text_count, value.length, maxLength),
+                    modifier = Modifier.padding(top = AppSpacing.xs),
                     style = MaterialTheme.extraTypography.captionRegular,
                     color = MaterialTheme.extraColors.captionTextColor,
                 )

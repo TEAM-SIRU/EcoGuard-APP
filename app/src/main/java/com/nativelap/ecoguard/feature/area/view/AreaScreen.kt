@@ -152,7 +152,9 @@ private fun AreaDetailContent(
     Column {
         EcoSegmentedControl(
             segmentLabels = floorLabels,
-            selectedIndex = areaContent.floors.indexOf(areaContent.selectedFloor),
+            selectedIndex = areaContent.floors
+                .indexOf(areaContent.selectedFloor)
+                .coerceAtLeast(0),
             onSegmentSelect = { selectedIndex -> onFloorSelect(areaContent.floors[selectedIndex]) },
             modifier = Modifier.padding(
                 start = AppSpacing.screenHorizontal,

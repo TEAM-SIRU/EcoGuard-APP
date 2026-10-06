@@ -4,6 +4,8 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 sealed interface RecruitmentUiState {
+    data object Loading : RecruitmentUiState
+
     data object LoadFailed : RecruitmentUiState
 
     data class Content(

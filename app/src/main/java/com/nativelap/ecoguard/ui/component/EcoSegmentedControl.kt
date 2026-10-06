@@ -52,7 +52,7 @@ fun EcoSegmentedControl(
             Box(
                 modifier = Modifier
                     .weight(1f)
-                    .heightIn(min = AppComponentSize.minTouchTarget - AppSpacing.xs)
+                    .heightIn(min = AppComponentSize.minTouchTarget)
                     .clip(RoundedCornerShape(segmentItemRadius))
                     .background(
                         if (isSelected) {
