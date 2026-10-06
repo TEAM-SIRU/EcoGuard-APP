@@ -1,6 +1,7 @@
 package com.nativelap.ecoguard.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,6 +38,7 @@ fun EcoCard(
     cornerRadius: Dp = AppRadius.card,
     contentPadding: PaddingValues = PaddingValues(AppSpacing.lg),
     emphasized: Boolean = false,
+    onClick: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val cardShape = RoundedCornerShape(cornerRadius)
@@ -65,6 +67,13 @@ fun EcoCard(
             )
             .clip(cardShape)
             .background(MaterialTheme.colorScheme.surface)
+            .then(
+                if (onClick != null) {
+                    Modifier.clickable(onClick = onClick)
+                } else {
+                    Modifier
+                },
+            )
             .padding(contentPadding),
         content = content,
     )

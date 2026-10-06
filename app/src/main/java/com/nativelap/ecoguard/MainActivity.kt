@@ -6,7 +6,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.nativelap.ecoguard.feature.home.view.HomeLoadingRoute
+import com.nativelap.ecoguard.feature.home.view.HomeRoute
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.ThemeMode
 
@@ -25,7 +25,7 @@ class MainActivity : ComponentActivity() {
         )
         setContent {
             EcoGuardTheme(themeMode = ThemeMode.LIGHT) {
-                HomeLoadingRoute()
+                HomeRoute()
             }
         }
     }

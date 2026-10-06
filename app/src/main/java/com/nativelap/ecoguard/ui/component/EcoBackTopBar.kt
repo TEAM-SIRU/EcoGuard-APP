@@ -1,10 +1,13 @@
 package com.nativelap.ecoguard.ui.component
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -35,6 +38,7 @@ fun EcoBackTopBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
+            .windowInsetsPadding(WindowInsets.statusBars)
             .heightIn(min = AppComponentSize.backBarHeight)
             .padding(horizontal = AppSpacing.sm),
         contentAlignment = Alignment.CenterStart,

@@ -63,6 +63,9 @@
     <string name="home_view_activity_record">기록 보기</string>
     <string name="home_appeal">이의신청하기</string>
     <string name="home_outside_verification_time">지금은 인증 시간이 아니에요</string>
+    <string name="home_verification_available_from">%1$s부터 인증할 수 있어요</string>
+    <string name="home_recruiting_title">%1$s 환경지킴이를 모집하고 있어요</string>
+    <string name="home_recruiting_policy">반마다 %1$d명, 먼저 신청한 순서대로 확정돼요</string>
     <string name="home_verification_time">청소 인증은 매일 %1$s – %2$s에만 할 수 있어요</string>
     <string name="home_time_until_deadline">인증 마감까지 %1$s</string>
     <string name="home_daily_schedule">매일 %1$s – %2$s에 청소하고 사진 1장으로 인증해 주세요.</string>
@@ -207,5 +210,7 @@
     <string name="format_bonus_minutes">+%1$d분</string>
     <string name="format_photo_progress">촬영 %1$d/%2$d</string>
     <string name="format_application_headcount">%1$d/%2$d명</string>
+    <string name="format_time_range">%1$s – %2$s</string>
+    <string name="format_grade_class">%1$d학년 %2$d반</string>
     <string name="format_today">오늘 %1$s</string>
 </resources>
