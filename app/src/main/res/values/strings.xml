@@ -28,6 +28,8 @@
     <string name="cd_close">닫기</string>
     <string name="cd_notice">알림</string>
     <string name="cd_camera_verification">청소 인증 촬영</string>
+    <string name="cd_previous_year">이전 연도</string>
+    <string name="cd_next_year">다음 연도</string>
     <string name="cd_shutter">사진 찍기</string>
     <string name="cd_flip_camera">카메라 전환</string>
 
@@ -179,8 +181,15 @@
     <string name="activity_start_verification">청소 인증하러 가기</string>
     <string name="activity_select_month">월 선택</string>
     <string name="activity_select_month_description">조회할 활동 기록의 월을 선택해 주세요.</string>
+    <string name="activity_weeks_ago">%1$d주 전</string>
+    <string name="activity_holiday_format">%1$s · 휴일로 청소하지 않아요</string>
+    <string name="activity_not_verified">인증하지 않았어요</string>
+    <string name="activity_appeal_approved">이의신청 승인</string>
     <string name="activity_load_failed">기록을 불러오지 못했어요</string>
     <string name="common_try_again_later">잠시 후 다시 시도해 주세요</string>
+    <string name="profile_class_role">%1$d학년 %2$d반 · 환경지킴이</string>
+    <string name="profile_monthly_approvals">이번 달 승인</string>
+    <string name="profile_activity_time">활동 시간</string>
     <string name="profile_application_result">신청 결과</string>
     <string name="profile_cleaning_notification">청소 알림</string>
     <string name="profile_appeal_history">이의신청 내역</string>
@@ -238,6 +247,9 @@
     <string name="format_application_headcount">%1$d/%2$d명</string>
     <string name="format_text_count">%1$d/%2$d</string>
     <string name="format_step">%1$d/%2$d</string>
+    <string name="format_year">%1$d년</string>
+    <string name="format_month">%1$d월</string>
+    <string name="format_year_month">%1$d년 %2$d월</string>
     <string name="format_floor">%1$d층</string>
     <string name="format_list_separator">" · "</string>
     <string name="format_time_range">%1$s – %2$s</string>
