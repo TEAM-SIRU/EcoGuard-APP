@@ -35,7 +35,20 @@ jobs:
           packages: 'platform-tools'
 
       - name: Install Android SDK packages
-        run: sdkmanager --channel=3 --install "platforms;android-37" "build-tools;36.0.0"
+        run: |
+          sdkmanager --channel=3 --install "platforms;android-37.0" "build-tools;36.0.0"
+          sdk_platform="$ANDROID_HOME/platforms/android-37"
+          if [ -L "$sdk_platform" ] && [ ! -e "$sdk_platform" ]; then
+            echo "Android SDK platform alias is a broken symbolic link: $sdk_platform" >&2
+            exit 1
+          fi
+          if [ ! -e "$sdk_platform" ]; then
+            ln -s android-37.0 "$sdk_platform"
+          fi
+          if ! grep -Fxq 'AndroidVersion.ApiLevel=37.0' "$sdk_platform/source.properties"; then
+            echo "Android SDK platform alias does not point to API 37.0: $sdk_platform" >&2
+            exit 1
+          fi
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@017a9effdb900e5b5b2fddfb590a105619dca3c3 # v4.4.2
