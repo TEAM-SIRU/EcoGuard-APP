@@ -2,6 +2,7 @@ package com.nativelap.ecoguard.feature.area.view
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -35,6 +36,13 @@ import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 // Figma의 도면 영역 높이(308)에서 상하 여백(4·24)을 뺀 값. 도면 이미지는 서버 연동 시 채운다.
 private val floorPlanHeight = 280.dp
 
+private val areaTitlePadding = PaddingValues(
+    start = AppSpacing.screenHorizontal,
+    end = AppSpacing.screenHorizontal,
+    top = AppSpacing.xs,
+    bottom = AppSpacing.lg,
+)
+
 @Composable
 fun AreaScreen(
     uiState: AreaUiState,
@@ -59,13 +67,6 @@ fun AreaScreen(
                 .consumeWindowInsets(innerPadding),
             contentAlignment = Alignment.TopCenter,
         ) {
-            val areaTitleModifier = Modifier.padding(
-                start = AppSpacing.screenHorizontal,
-                end = AppSpacing.screenHorizontal,
-                top = AppSpacing.xs,
-                bottom = AppSpacing.lg,
-            )
-
             when (uiState) {
                 is AreaUiState.Content -> Column(
                     modifier = Modifier
@@ -76,7 +77,7 @@ fun AreaScreen(
                     PageTitle(
                         title = stringResource(R.string.common_my_cleaning_area),
                         subtitle = stringResource(R.string.area_selected_floor, uiState.selectedFloor),
-                        modifier = areaTitleModifier,
+                        modifier = Modifier.padding(areaTitlePadding),
                     )
 
                     AreaDetailContent(
@@ -84,14 +85,14 @@ fun AreaScreen(
                         onFloorSelect = { selectedFloor -> onEvent(AreaScreenEvent.FloorSelect(selectedFloor)) },
                     )
                 }
-                AreaUiState.NotAssigned -> AreaEmptyLayout(titleModifier = areaTitleModifier) {
+                AreaUiState.NotAssigned -> AreaEmptyLayout {
                     InlineEmptyState(
                         iconRes = R.drawable.ic_map_30,
                         title = stringResource(R.string.area_not_assigned_title),
                         description = stringResource(R.string.area_not_assigned_description),
                     )
                 }
-                AreaUiState.LoadFailed -> AreaEmptyLayout(titleModifier = areaTitleModifier) {
+                AreaUiState.LoadFailed -> AreaEmptyLayout {
                     InlineEmptyState(
                         iconRes = R.drawable.ic_map_30,
                         title = stringResource(R.string.area_load_failed),
@@ -108,7 +109,6 @@ fun AreaScreen(
 
 @Composable
 private fun AreaEmptyLayout(
-    titleModifier: Modifier,
     emptyContent: @Composable () -> Unit,
 ) {
     Column(
@@ -118,7 +118,7 @@ private fun AreaEmptyLayout(
     ) {
         PageTitle(
             title = stringResource(R.string.common_my_cleaning_area),
-            modifier = titleModifier,
+            modifier = Modifier.padding(areaTitlePadding),
         )
 
         Box(
