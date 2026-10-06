@@ -101,6 +101,11 @@
     <string name="recruitment_simple_photo_verification">사진 1장으로 간단하게 인증</string>
     <string name="recruitment_take_photo_to_submit">청소를 마치고 카메라로 찍어 보내요</string>
     <string name="recruitment_apply">신청하기</string>
+    <string name="recruitment_daily_time">매일 %1$s – %2$s</string>
+    <string name="recruitment_class_full">%1$d학년 %2$d반은 자리가 모두 찼어요. 다음 모집을 기다려 주세요</string>
+    <string name="recruitment_applied_at">%1$s에 %2$d번째로 신청했어요</string>
+    <string name="application_title">환경지킴이 신청</string>
+    <string name="application_description">신청하면 바로 확정돼요.\n반마다 %1$d명이 차면 마감돼요.</string>
     <string name="recruitment_application_failed">신청하지 못했어요</string>
     <string name="recruitment_filled_while_applying">신청하는 사이 모집 인원이 모두 찼어요.\n다음 모집 때 다시 신청해 주세요.</string>
     <string name="recruitment_closed">모집이 마감됐어요</string>

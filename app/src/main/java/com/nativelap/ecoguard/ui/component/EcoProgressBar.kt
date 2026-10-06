@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
@@ -26,6 +27,7 @@ fun EcoProgressBar(
     currentCount: Int,
     maxCount: Int,
     modifier: Modifier = Modifier,
+    progressColor: Color = MaterialTheme.colorScheme.primary,
 ) {
     val progressFraction = if (maxCount > 0) {
         (currentCount.toFloat() / maxCount).coerceIn(0f, 1f)
@@ -52,7 +54,7 @@ fun EcoProgressBar(
                 .fillMaxWidth(progressFraction)
                 .fillMaxHeight()
                 .clip(barShape)
-                .background(MaterialTheme.colorScheme.primary),
+                .background(progressColor),
         )
     }
 }

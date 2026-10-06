@@ -28,13 +28,14 @@ import com.nativelap.ecoguard.ui.theme.AppIconSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-/** 회색 원 안의 아이콘과 가운데 정렬 제목·설명. 빈 상태·안내 화면에서 사용한다. */
+/** 아이콘과 가운데 정렬 제목·설명. 빈 상태·안내·결과 화면에서 사용한다. */
 @Composable
 fun CenteredIconMessage(
     @DrawableRes iconRes: Int,
     title: String,
     modifier: Modifier = Modifier,
     description: String? = null,
+    iconStyle: CenteredIconStyle = CenteredIconStyle.CIRCLE,
     iconTint: Color = MaterialTheme.colorScheme.onSurfaceVariant,
 ) {
     Column(
@@ -46,18 +47,26 @@ fun CenteredIconMessage(
             modifier = Modifier.size(AppComponentSize.logo),
             contentAlignment = Alignment.Center,
         ) {
-            Box(
-                modifier = Modifier
-                    .size(AppComponentSize.emptyIconCircle)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.surfaceVariant),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
+            when (iconStyle) {
+                CenteredIconStyle.CIRCLE -> Box(
+                    modifier = Modifier
+                        .size(AppComponentSize.emptyIconCircle)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.surfaceVariant),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        painter = painterResource(iconRes),
+                        contentDescription = null,
+                        modifier = Modifier.size(AppIconSize.emptyState),
+                        tint = iconTint,
+                    )
+                }
+                CenteredIconStyle.HERO -> Icon(
                     painter = painterResource(iconRes),
                     contentDescription = null,
-                    modifier = Modifier.size(AppIconSize.emptyState),
-                    tint = iconTint,
+                    modifier = Modifier.size(AppIconSize.hero),
+                    tint = Color.Unspecified,
                 )
             }
         }
