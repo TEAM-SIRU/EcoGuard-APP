@@ -64,6 +64,7 @@ fun EcoBottomTabBar(
     onTabSelected: (EcoBottomTab) -> Unit,
     onCameraClick: () -> Unit,
     modifier: Modifier = Modifier,
+    isCameraEnabled: Boolean = true,
 ) {
     Box(
         modifier = modifier.fillMaxWidth(),
@@ -126,6 +127,7 @@ fun EcoBottomTabBar(
 
         CameraFab(
             onClick = onCameraClick,
+            isEnabled = isCameraEnabled,
             modifier = Modifier.offset(y = cameraFabOffsetY),
         )
     }
@@ -193,8 +195,21 @@ private fun EcoBottomTabItem(
 @Composable
 private fun CameraFab(
     onClick: () -> Unit,
+    isEnabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    // 인증할 수 없는 상태(미가입·구역 배정 대기)에서는 회색으로 표시하고 그림자를 없앤다.
+    val fabContainerColor = if (isEnabled) {
+        MaterialTheme.colorScheme.primary
+    } else {
+        MaterialTheme.extraColors.disabledContentColor
+    }
+    val fabShadowAlpha = if (isEnabled) {
+        CAMERA_FAB_SHADOW_ALPHA
+    } else {
+        0f
+    }
+
     Surface(
         onClick = onClick,
         modifier = modifier
@@ -205,11 +220,12 @@ private fun CameraFab(
                     radius = cameraFabShadowRadius,
                     color = MaterialTheme.colorScheme.primary,
                     offset = DpOffset(x = 0.dp, y = cameraFabShadowOffsetY),
-                    alpha = CAMERA_FAB_SHADOW_ALPHA,
+                    alpha = fabShadowAlpha,
                 ),
             ),
+        enabled = isEnabled,
         shape = CircleShape,
-        color = MaterialTheme.colorScheme.primary,
+        color = fabContainerColor,
         contentColor = MaterialTheme.colorScheme.onPrimary,
         border = BorderStroke(
             width = AppComponentSize.cameraFabBorder,
