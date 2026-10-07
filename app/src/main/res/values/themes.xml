@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.EcoGuard" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.EcoGuard" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Theme.kt의 lightSurfaceColor(흰색)와 같은 값이어야 스플래시에서 첫 화면으로 자연스럽게 이어진다. -->
+        <item name="android:windowSplashScreenBackground">@color/white</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_sprout</item>
+    </style>
 </resources>
