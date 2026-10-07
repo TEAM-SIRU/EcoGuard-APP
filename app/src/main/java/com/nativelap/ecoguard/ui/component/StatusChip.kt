@@ -1,0 +1,65 @@
+package com.nativelap.ecoguard.ui.component
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.tooling.preview.Preview
+import com.nativelap.ecoguard.ui.theme.AppIconSize
+import com.nativelap.ecoguard.ui.theme.AppSpacing
+import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
+
+/** 색맹 대응을 위해 색·아이콘·텍스트를 함께 표시하는 인증 상태 칩. */
+@Composable
+fun StatusChip(
+    type: StatusChipType,
+    modifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.labelSmall,
+    label: String = stringResource(type.labelRes),
+) {
+    val contentColor = type.contentColor()
+
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(AppSpacing.xxs),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Icon(
+            painter = painterResource(type.iconRes),
+            contentDescription = null,
+            modifier = Modifier.size(AppIconSize.chip),
+            tint = contentColor,
+        )
+
+        Text(
+            text = label,
+            style = textStyle,
+            color = contentColor,
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun StatusChipPreview() {
+    EcoGuardTheme {
+        Column(
+            modifier = Modifier.padding(AppSpacing.md),
+            verticalArrangement = Arrangement.spacedBy(AppSpacing.xs),
+        ) {
+            StatusChipType.entries.forEach { chipType ->
+                StatusChip(type = chipType)
+            }
+        }
+    }
+}
