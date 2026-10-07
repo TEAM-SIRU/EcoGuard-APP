@@ -1,4 +1,4 @@
-package com.nativelap.ecoguard.feature.home.view
+package com.nativelap.ecoguard.feature.recruitment.view
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
@@ -11,9 +11,9 @@ import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.ui.component.LoadingSkeletonScrollContent
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-/** 02 홈 로딩. 회색 제목과 스켈레톤을 표시한다. */
+/** 03 모집 공고 로딩. 회색 제목과 스켈레톤을 표시한다. */
 @Composable
-fun HomeLoadingScreen(
+fun RecruitmentLoadingScreen(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -22,15 +22,15 @@ fun HomeLoadingScreen(
     ) { innerPadding ->
         LoadingSkeletonScrollContent(
             innerPadding = innerPadding,
-            title = stringResource(R.string.brand_name),
+            title = stringResource(R.string.recruitment_notice_title),
         )
     }
 }
 
-@Preview(name = "Home · loading", showBackground = true, widthDp = 390, heightDp = 844)
+@Preview(name = "Recruitment · loading", showBackground = true, widthDp = 390, heightDp = 844)
 @Composable
-private fun HomeLoadingScreenPreview() {
+private fun RecruitmentLoadingScreenPreview() {
     EcoGuardTheme {
-        HomeLoadingScreen()
+        RecruitmentLoadingScreen()
     }
 }

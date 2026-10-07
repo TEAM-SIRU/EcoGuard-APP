@@ -1,6 +1,5 @@
 package com.nativelap.ecoguard.feature.menu.view
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
@@ -17,13 +15,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.menu.viewmodel.MenuScreenEvent
@@ -37,7 +32,6 @@ import com.nativelap.ecoguard.ui.component.StatSummaryRow
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
-import com.nativelap.ecoguard.ui.theme.extraColors
 
 /** 12 전체(마이페이지). 프로필, 이번 달 요약, 메뉴 목록, 로그아웃. */
 @Composable
@@ -153,21 +147,14 @@ fun MenuScreen(
 
                 SectionDivider()
 
-                Text(
+                MenuTextAction(
                     text = stringResource(R.string.action_logout),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = AppComponentSize.minTouchTarget)
-                        .clickable(
-                            role = Role.Button,
-                            onClick = { onEvent(MenuScreenEvent.LogoutClick) },
-                        )
-                        .padding(
-                            horizontal = AppSpacing.screenHorizontal,
-                            vertical = AppSpacing.md,
-                        ),
-                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-                    color = MaterialTheme.extraColors.captionTextColor,
+                    onClick = { onEvent(MenuScreenEvent.LogoutClick) },
+                )
+
+                MenuTextAction(
+                    text = stringResource(R.string.action_withdraw),
+                    onClick = { onEvent(MenuScreenEvent.WithdrawClick) },
                 )
             }
         }

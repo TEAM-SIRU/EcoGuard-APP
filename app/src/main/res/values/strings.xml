@@ -21,6 +21,7 @@
     <string name="action_notice">공지</string>
     <string name="action_help">도움말</string>
     <string name="action_logout">로그아웃</string>
+    <string name="action_withdraw">회원탈퇴</string>
     <string name="action_view_notices">공지 보기</string>
     <string name="action_close">닫기</string>
     <string name="action_view_activity_record">활동 기록 보기</string>
@@ -44,6 +45,8 @@
     <string name="web_address_share">웹 주소 공유</string>
     <string name="logout_confirmation_title">로그아웃할까요?</string>
     <string name="logout_confirmation_description">다시 들어오려면 DataGSM으로 로그인해야 해요</string>
+    <string name="withdraw_confirmation_title">회원탈퇴</string>
+    <string name="withdraw_confirmation_description">정말 탈퇴하시겠어요?</string>
 
     <!-- Home and cleaning status -->
     <string name="home_today_cleaning">오늘의 청소</string>
@@ -214,7 +217,7 @@
     <string name="appeal_unlimited_attempts">이의신청은 횟수 제한 없이 할 수 있어요</string>
     <string name="appeal_approved">이의신청이 승인됐어요</string>
     <string name="appeal_send_failed">이의신청을 보내지 못했어요</string>
-    <string name="appeal_send_failed_description">입력한 내용과 첨부 사진은 유지돼요. 연결을 확인하고 다시 보내 주세요. 중복 접수되지 않도록 이전 제출 상태부터 확인해요.</string>
+    <string name="appeal_send_failed_description">입력한 내용과 첨부 사진은 유지돼요.\n연결을 확인하고 다시 보내 주세요.\n중복 접수되지 않도록 이전 제출 상태부터 확인해요.</string>
     <string name="appeal_retry_send">다시 보내기</string>
     <string name="appeal_edit_content">내용 수정하기</string>
     <string name="appeal_approval_summary">%1$s 인증 · %2$d차 이의신청\n\n선생님이 청소한 내용을 확인했어요.\n활동 기록에 %3$d분이 추가됐어요.</string>
@@ -233,9 +236,13 @@
     <string name="recruitment_load_failed">모집 공고를 불러오지 못했어요</string>
     <string name="recruitment_load_failed_description">모집 상태를 확인하지 못했어요. 다시 불러온 뒤 신청 가능 여부를 확인해 주세요.</string>
     <string name="photo_upload_failed">사진을 보내지 못했어요</string>
-    <string name="photo_upload_failed_description">네트워크 연결을 확인하고 다시 시도해 주세요. %1$s 전에 업로드를 시작한 사진은 마감 후에도 같은 사진으로 재시도할 수 있어요. 새 사진으로 바꾸면 마감 후 제출할 수 없어요.</string>
+    <string name="photo_upload_failed_description">네트워크 연결을 확인하고 다시 시도해 주세요.\n%1$s 전에 업로드를 시작한 사진은 마감 후에도 같은 사진으로 재시도할 수 있어요.\n새 사진으로 바꾸면 마감 후 제출할 수 없어요.</string>
     <string name="verification_time_ended">오늘 인증 시간이 끝났어요</string>
-    <string name="verification_time_ended_description">%1$s이 지나 새 인증은 제출할 수 없어요. 마감 전에 업로드를 시작했다면 기존 사진의 업로드를 이어갈 수 있어요. 이의신청용 촬영은 별도로 가능해요.</string>
+    <string name="verification_time_ended_description">%1$s이 지나 새 인증은 제출할 수 없어요.\n마감 전에 업로드를 시작했다면 기존 사진의 업로드를 이어갈 수 있어요.\n이의신청용 촬영은 별도로 가능해요.</string>
+    <string name="verification_weekend_title">오늘은 주말이에요!</string>
+    <string name="verification_weekend_description">다음 주부터 봉사 활동을 시작해주세요.</string>
+    <string name="verification_vacation_title">오늘은 방학이에요!</string>
+    <string name="verification_vacation_description">다음 환경지킴이를 신청해주세요.</string>
     <string name="notice_load_failed">공지를 불러오지 못했어요</string>
 
     <!-- Dynamic values formatted by the caller -->

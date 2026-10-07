@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 시스템 스플래시 아이콘 영역(288dp) 안에서 Figma 로고 크기(80dp)에 맞추려고 각 변을 36%씩 줄인다. -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_sprout"
+    android:inset="36%" />

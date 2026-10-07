@@ -16,7 +16,11 @@ sealed interface HomeUiState {
     data class Content(
         val notice: HomeNoticeUiModel?,
         val section: HomeSectionUiModel,
-    ) : HomeUiState
+    ) : HomeUiState {
+        /** 청소 구역이 배정된 환경지킴이만 하단 카메라로 인증할 수 있다. */
+        val isCameraVerificationAvailable: Boolean
+            get() = section is HomeSectionUiModel.Cleaning
+    }
 }
 
 @Immutable

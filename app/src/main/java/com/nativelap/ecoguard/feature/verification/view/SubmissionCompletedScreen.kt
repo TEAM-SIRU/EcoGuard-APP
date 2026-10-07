@@ -1,12 +1,17 @@
 package com.nativelap.ecoguard.feature.verification.view
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationScreenEvent
+import com.nativelap.ecoguard.ui.component.BottomCtaBar
+import com.nativelap.ecoguard.ui.component.CenteredScrollContent
+import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
 import com.nativelap.ecoguard.ui.component.InfoRow
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
@@ -19,29 +24,41 @@ fun SubmissionCompletedScreen(
     onEvent: (VerificationScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    VerificationSummaryLayout(
-        resultIconRes = R.drawable.ic_clock_64,
-        title = stringResource(R.string.photo_submitted),
-        description = stringResource(R.string.photo_review_pending_description),
-        actionText = stringResource(R.string.action_home),
-        onActionClick = { onEvent(VerificationScreenEvent.HomeClick) },
-        modifier = modifier,
-    ) {
-        InfoRow(
-            label = stringResource(R.string.common_assigned_area),
-            value = areaName,
-        )
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.surface,
+        bottomBar = {
+            BottomCtaBar {
+                EcoPrimaryButton(
+                    text = stringResource(R.string.action_home),
+                    onClick = { onEvent(VerificationScreenEvent.HomeClick) },
+                )
+            }
+        },
+    ) { innerPadding ->
+        CenteredScrollContent(innerPadding = innerPadding) {
+            VerificationSummaryContent(
+                resultIconRes = R.drawable.ic_clock_64,
+                title = stringResource(R.string.photo_submitted),
+                description = stringResource(R.string.photo_review_pending_description),
+            ) {
+                InfoRow(
+                    label = stringResource(R.string.common_assigned_area),
+                    value = areaName,
+                )
 
-        InfoRow(
-            label = stringResource(R.string.verification_submitted_at),
-            value = stringResource(R.string.format_today, submittedTime),
-        )
+                InfoRow(
+                    label = stringResource(R.string.verification_submitted_at),
+                    value = stringResource(R.string.format_today, submittedTime),
+                )
 
-        InfoRow(
-            label = stringResource(R.string.photo_status),
-            value = stringResource(R.string.photo_ai_review_pending),
-            valueColor = MaterialTheme.extraColors.warningTextColor,
-        )
+                InfoRow(
+                    label = stringResource(R.string.photo_status),
+                    value = stringResource(R.string.photo_ai_review_pending),
+                    valueColor = MaterialTheme.extraColors.warningTextColor,
+                )
+            }
+        }
     }
 }
 

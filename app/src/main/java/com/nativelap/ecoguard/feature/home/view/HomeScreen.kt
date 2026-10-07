@@ -51,6 +51,7 @@ fun HomeScreen(
                 selectedTab = EcoBottomTab.HOME,
                 onTabSelected = { selectedTab -> onEvent(HomeScreenEvent.TabSelect(selectedTab)) },
                 onCameraClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
+                isCameraEnabled = uiState.isCameraVerificationAvailable,
             )
         },
     ) { innerPadding ->
