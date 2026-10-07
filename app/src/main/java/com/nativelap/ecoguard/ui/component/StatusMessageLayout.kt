@@ -1,24 +1,8 @@
 package com.nativelap.ecoguard.ui.component
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.consumeWindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.nativelap.ecoguard.ui.theme.AppComponentSize
-import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 /**
@@ -34,44 +18,18 @@ fun StatusMessageLayout(
     highlightText: String? = null,
     bottomActions: @Composable () -> Unit,
 ) {
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+    CenteredContentScaffold(
+        bottomActions = bottomActions,
+        modifier = modifier,
         topBar = {
             EcoBackTopBar(onBackClick = onBackClick)
         },
-        bottomBar = {
-            BottomCtaBar {
-                bottomActions()
-            }
-        },
-    ) { innerPadding ->
-        BoxWithConstraints(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .consumeWindowInsets(innerPadding),
-            contentAlignment = Alignment.TopCenter,
-        ) {
-            Column(
-                modifier = Modifier
-                    .widthIn(max = AppComponentSize.contentMaxWidth)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .heightIn(min = maxHeight)
-                    .padding(
-                        horizontal = AppSpacing.screenHorizontal,
-                        vertical = AppSpacing.xl,
-                    ),
-                verticalArrangement = Arrangement.Center,
-            ) {
-                StatusMessage(
-                    title = title,
-                    description = description,
-                    highlightText = highlightText,
-                )
-            }
-        }
+    ) {
+        StatusMessage(
+            title = title,
+            description = description,
+            highlightText = highlightText,
+        )
     }
 }
 
