@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.heading
@@ -40,7 +41,8 @@ fun LoginBrand(
                 painter = painterResource(R.drawable.ic_sprout),
                 contentDescription = null,
                 modifier = Modifier.size(AppIconSize.hero),
-                tint = MaterialTheme.colorScheme.primary,
+                // Figma 원본 아이콘의 두 가지 초록색을 그대로 표시한다.
+                tint = Color.Unspecified,
             )
         }
 
