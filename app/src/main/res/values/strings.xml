@@ -238,6 +238,10 @@
     <string name="photo_upload_failed">사진을 보내지 못했어요</string>
     <string name="photo_upload_failed_description">네트워크 연결을 확인하고 다시 시도해 주세요. %1$s 전에 업로드를 시작한 사진은 마감 후에도 같은 사진으로 재시도할 수 있어요. 새 사진으로 바꾸면 마감 후 제출할 수 없어요.</string>
     <string name="verification_time_ended">오늘 인증 시간이 끝났어요</string>
+    <string name="verification_weekend_title">오늘은 주말이에요!</string>
+    <string name="verification_weekend_description">다음 주부터 봉사 활동을 시작해주세요.</string>
+    <string name="verification_vacation_title">오늘은 방학이에요!</string>
+    <string name="verification_vacation_description">다음 환경지킴이를 신청해주세요.</string>
     <string name="verification_time_ended_description">%1$s이 지나 새 인증은 제출할 수 없어요. 마감 전에 업로드를 시작했다면 기존 사진의 업로드를 이어갈 수 있어요. 이의신청용 촬영은 별도로 가능해요.</string>
     <string name="notice_load_failed">공지를 불러오지 못했어요</string>
 
