@@ -25,8 +25,8 @@ import com.nativelap.ecoguard.ui.component.EcoTag
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-private val recruitmentCardTopPadding = 24.dp
-private val recruitmentTitleTopPadding = 10.dp
+private val recruitmentCardTopPadding = 20.dp
+private val recruitmentTitleTopPadding = 8.dp
 private val recruitmentTextSpacing = 6.dp
 
 /** 모집 기간에 아직 신청하지 않은 학생에게 보여주는 모집 카드. */

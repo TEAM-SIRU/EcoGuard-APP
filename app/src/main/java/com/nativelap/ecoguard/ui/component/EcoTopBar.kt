@@ -21,6 +21,7 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppIconSize
@@ -35,6 +36,7 @@ fun EcoTopBar(
     @DrawableRes actionIconRes: Int? = R.drawable.ic_bell,
     actionContentDescription: String? = stringResource(R.string.cd_notice),
     onActionClick: () -> Unit = {},
+    contentMaxWidth: Dp = AppComponentSize.contentMaxWidth,
 ) {
     Box(
         modifier = modifier
@@ -44,7 +46,7 @@ fun EcoTopBar(
     ) {
         Row(
             modifier = Modifier
-                .contentColumnWidth()
+                .contentColumnWidth(contentMaxWidth)
                 .heightIn(min = AppComponentSize.topBarHeight)
                 .padding(
                     start = AppSpacing.screenHorizontal,

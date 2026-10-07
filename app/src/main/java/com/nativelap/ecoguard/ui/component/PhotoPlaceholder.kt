@@ -25,7 +25,7 @@ import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 
-private val photoIconSize = 40.dp
+private val photoIconSize = 36.dp
 
 /** 사진 자리 표시. 실제 사진은 촬영·서버 연동 작업에서 이 영역에 표시한다. */
 @Composable

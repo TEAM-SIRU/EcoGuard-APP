@@ -29,11 +29,11 @@ import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 
-private val listRowIconSpacing = 14.dp
-private val listRowVerticalPadding = 14.dp
+private val listRowIconSpacing = 12.dp
+private val listRowVerticalPadding = 12.dp
 private val listRowTextSpacing = 2.dp
 
-/** 44dp 아이콘 타일·본문 17·보조 14로 구성된 리스트 행. */
+/** 40dp 아이콘 타일·본문 16·보조 14로 구성된 리스트 행. */
 @Composable
 fun EcoListRow(
     @DrawableRes iconRes: Int,

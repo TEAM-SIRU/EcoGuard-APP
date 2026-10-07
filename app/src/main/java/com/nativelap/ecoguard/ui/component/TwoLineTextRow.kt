@@ -23,12 +23,12 @@ import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 
-private val twoLineRowVerticalPadding = 14.dp
+private val twoLineRowVerticalPadding = 12.dp
 private val twoLineRowTextSpacing = 2.dp
-private val twoLineRowIconSpacing = 14.dp
+private val twoLineRowIconSpacing = 12.dp
 
 /**
- * 본문 17·보조 14 두 줄 리스트 행. 선택적으로 앞에 22dp 강조색 아이콘, 뒤에 칩·화살표 등을 둔다.
+ * 본문 16·보조 14 두 줄 리스트 행. 선택적으로 앞에 20dp 강조색 아이콘, 뒤에 칩·화살표 등을 둔다.
  * 폭이 좁거나 글자가 크면 뒤쪽 콘텐츠를 부제목 아래로 내린다.
  */
 @Composable

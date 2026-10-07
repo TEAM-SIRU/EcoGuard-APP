@@ -62,8 +62,8 @@ fun EcoInfoBottomSheet(
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         sheetMaxWidth = AppComponentSize.contentMaxWidth,
         shape = RoundedCornerShape(
-            topStart = AppRadius.logo,
-            topEnd = AppRadius.logo,
+            topStart = AppRadius.sheet,
+            topEnd = AppRadius.sheet,
         ),
         containerColor = MaterialTheme.colorScheme.surface,
         scrimColor = MaterialTheme.colorScheme.scrim.copy(alpha = BOTTOM_SHEET_SCRIM_ALPHA),

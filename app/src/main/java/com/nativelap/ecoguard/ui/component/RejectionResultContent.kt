@@ -28,10 +28,9 @@ import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 import com.nativelap.ecoguard.ui.theme.extraTypography
 
-private val rejectionHeroTopPadding = 40.dp
-private val rejectionHeroBottomPadding = 32.dp
-private val rejectionPhotoHeight = 128.dp
-private val rejectionCompactButtonHeight = 48.dp
+private val rejectionHeroTopPadding = 32.dp
+private val rejectionHeroBottomPadding = 24.dp
+private val rejectionPhotoHeight = 112.dp
 
 /**
  * 인증 반려·이의신청 반려 결과 화면의 공통 본문. Scaffold는 각 Screen이 직접 배치한다.
@@ -112,7 +111,7 @@ fun RejectionResultContent(
                 EcoSecondaryButton(
                     text = stringResource(R.string.action_home),
                     onClick = onHomeClick,
-                    minHeight = rejectionCompactButtonHeight,
+                    minHeight = AppComponentSize.minTouchTarget,
                 )
             }
         }

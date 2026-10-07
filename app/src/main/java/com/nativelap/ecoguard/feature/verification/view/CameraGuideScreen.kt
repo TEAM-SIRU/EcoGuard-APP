@@ -40,8 +40,8 @@ import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-private val guideIllustrationHeight = 180.dp
-private val guideIllustrationIconSize = 40.dp
+private val guideIllustrationHeight = 156.dp
+private val guideIllustrationIconSize = 36.dp
 
 /** 06-1 촬영 안내. 담당 구역과 촬영 요령을 보여주고 촬영 화면으로 이동한다. */
 @Composable

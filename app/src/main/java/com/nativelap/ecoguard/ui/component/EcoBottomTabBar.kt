@@ -36,6 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,11 +51,13 @@ import com.nativelap.ecoguard.ui.theme.extraTypography
 private val tabBarShadowRadius = 8.dp
 private val tabBarShadowOffsetY = (-4).dp
 private const val TAB_BAR_SHADOW_ALPHA = 0.06f
-private val cameraFabOffsetY = (-18).dp
 private val cameraFabShadowRadius = 14.dp
 private val cameraFabShadowOffsetY = 6.dp
 private const val CAMERA_FAB_SHADOW_ALPHA = 0.32f
-private val tabItemTopPadding = 10.dp
+private val tabItemTopPadding = 8.dp
+
+// 라벨이 시스템 내비게이션 바(제스처 바·3버튼)에 붙어 보이지 않도록 inset 위에 두는 여백
+private val tabBarSystemBarSpacing = 6.dp
 private val tabLabelMinFontSize = 9.sp
 
 /** 홈·구역·카메라 FAB·기록·마이페이지로 구성된 하단 탭 바. */
@@ -65,6 +68,8 @@ fun EcoBottomTabBar(
     onCameraClick: () -> Unit,
     modifier: Modifier = Modifier,
     isCameraEnabled: Boolean = true,
+    // 탭을 옮겨도 아이콘 위치가 바뀌지 않도록 모든 탭 화면이 같은 폭을 쓴다.
+    contentMaxWidth: Dp = twoPaneContentMaxWidth(),
 ) {
     Box(
         modifier = modifier.fillMaxWidth(),
@@ -88,9 +93,13 @@ fun EcoBottomTabBar(
         ) {
             Row(
                 modifier = Modifier
-                    .contentColumnWidth()
+                    .contentColumnWidth(contentMaxWidth)
                     .heightIn(min = AppComponentSize.tabBarHeight)
-                    .padding(horizontal = AppSpacing.xs)
+                    .padding(
+                        start = AppSpacing.xs,
+                        end = AppSpacing.xs,
+                        bottom = tabBarSystemBarSpacing,
+                    )
                     .selectableGroup(),
             ) {
                 EcoBottomTabItem(
@@ -128,7 +137,7 @@ fun EcoBottomTabBar(
         CameraFab(
             onClick = onCameraClick,
             isEnabled = isCameraEnabled,
-            modifier = Modifier.offset(y = cameraFabOffsetY),
+            modifier = Modifier.offset(y = -AppComponentSize.cameraFabProtrusion),
         )
     }
 }

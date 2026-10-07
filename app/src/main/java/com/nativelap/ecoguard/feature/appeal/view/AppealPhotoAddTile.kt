@@ -28,7 +28,7 @@ import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 
-private val photoAddTileSize = 88.dp
+private val photoAddTileSize = 76.dp
 
 /** 이의신청용 사진 촬영 타일. 현재 촬영 수/최대 수를 표시한다. */
 @Composable

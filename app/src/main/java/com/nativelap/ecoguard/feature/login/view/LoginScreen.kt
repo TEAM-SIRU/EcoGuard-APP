@@ -28,8 +28,8 @@ import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-// Figma 하단 CTA 영역 아래 여백(34) + 토스트 상단 여백(8)
-private val loginToastTopSpacing = 42.dp
+// 하단 CTA 영역 아래 여백(28) + 토스트 상단 여백(8). Figma(34+8)를 컴팩트 기준으로 줄인 값
+private val loginToastTopSpacing = 36.dp
 
 @Composable
 fun LoginScreen(

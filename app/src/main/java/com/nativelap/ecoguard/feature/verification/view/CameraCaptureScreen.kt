@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationScreenEvent
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationStep
+import com.nativelap.ecoguard.ui.component.LightSystemBarIconsEffect
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppIconSize
 import com.nativelap.ecoguard.ui.theme.AppRadius
@@ -53,19 +54,18 @@ import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 import com.nativelap.ecoguard.ui.theme.extraTypography
 
-private val countdownBarHeight = 40.dp
+private val countdownBarHeight = 36.dp
 private val guideFrameBorderWidth = 2.dp
 private val guideFrameDashLength = 8.dp
 private val guideFrameDashGap = 6.dp
 private const val GUIDE_MESSAGE_OVERLAY_ALPHA = 0.8f
 private val guideMessageHorizontalPadding = 14.dp
-private val shutterSize = 80.dp
+private val shutterSize = 72.dp
 private val shutterBorderWidth = 4.dp
 private val shutterInnerPadding = 6.dp
-private val sideControlSize = 48.dp
-private val controlsHorizontalPadding = 48.dp
-private val controlsTopPadding = 28.dp
-private val controlsBottomPadding = 44.dp
+private val controlsHorizontalPadding = 40.dp
+private val controlsTopPadding = 24.dp
+private val controlsBottomPadding = 32.dp
 
 /**
  * 06-2 촬영. 화면 전체가 어두운 카메라 배경이라 Scaffold 대신 Column이 inset을 직접 처리한다.
@@ -82,6 +82,8 @@ fun CameraCaptureScreen(
 ) {
     val cameraColors = MaterialTheme.extraColors
     val shutterDescription = stringResource(R.string.cd_shutter)
+
+    LightSystemBarIconsEffect()
 
     Column(
         modifier = modifier
@@ -198,7 +200,7 @@ fun CameraCaptureScreen(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Spacer(modifier = Modifier.size(sideControlSize))
+            Spacer(modifier = Modifier.size(AppComponentSize.minTouchTarget))
 
             Surface(
                 onClick = { onEvent(VerificationScreenEvent.ShutterClick) },
@@ -223,7 +225,7 @@ fun CameraCaptureScreen(
             IconButton(
                 onClick = { onEvent(VerificationScreenEvent.FlipCameraClick) },
                 modifier = Modifier
-                    .size(sideControlSize)
+                    .size(AppComponentSize.minTouchTarget)
                     .clip(CircleShape)
                     .background(cameraColors.cameraSurfaceColor),
             ) {

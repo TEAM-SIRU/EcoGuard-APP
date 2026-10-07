@@ -42,7 +42,7 @@ import com.nativelap.ecoguard.ui.theme.extraTypography
 private val noticeTextSpacing = 2.dp
 private val noticeBadgeHorizontalPadding = 10.dp
 private val noticeBadgeVerticalPadding = 3.dp
-private val noticeCardBottomPadding = 18.dp
+private val noticeCardBottomPadding = 12.dp
 private val noticeLinkSpacing = 2.dp
 
 @Composable

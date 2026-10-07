@@ -29,7 +29,6 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.ui.component.AdaptiveButtonRow
 import com.nativelap.ecoguard.ui.component.EcoDialogButton
@@ -44,7 +43,6 @@ import com.nativelap.ecoguard.ui.theme.extraTypography
 
 private const val MONTHS_PER_ROW = 3
 private const val MONTH_COUNT = 12
-private val monthItemHeight = 48.dp
 
 /** 활동 기록 조회 월 선택 팝업. 연도 이동과 1–12월 선택 후 적용한다. */
 @Composable
@@ -156,7 +154,7 @@ private fun MonthItem(
 ) {
     Box(
         modifier = modifier
-            .heightIn(min = monthItemHeight)
+            .heightIn(min = AppComponentSize.minTouchTarget)
             .clip(RoundedCornerShape(AppRadius.button))
             .background(
                 if (isSelected) {

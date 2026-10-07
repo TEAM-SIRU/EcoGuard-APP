@@ -17,10 +17,10 @@ import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.ThemeMode
 
-private val skeletonBarHeight = 24.dp
+private val skeletonBarHeight = 22.dp
 private val skeletonTitleSkeletonWidth = 160.dp
-private val skeletonMainSkeletonHeight = 156.dp
-private val skeletonRowSkeletonHeight = 72.dp
+private val skeletonMainSkeletonHeight = 136.dp
+private val skeletonRowSkeletonHeight = 62.dp
 private val skeletonFooterSkeletonWidth = 220.dp
 
 /** 로딩 중 카드 자리를 보여주는 스켈레톤 5개와 로딩 안내 문구. */
