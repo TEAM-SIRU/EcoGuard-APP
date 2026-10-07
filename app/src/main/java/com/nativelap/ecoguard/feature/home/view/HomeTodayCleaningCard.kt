@@ -31,9 +31,9 @@ import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-private val todayCardTopPadding = 24.dp
-private val todayTitleTopPadding = 10.dp
-private val reasonBoxHorizontalPadding = 14.dp
+private val todayCardTopPadding = 20.dp
+private val todayTitleTopPadding = 8.dp
+private val reasonBoxHorizontalPadding = 12.dp
 private val reasonTextSpacing = 2.dp
 private val reasonBorderWidth = 1.dp
 

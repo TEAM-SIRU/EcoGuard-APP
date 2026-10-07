@@ -16,8 +16,8 @@ import com.nativelap.ecoguard.ui.component.InfoTableBox
 import com.nativelap.ecoguard.ui.component.PhotoPlaceholder
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 
-private val summaryPhotoHeight = 200.dp
-private val summaryMessageBottomPadding = 32.dp
+private val summaryPhotoHeight = 176.dp
+private val summaryMessageBottomPadding = 24.dp
 
 /** 제출 완료·인증 승인·선생님 확인 중 화면의 공통 본문(결과 아이콘, 제출 사진, 정보 표). */
 @Composable

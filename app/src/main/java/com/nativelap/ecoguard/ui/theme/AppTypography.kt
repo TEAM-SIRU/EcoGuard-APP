@@ -58,51 +58,51 @@ private val BaseTypography = defaultTypography.copy(
     displayLarge = defaultTypography.displayLarge.withPretendard(),
     displayMedium = defaultTypography.displayMedium.withPretendard(),
     displaySmall = defaultTypography.displaySmall.withPretendard(),
-    // Title 1 · 26/36 Bold
+    // Title 1 · 24/33 Bold (Figma 26/36에서 컴팩트 축소)
     headlineLarge = pretendardTextStyle(
         fontWeight = FontWeight.Bold,
-        fontSize = 26.sp,
-        lineHeight = 36.sp,
-        letterSpacing = (-0.52f).sp,
+        fontSize = 24.sp,
+        lineHeight = 33.sp,
+        letterSpacing = (-0.48f).sp,
     ),
-    // Title 2 · 22/31 Bold
+    // Title 2 · 20/28 Bold (Figma 22/31)
     headlineMedium = pretendardTextStyle(
         fontWeight = FontWeight.Bold,
-        fontSize = 22.sp,
-        lineHeight = 31.sp,
-        letterSpacing = (-0.44f).sp,
-    ),
-    // Title 3 · 20/29 Bold
-    headlineSmall = pretendardTextStyle(
-        fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
-        lineHeight = 29.sp,
+        lineHeight = 28.sp,
         letterSpacing = (-0.4f).sp,
     ),
-    titleLarge = pretendardTextStyle(
+    // Title 3 · 18/26 Bold (Figma 20/29)
+    headlineSmall = pretendardTextStyle(
         fontWeight = FontWeight.Bold,
         fontSize = 18.sp,
         lineHeight = 26.sp,
-        letterSpacing = (-0.18f).sp,
+        letterSpacing = (-0.36f).sp,
     ),
-    titleMedium = pretendardTextStyle(
+    titleLarge = pretendardTextStyle(
         fontWeight = FontWeight.Bold,
         fontSize = 17.sp,
-        lineHeight = 25.sp,
+        lineHeight = 24.sp,
         letterSpacing = (-0.17f).sp,
     ),
-    titleSmall = pretendardTextStyle(
+    titleMedium = pretendardTextStyle(
         fontWeight = FontWeight.Bold,
         fontSize = 16.sp,
         lineHeight = 23.sp,
         letterSpacing = (-0.16f).sp,
     ),
-    // Body 1 · 17/25 Medium
+    titleSmall = pretendardTextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 15.sp,
+        lineHeight = 22.sp,
+        letterSpacing = (-0.15f).sp,
+    ),
+    // Body 1 · 16/23 Medium (Figma 17/25)
     bodyLarge = pretendardTextStyle(
         fontWeight = FontWeight.Medium,
-        fontSize = 17.sp,
-        lineHeight = 25.sp,
-        letterSpacing = (-0.17f).sp,
+        fontSize = 16.sp,
+        lineHeight = 23.sp,
+        letterSpacing = (-0.16f).sp,
     ),
     // Body 2 · 15/22 Regular
     bodyMedium = pretendardTextStyle(
@@ -118,19 +118,19 @@ private val BaseTypography = defaultTypography.copy(
         lineHeight = 20.sp,
         letterSpacing = (-0.14f).sp,
     ),
-    // Primary 버튼 · 19/26 Bold
+    // Primary 버튼 · 17/24 Bold (Figma 19/26)
     labelLarge = pretendardTextStyle(
-        fontWeight = FontWeight.Bold,
-        fontSize = 19.sp,
-        lineHeight = 26.sp,
-        letterSpacing = (-0.19f).sp,
-    ),
-    // Secondary 버튼 · 17/24 Bold
-    labelMedium = pretendardTextStyle(
         fontWeight = FontWeight.Bold,
         fontSize = 17.sp,
         lineHeight = 24.sp,
         letterSpacing = (-0.17f).sp,
+    ),
+    // Secondary 버튼 · 16/22 Bold (Figma 17/24)
+    labelMedium = pretendardTextStyle(
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp,
+        lineHeight = 22.sp,
+        letterSpacing = (-0.16f).sp,
     ),
     // Caption · 13/18 Bold
     labelSmall = pretendardTextStyle(
@@ -155,8 +155,8 @@ val EcoGuardTypography = BaseTypography.copy(
 val EcoGuardExtraTypography = AppExtraTypography(
     statusTitle = pretendardTextStyle(
         fontWeight = FontWeight.Bold,
-        fontSize = 26.sp,
-        lineHeight = 34.sp,
+        fontSize = 24.sp,
+        lineHeight = 32.sp,
         letterSpacing = 0.sp,
     ).withPhraseLineBreak(),
     statusBody = pretendardTextStyle(
@@ -185,8 +185,8 @@ val EcoGuardExtraTypography = AppExtraTypography(
     ),
     highlightNumber = pretendardTextStyle(
         fontWeight = FontWeight.Bold,
-        fontSize = 32.sp,
-        lineHeight = 34.sp,
+        fontSize = 28.sp,
+        lineHeight = 32.sp,
         letterSpacing = 0.sp,
     ),
 )

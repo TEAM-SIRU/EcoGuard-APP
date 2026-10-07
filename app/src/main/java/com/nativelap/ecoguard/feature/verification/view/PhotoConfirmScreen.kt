@@ -34,7 +34,7 @@ import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-private val capturedPhotoHeight = 256.dp
+private val capturedPhotoHeight = 224.dp
 
 /** 06-3 촬영한 사진 확인. 다시 찍거나 보낼 수 있다. */
 @Composable

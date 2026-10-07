@@ -9,9 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
-private val sectionDividerHeight = 12.dp
+private val sectionDividerHeight = 10.dp
 
-/** 화면 섹션 사이를 나누는 12dp 회색 띠. */
+/** 화면 섹션 사이를 나누는 10dp 회색 띠. */
 @Composable
 fun SectionDivider(
     modifier: Modifier = Modifier,

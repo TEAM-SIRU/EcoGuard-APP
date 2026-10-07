@@ -40,7 +40,7 @@ import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 import com.nativelap.ecoguard.ui.theme.extraTypography
 
-private val reasonBoxVerticalPadding = 14.dp
+private val reasonBoxVerticalPadding = 12.dp
 
 /** 09 이의신청 작성. 반려 사유 확인, 내용 입력, 선택적 사진 촬영 후 보낸다. */
 @Composable

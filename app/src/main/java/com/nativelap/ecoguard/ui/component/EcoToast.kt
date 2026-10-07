@@ -31,7 +31,7 @@ import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 private val toastIconSpacing = 10.dp
-private val toastVerticalPadding = 14.dp
+private val toastVerticalPadding = 12.dp
 
 /** 짙은 배경의 오류 안내 토스트. 아이콘은 Figma 원본 색(연한 빨강)을 유지한다. */
 @Composable

@@ -31,7 +31,7 @@ import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 private val applicationTitleSpacing = 6.dp
-private val applicationActionTopPadding = 32.dp
+private val applicationActionTopPadding = 24.dp
 
 /** 환경지킴이 신청 확인 화면. 신청 요청 중에는 버튼을 비활성화한다. */
 @Composable

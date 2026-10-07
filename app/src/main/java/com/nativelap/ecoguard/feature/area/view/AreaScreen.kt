@@ -3,6 +3,7 @@ package com.nativelap.ecoguard.feature.area.view
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,12 +30,15 @@ import com.nativelap.ecoguard.ui.component.InlineEmptyState
 import com.nativelap.ecoguard.ui.component.PageTitle
 import com.nativelap.ecoguard.ui.component.SectionDivider
 import com.nativelap.ecoguard.ui.component.TwoLineTextRow
+import com.nativelap.ecoguard.ui.component.contentColumnWidth
+import com.nativelap.ecoguard.ui.component.isExpandedLayout
+import com.nativelap.ecoguard.ui.component.twoPaneContentMaxWidth
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-// Figma의 도면 영역 높이(308)에서 상하 여백(4·24)을 뺀 값. 도면 이미지는 서버 연동 시 채운다.
-private val floorPlanHeight = 280.dp
+// Figma 도면 영역(280)을 컴팩트 기준으로 줄인 높이. 도면 이미지는 서버 연동 시 채운다.
+private val floorPlanHeight = 240.dp
 
 private val areaTitlePadding = PaddingValues(
     start = AppSpacing.screenHorizontal,
@@ -49,6 +53,9 @@ fun AreaScreen(
     onEvent: (AreaScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val contentMaxWidth = twoPaneContentMaxWidth()
+    val isTwoPane = isExpandedLayout()
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surface,
@@ -70,8 +77,7 @@ fun AreaScreen(
             when (uiState) {
                 is AreaUiState.Content -> Column(
                     modifier = Modifier
-                        .widthIn(max = AppComponentSize.contentMaxWidth)
-                        .fillMaxWidth()
+                        .contentColumnWidth(contentMaxWidth)
                         .verticalScroll(rememberScrollState())
                         .padding(bottom = AppComponentSize.cameraFabScrollClearance),
                 ) {
@@ -83,6 +89,7 @@ fun AreaScreen(
 
                     AreaDetailContent(
                         areaContent = uiState,
+                        isTwoPane = isTwoPane,
                         onFloorSelect = { selectedFloor -> onEvent(AreaScreenEvent.FloorSelect(selectedFloor)) },
                     )
                 }
@@ -141,19 +148,51 @@ private fun AreaEmptyLayout(
     }
 }
 
+// 넓은 화면에서는 층 선택·도면을 왼쪽, 구역 정보를 오른쪽 열에 둔다.
 @Composable
 private fun AreaDetailContent(
     areaContent: AreaUiState.Content,
+    isTwoPane: Boolean,
     onFloorSelect: (Int) -> Unit,
+) {
+    if (isTwoPane) {
+        Row(verticalAlignment = Alignment.Top) {
+            AreaFloorPlan(
+                areaContent = areaContent,
+                onFloorSelect = onFloorSelect,
+                modifier = Modifier.weight(1f),
+            )
+
+            AreaInfoRows(
+                areaContent = areaContent,
+                modifier = Modifier.weight(1f),
+            )
+        }
+    } else {
+        Column {
+            AreaFloorPlan(
+                areaContent = areaContent,
+                onFloorSelect = onFloorSelect,
+            )
+
+            SectionDivider()
+
+            AreaInfoRows(areaContent = areaContent)
+        }
+    }
+}
+
+@Composable
+private fun AreaFloorPlan(
+    areaContent: AreaUiState.Content,
+    onFloorSelect: (Int) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val floorLabels = areaContent.floors.map { floor ->
         stringResource(R.string.format_floor, floor)
     }
-    val memberSeparator = stringResource(R.string.format_list_separator)
-    val memberNames = (areaContent.teammateNames + stringResource(R.string.area_member_me, areaContent.myName))
-        .joinToString(separator = memberSeparator)
 
-    Column {
+    Column(modifier = modifier) {
         EcoSegmentedControl(
             segmentLabels = floorLabels,
             selectedIndex = areaContent.floors
@@ -178,9 +217,19 @@ private fun AreaDetailContent(
                 )
                 .height(floorPlanHeight),
         )
+    }
+}
 
-        SectionDivider()
+@Composable
+private fun AreaInfoRows(
+    areaContent: AreaUiState.Content,
+    modifier: Modifier = Modifier,
+) {
+    val memberSeparator = stringResource(R.string.format_list_separator)
+    val memberNames = (areaContent.teammateNames + stringResource(R.string.area_member_me, areaContent.myName))
+        .joinToString(separator = memberSeparator)
 
+    Column(modifier = modifier) {
         TwoLineTextRow(
             title = areaContent.areaName,
             subtitle = stringResource(R.string.area_description_format, areaContent.areaDescription),
@@ -203,6 +252,7 @@ private fun AreaDetailContent(
 }
 
 @Preview(name = "Area · content", showBackground = true, widthDp = 390, heightDp = 895)
+@Preview(name = "Area · tablet two-pane", showBackground = true, widthDp = 1280, heightDp = 800)
 @Composable
 private fun AreaScreenContentPreview() {
     EcoGuardTheme {

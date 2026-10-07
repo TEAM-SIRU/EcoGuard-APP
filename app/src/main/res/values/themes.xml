@@ -5,5 +5,7 @@
         <!-- Theme.kt의 lightSurfaceColor(흰색)와 같은 값이어야 스플래시에서 첫 화면으로 자연스럽게 이어진다. -->
         <item name="android:windowSplashScreenBackground">@color/white</item>
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_sprout</item>
+        <!-- Compose 첫 프레임 전이나 창 크기 변경 순간에도 시스템 바 뒤까지 화면 배경(surface)과 같은 색이 보이게 한다. -->
+        <item name="android:windowBackground">@color/white</item>
     </style>
 </resources>

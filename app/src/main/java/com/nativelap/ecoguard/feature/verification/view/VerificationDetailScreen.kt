@@ -30,7 +30,7 @@ import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-private val detailPhotoHeight = 256.dp
+private val detailPhotoHeight = 224.dp
 
 /** 08 인증 상세(활동 기록에서 열기). 제출 사진과 상태·구역·제출 시각을 보여준다. */
 @Composable

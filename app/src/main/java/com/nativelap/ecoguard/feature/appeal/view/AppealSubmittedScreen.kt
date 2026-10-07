@@ -20,7 +20,7 @@ import com.nativelap.ecoguard.ui.component.InfoRow
 import com.nativelap.ecoguard.ui.component.InfoTableBox
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-private val submittedMessageBottomPadding = 32.dp
+private val submittedMessageBottomPadding = 24.dp
 
 /** 09-2 이의신청 완료. 대상 인증과 보낸 시각을 보여준다. */
 @Composable

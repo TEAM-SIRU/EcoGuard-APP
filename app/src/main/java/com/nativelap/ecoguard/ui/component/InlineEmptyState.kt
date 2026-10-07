@@ -30,7 +30,6 @@ import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-private val compactActionHeight = 48.dp
 private val compactActionMinWidth = 140.dp
 
 /** 화면 일부 영역의 빈 상태·조회 실패 안내. 회색 아이콘, 제목, 설명, 선택적 작은 버튼. */
@@ -78,7 +77,7 @@ fun InlineEmptyState(
             Button(
                 onClick = onActionClick,
                 modifier = Modifier
-                    .heightIn(min = compactActionHeight)
+                    .heightIn(min = AppComponentSize.minTouchTarget)
                     .widthIn(min = compactActionMinWidth),
                 shape = RoundedCornerShape(AppRadius.button),
                 colors = ButtonDefaults.buttonColors(

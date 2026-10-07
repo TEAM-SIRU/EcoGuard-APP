@@ -37,7 +37,7 @@ fun EcoDialogSurface(
                 .padding(horizontal = AppSpacing.screenHorizontal)
                 .widthIn(max = dialogMaxWidth)
                 .fillMaxWidth(),
-            shape = RoundedCornerShape(AppRadius.logo),
+            shape = RoundedCornerShape(AppRadius.sheet),
             color = MaterialTheme.colorScheme.surface,
         ) {
             Column(

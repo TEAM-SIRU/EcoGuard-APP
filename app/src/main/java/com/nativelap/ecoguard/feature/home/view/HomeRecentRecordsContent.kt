@@ -16,7 +16,7 @@ import com.nativelap.ecoguard.ui.component.SectionHeader
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-private val recentRecordSpacing = 10.dp
+private val recentRecordSpacing = 8.dp
 
 /** 최근 청소 기록 섹션 제목과 기록 카드 목록. */
 @Composable

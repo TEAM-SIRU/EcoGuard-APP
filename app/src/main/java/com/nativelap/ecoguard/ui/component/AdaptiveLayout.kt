@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
@@ -38,9 +39,31 @@ fun isCompactForText(
     return availableWidth / LocalDensity.current.fontScale < requiredWidth
 }
 
-/** 넓은 화면에서도 화면 콘텐츠와 같은 최대 폭(600dp) 안에 배치한다. 바깥 컨테이너는 가운데 정렬해야 한다. */
-fun Modifier.contentColumnWidth(): Modifier {
-    return widthIn(max = AppComponentSize.contentMaxWidth).fillMaxWidth()
+/** 넓은 화면에서도 화면 콘텐츠와 같은 최대 폭(기본 600dp) 안에 배치한다. 바깥 컨테이너는 가운데 정렬해야 한다. */
+fun Modifier.contentColumnWidth(maxWidth: Dp = AppComponentSize.contentMaxWidth): Modifier {
+    return widthIn(max = maxWidth).fillMaxWidth()
+}
+
+/** 창 폭이 840dp 이상이라 카드형 화면을 2열로 배치할 수 있는지 판단한다. */
+@Composable
+@ReadOnlyComposable
+fun isExpandedLayout(): Boolean {
+    val windowWidth = with(LocalDensity.current) {
+        LocalWindowInfo.current.containerSize.width.toDp()
+    }
+
+    return windowWidth >= AppComponentSize.expandedLayoutMinWidth
+}
+
+/** 2열 배치를 지원하는 화면이 상단 바·본문·탭 바에 함께 쓰는 최대 폭. */
+@Composable
+@ReadOnlyComposable
+fun twoPaneContentMaxWidth(): Dp {
+    return if (isExpandedLayout()) {
+        AppComponentSize.expandedContentMaxWidth
+    } else {
+        AppComponentSize.contentMaxWidth
+    }
 }
 
 /** 상단 바가 피해야 하는 영역: 상태 바와 가로 방향 디스플레이 컷아웃. */

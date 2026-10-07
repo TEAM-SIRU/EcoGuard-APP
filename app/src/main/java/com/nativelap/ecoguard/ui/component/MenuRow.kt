@@ -27,11 +27,11 @@ import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 
-private val menuRowVerticalPadding = 14.dp
-private val menuRowSpacing = 14.dp
+private val menuRowVerticalPadding = 12.dp
+private val menuRowSpacing = 12.dp
 
-// 오른쪽 화살표(20)와 간격(14)은 판정 폭 밖에 있으므로 기준에서 뺀다.
-private val menuChevronAllowance = 34.dp
+// 오른쪽 화살표(18)와 간격(12)은 판정 폭 밖에 있으므로 기준에서 뺀다.
+private val menuChevronAllowance = 30.dp
 
 /** 제목, 선택적 값 텍스트, 오른쪽 화살표로 구성된 메뉴 행. trailingContent로 스위치 등을 대신 둘 수 있다. */
 @Composable

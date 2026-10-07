@@ -31,8 +31,8 @@ import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 
-private val profileAvatarSize = 56.dp
-private val profileSpacing = 14.dp
+private val profileAvatarSize = 48.dp
+private val profileSpacing = 12.dp
 private val profileTextSpacing = 2.dp
 private val profileInitialsMinFontSize = 10.sp
 
