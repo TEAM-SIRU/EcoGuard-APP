@@ -1,17 +1,17 @@
 package com.nativelap.ecoguard.feature.verification.view
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
-import com.nativelap.ecoguard.ui.component.CenteredContentScaffold
 import com.nativelap.ecoguard.ui.component.CenteredIconMessage
 import com.nativelap.ecoguard.ui.component.CenteredIconStyle
-import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
 import com.nativelap.ecoguard.ui.component.InfoTableBox
 import com.nativelap.ecoguard.ui.component.PhotoPlaceholder
 import com.nativelap.ecoguard.ui.theme.AppSpacing
@@ -19,26 +19,16 @@ import com.nativelap.ecoguard.ui.theme.AppSpacing
 private val summaryPhotoHeight = 200.dp
 private val summaryMessageBottomPadding = 32.dp
 
-/** 제출 완료·인증 승인·선생님 확인 중 화면의 공통 뼈대(결과 아이콘, 제출 사진, 정보 표, 하단 버튼). */
+/** 제출 완료·인증 승인·선생님 확인 중 화면의 공통 본문(결과 아이콘, 제출 사진, 정보 표). */
 @Composable
-internal fun VerificationSummaryLayout(
+internal fun VerificationSummaryContent(
     @DrawableRes resultIconRes: Int,
     title: String,
     description: String,
-    actionText: String,
-    onActionClick: () -> Unit,
     modifier: Modifier = Modifier,
     infoRows: @Composable ColumnScope.() -> Unit,
 ) {
-    CenteredContentScaffold(
-        bottomActions = {
-            EcoPrimaryButton(
-                text = actionText,
-                onClick = onActionClick,
-            )
-        },
-        modifier = modifier,
-    ) {
+    Column(modifier = modifier.fillMaxWidth()) {
         CenteredIconMessage(
             iconRes = resultIconRes,
             title = title,

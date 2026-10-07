@@ -1,5 +1,8 @@
 package com.nativelap.ecoguard.feature.verification.view
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -7,9 +10,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationDayOffReason
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationScreenEvent
-import com.nativelap.ecoguard.ui.component.CenteredContentScaffold
+import com.nativelap.ecoguard.ui.component.BottomCtaBar
 import com.nativelap.ecoguard.ui.component.CenteredIconMessage
 import com.nativelap.ecoguard.ui.component.CenteredIconStyle
+import com.nativelap.ecoguard.ui.component.CenteredScrollContent
 import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
@@ -29,21 +33,26 @@ fun VerificationDayOffScreen(
         VerificationDayOffReason.SCHOOL_VACATION -> R.string.verification_vacation_description
     }
 
-    CenteredContentScaffold(
-        bottomActions = {
-            EcoPrimaryButton(
-                text = stringResource(R.string.action_home),
-                onClick = { onEvent(VerificationScreenEvent.HomeClick) },
-            )
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.surface,
+        bottomBar = {
+            BottomCtaBar {
+                EcoPrimaryButton(
+                    text = stringResource(R.string.action_home),
+                    onClick = { onEvent(VerificationScreenEvent.HomeClick) },
+                )
+            }
         },
-        modifier = modifier,
-    ) {
-        CenteredIconMessage(
-            iconRes = R.drawable.ic_clock_64,
-            title = stringResource(titleRes),
-            description = stringResource(descriptionRes),
-            iconStyle = CenteredIconStyle.HERO,
-        )
+    ) { innerPadding ->
+        CenteredScrollContent(innerPadding = innerPadding) {
+            CenteredIconMessage(
+                iconRes = R.drawable.ic_clock_64,
+                title = stringResource(titleRes),
+                description = stringResource(descriptionRes),
+                iconStyle = CenteredIconStyle.HERO,
+            )
+        }
     }
 }
 

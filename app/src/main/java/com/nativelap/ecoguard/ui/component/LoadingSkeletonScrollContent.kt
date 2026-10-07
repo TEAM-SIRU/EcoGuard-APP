@@ -3,6 +3,7 @@ package com.nativelap.ecoguard.ui.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,93 +27,94 @@ import com.nativelap.ecoguard.ui.theme.ThemeMode
 private val skeletonCompactHeightThreshold = 640.dp
 private const val SKELETON_LARGE_FONT_SCALE_THRESHOLD = 1.3f
 
-/** 홈·구역·기록 화면의 로딩 상태 공통 뼈대. 회색 제목과 스켈레톤을 표시한다. */
+/** 홈·구역·기록·모집 화면의 로딩 상태 공통 본문. 회색 제목과 스켈레톤을 표시하며 Scaffold는 각 Screen이 배치한다. */
 @Composable
-fun LoadingSkeletonLayout(
+fun LoadingSkeletonScrollContent(
+    innerPadding: PaddingValues,
     title: String,
     modifier: Modifier = Modifier,
 ) {
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
-    ) { innerPadding ->
-        BoxWithConstraints(
+    BoxWithConstraints(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+            .consumeWindowInsets(innerPadding),
+        contentAlignment = Alignment.TopCenter,
+    ) {
+        val isCompactLargeText = maxHeight < skeletonCompactHeightThreshold &&
+            LocalDensity.current.fontScale >= SKELETON_LARGE_FONT_SCALE_THRESHOLD
+        val itemSpacing = if (isCompactLargeText) {
+            AppSpacing.lg
+        } else {
+            AppSpacing.xl
+        }
+
+        Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .consumeWindowInsets(innerPadding),
-            contentAlignment = Alignment.TopCenter,
+                .widthIn(max = AppComponentSize.contentMaxWidth)
+                .fillMaxWidth()
+                .verticalScroll(rememberScrollState())
+                .padding(
+                    horizontal = AppSpacing.screenHorizontal,
+                    vertical = AppSpacing.xl,
+                ),
+            verticalArrangement = Arrangement.spacedBy(itemSpacing),
         ) {
-            val isCompactLargeText = maxHeight < skeletonCompactHeightThreshold &&
-                LocalDensity.current.fontScale >= SKELETON_LARGE_FONT_SCALE_THRESHOLD
-            val itemSpacing = if (isCompactLargeText) {
-                AppSpacing.lg
-            } else {
-                AppSpacing.xl
-            }
+            LoadingTitle(title = title)
 
-            Column(
-                modifier = Modifier
-                    .widthIn(max = AppComponentSize.contentMaxWidth)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .padding(
-                        horizontal = AppSpacing.screenHorizontal,
-                        vertical = AppSpacing.xl,
-                    ),
-                verticalArrangement = Arrangement.spacedBy(itemSpacing),
-            ) {
-                LoadingTitle(title = title)
-
-                LoadingSkeletonContent(itemSpacing = itemSpacing)
-            }
+            LoadingSkeletonContent(itemSpacing = itemSpacing)
         }
     }
 }
 
 @Preview(
-    name = "Loading skeleton layout · Figma",
+    name = "Loading skeleton · Figma",
     showBackground = true,
     showSystemUi = true,
     widthDp = 390,
     heightDp = 844,
 )
 @Preview(
-    name = "Loading skeleton layout · compact",
+    name = "Loading skeleton · compact",
     showBackground = true,
     widthDp = 320,
     heightDp = 596,
 )
 @Preview(
-    name = "Loading skeleton layout · tablet",
+    name = "Loading skeleton · tablet",
     showBackground = true,
     widthDp = 840,
     heightDp = 856,
 )
 @Preview(
-    name = "Loading skeleton layout · larger text",
+    name = "Loading skeleton · larger text",
     showBackground = true,
     widthDp = 390,
     heightDp = 844,
     fontScale = 1.5f,
 )
 @Preview(
-    name = "Loading skeleton layout · compact larger text",
+    name = "Loading skeleton · compact larger text",
     showBackground = true,
     widthDp = 320,
     heightDp = 596,
     fontScale = 1.5f,
 )
 @Preview(
-    name = "Loading skeleton layout · RTL",
+    name = "Loading skeleton · RTL",
     showBackground = true,
     widthDp = 390,
     heightDp = 844,
     locale = "ar",
 )
 @Composable
-private fun LoadingSkeletonLayoutPreview() {
+private fun LoadingSkeletonScrollContentPreview() {
     EcoGuardTheme(themeMode = ThemeMode.LIGHT) {
-        LoadingSkeletonLayout(title = "환경지킴이")
+        Scaffold(containerColor = MaterialTheme.colorScheme.surface) { innerPadding ->
+            LoadingSkeletonScrollContent(
+                innerPadding = innerPadding,
+                title = "환경지킴이",
+            )
+        }
     }
 }

@@ -1,14 +1,20 @@
 package com.nativelap.ecoguard.feature.home.view
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.home.viewmodel.HomeScreenEvent
+import com.nativelap.ecoguard.ui.component.BottomCtaBar
+import com.nativelap.ecoguard.ui.component.CenteredScrollContent
+import com.nativelap.ecoguard.ui.component.EcoBackTopBar
 import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
 import com.nativelap.ecoguard.ui.component.EcoSecondaryButton
-import com.nativelap.ecoguard.ui.component.StatusMessageLayout
+import com.nativelap.ecoguard.ui.component.StatusMessage
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 private const val PARAGRAPH_SEPARATOR = "\n\n"
@@ -25,21 +31,32 @@ fun HomeActivityRemovedScreen(
         stringResource(R.string.home_contact_teacher_about_reason),
     ).joinToString(separator = PARAGRAPH_SEPARATOR)
 
-    StatusMessageLayout(
-        title = stringResource(R.string.home_activity_cancelled),
-        description = removalDescription,
-        onBackClick = { onEvent(HomeScreenEvent.BackClick) },
-        modifier = modifier,
-    ) {
-        EcoPrimaryButton(
-            text = stringResource(R.string.action_home),
-            onClick = { onEvent(HomeScreenEvent.HomeClick) },
-        )
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.surface,
+        topBar = {
+            EcoBackTopBar(onBackClick = { onEvent(HomeScreenEvent.BackClick) })
+        },
+        bottomBar = {
+            BottomCtaBar {
+                EcoPrimaryButton(
+                    text = stringResource(R.string.action_home),
+                    onClick = { onEvent(HomeScreenEvent.HomeClick) },
+                )
 
-        EcoSecondaryButton(
-            text = stringResource(R.string.action_view_notices),
-            onClick = { onEvent(HomeScreenEvent.NoticeListClick) },
-        )
+                EcoSecondaryButton(
+                    text = stringResource(R.string.action_view_notices),
+                    onClick = { onEvent(HomeScreenEvent.NoticeListClick) },
+                )
+            }
+        },
+    ) { innerPadding ->
+        CenteredScrollContent(innerPadding = innerPadding) {
+            StatusMessage(
+                title = stringResource(R.string.home_activity_cancelled),
+                description = removalDescription,
+            )
+        }
     }
 }
 

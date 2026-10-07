@@ -1,6 +1,9 @@
 package com.nativelap.ecoguard.feature.appeal.view
 
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -8,9 +11,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.appeal.viewmodel.AppealScreenEvent
-import com.nativelap.ecoguard.ui.component.CenteredContentScaffold
+import com.nativelap.ecoguard.ui.component.BottomCtaBar
 import com.nativelap.ecoguard.ui.component.CenteredIconMessage
 import com.nativelap.ecoguard.ui.component.CenteredIconStyle
+import com.nativelap.ecoguard.ui.component.CenteredScrollContent
 import com.nativelap.ecoguard.ui.component.EcoSecondaryButton
 import com.nativelap.ecoguard.ui.component.InfoRow
 import com.nativelap.ecoguard.ui.component.InfoTableBox
@@ -26,33 +30,38 @@ fun AppealSubmittedScreen(
     onEvent: (AppealScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    CenteredContentScaffold(
-        bottomActions = {
-            EcoSecondaryButton(
-                text = stringResource(R.string.action_home),
-                onClick = { onEvent(AppealScreenEvent.HomeClick) },
-            )
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.surface,
+        bottomBar = {
+            BottomCtaBar {
+                EcoSecondaryButton(
+                    text = stringResource(R.string.action_home),
+                    onClick = { onEvent(AppealScreenEvent.HomeClick) },
+                )
+            }
         },
-        modifier = modifier,
-    ) {
-        CenteredIconMessage(
-            iconRes = R.drawable.ic_clock_64,
-            title = stringResource(R.string.appeal_submitted),
-            description = stringResource(R.string.appeal_submitted_description),
-            iconStyle = CenteredIconStyle.HERO,
-            modifier = Modifier.padding(bottom = submittedMessageBottomPadding),
-        )
-
-        InfoTableBox {
-            InfoRow(
-                label = stringResource(R.string.appeal_target_verification),
-                value = targetVerificationDateTime,
+    ) { innerPadding ->
+        CenteredScrollContent(innerPadding = innerPadding) {
+            CenteredIconMessage(
+                iconRes = R.drawable.ic_clock_64,
+                title = stringResource(R.string.appeal_submitted),
+                description = stringResource(R.string.appeal_submitted_description),
+                iconStyle = CenteredIconStyle.HERO,
+                modifier = Modifier.padding(bottom = submittedMessageBottomPadding),
             )
 
-            InfoRow(
-                label = stringResource(R.string.appeal_sent_at),
-                value = sentDateTime,
-            )
+            InfoTableBox {
+                InfoRow(
+                    label = stringResource(R.string.appeal_target_verification),
+                    value = targetVerificationDateTime,
+                )
+
+                InfoRow(
+                    label = stringResource(R.string.appeal_sent_at),
+                    value = sentDateTime,
+                )
+            }
         }
     }
 }
