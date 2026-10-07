@@ -18,7 +18,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
@@ -75,7 +77,7 @@ private fun CenteredContentScaffoldPreview() {
         CenteredContentScaffold(
             bottomActions = {
                 EcoPrimaryButton(
-                    text = "홈으로",
+                    text = stringResource(R.string.action_home),
                     onClick = {},
                 )
             },
