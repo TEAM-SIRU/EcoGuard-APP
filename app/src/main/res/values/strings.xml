@@ -21,6 +21,7 @@
     <string name="action_notice">공지</string>
     <string name="action_help">도움말</string>
     <string name="action_logout">로그아웃</string>
+    <string name="action_withdraw">회원탈퇴</string>
     <string name="action_view_notices">공지 보기</string>
     <string name="action_close">닫기</string>
     <string name="action_view_activity_record">활동 기록 보기</string>
@@ -44,6 +45,8 @@
     <string name="web_address_share">웹 주소 공유</string>
     <string name="logout_confirmation_title">로그아웃할까요?</string>
     <string name="logout_confirmation_description">다시 들어오려면 DataGSM으로 로그인해야 해요</string>
+    <string name="withdraw_confirmation_title">회원탈퇴</string>
+    <string name="withdraw_confirmation_description">정말 탈퇴하시겠어요?</string>
 
     <!-- Home and cleaning status -->
     <string name="home_today_cleaning">오늘의 청소</string>
