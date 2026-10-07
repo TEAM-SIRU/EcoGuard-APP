@@ -3,6 +3,7 @@ package com.nativelap.ecoguard.feature.verification.view
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationResultScreenEvent
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationResultUiState
@@ -11,6 +12,7 @@ import com.nativelap.ecoguard.ui.component.EcoSecondaryButton
 import com.nativelap.ecoguard.ui.component.InfoRow
 import com.nativelap.ecoguard.ui.component.RejectionResultLayout
 import com.nativelap.ecoguard.ui.component.StatusMessageLayout
+import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 
 /** 08 인증 결과(승인·선생님 확인 중·반려·조회 실패). */
@@ -92,6 +94,51 @@ fun VerificationResultScreen(
             onPrimaryActionClick = { onEvent(VerificationResultScreenEvent.AppealClick) },
             onHomeClick = { onEvent(VerificationResultScreenEvent.HomeClick) },
             onBackClick = { onEvent(VerificationResultScreenEvent.BackClick) },
+        )
+    }
+}
+
+@Preview(name = "Result · approved", showBackground = true, widthDp = 390, heightDp = 844)
+@Composable
+private fun VerificationResultApprovedPreview() {
+    EcoGuardTheme {
+        VerificationResultScreen(
+            uiState = VerificationResultUiState.Approved(
+                areaName = "본관 2층 복도 A",
+                submittedTime = "08:04",
+                earnedMinutes = 10,
+            ),
+            onEvent = {},
+        )
+    }
+}
+
+@Preview(name = "Result · rejected", showBackground = true, widthDp = 390, heightDp = 844)
+@Composable
+private fun VerificationResultRejectedPreview() {
+    EcoGuardTheme {
+        VerificationResultScreen(
+            uiState = VerificationResultUiState.Rejected(
+                areaName = "본관 2층 복도 A",
+                submittedTime = "08:04",
+                rejectionReason = "사진에 청소 구역이 잘 보이지 않아요",
+                retakeGuide = "복도 끝까지 보이도록 조금 뒤에서 찍으면 돼요",
+            ),
+            onEvent = {},
+        )
+    }
+}
+
+@Preview(name = "Result · teacher reviewing", showBackground = true, widthDp = 390, heightDp = 844)
+@Composable
+private fun VerificationResultTeacherReviewingPreview() {
+    EcoGuardTheme {
+        VerificationResultScreen(
+            uiState = VerificationResultUiState.TeacherReviewing(
+                areaName = "본관 2층 복도 A",
+                submittedTime = "08:04",
+            ),
+            onEvent = {},
         )
     }
 }

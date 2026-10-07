@@ -28,6 +28,7 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.ui.component.AdaptiveButtonRow
@@ -37,6 +38,7 @@ import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppIconSize
 import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
+import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 import com.nativelap.ecoguard.ui.theme.extraTypography
 
@@ -178,6 +180,19 @@ private fun MonthItem(
             } else {
                 MaterialTheme.colorScheme.onSurface
             },
+        )
+    }
+}
+
+@Preview(name = "Month picker", showBackground = true, widthDp = 390, heightDp = 844)
+@Composable
+private fun MonthPickerDialogPreview() {
+    EcoGuardTheme {
+        MonthPickerDialog(
+            initialYear = 2026,
+            initialMonth = 9,
+            onDismissRequest = {},
+            onApply = { _, _ -> },
         )
     }
 }

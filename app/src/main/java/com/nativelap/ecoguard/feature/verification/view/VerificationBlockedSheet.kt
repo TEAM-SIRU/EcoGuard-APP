@@ -3,9 +3,11 @@ package com.nativelap.ecoguard.feature.verification.view
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationBlockReason
 import com.nativelap.ecoguard.ui.component.EcoInfoBottomSheet
+import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 /** 인증 시간 아님·오늘 이미 제출·카메라 권한 필요 안내 바텀시트. */
 @Composable
@@ -51,6 +53,48 @@ fun VerificationBlockedSheet(
             secondaryActionText = stringResource(R.string.camera_later),
             onSecondaryActionClick = onSecondaryActionClick,
             onDismissRequest = onDismissRequest,
+        )
+    }
+}
+
+@Preview(name = "Blocked · outside time", showBackground = true, widthDp = 390, heightDp = 844)
+@Composable
+private fun VerificationBlockedOutsideTimePreview() {
+    EcoGuardTheme {
+        VerificationBlockedSheet(
+            blockReason = VerificationBlockReason.OutsideVerificationTime(
+                startTime = "08:00",
+                endTime = "08:10",
+            ),
+            onPrimaryActionClick = {},
+            onSecondaryActionClick = {},
+            onDismissRequest = {},
+        )
+    }
+}
+
+@Preview(name = "Blocked · already submitted", showBackground = true, widthDp = 390, heightDp = 844)
+@Composable
+private fun VerificationBlockedAlreadySubmittedPreview() {
+    EcoGuardTheme {
+        VerificationBlockedSheet(
+            blockReason = VerificationBlockReason.AlreadySubmitted(submittedTime = "08:04"),
+            onPrimaryActionClick = {},
+            onSecondaryActionClick = {},
+            onDismissRequest = {},
+        )
+    }
+}
+
+@Preview(name = "Blocked · camera permission", showBackground = true, widthDp = 390, heightDp = 844)
+@Composable
+private fun VerificationBlockedCameraPermissionPreview() {
+    EcoGuardTheme {
+        VerificationBlockedSheet(
+            blockReason = VerificationBlockReason.CameraPermissionRequired,
+            onPrimaryActionClick = {},
+            onSecondaryActionClick = {},
+            onDismissRequest = {},
         )
     }
 }
