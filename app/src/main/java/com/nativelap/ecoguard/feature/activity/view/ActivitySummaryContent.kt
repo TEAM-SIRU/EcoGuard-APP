@@ -21,7 +21,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.activity.viewmodel.ActivityUiState
-import com.nativelap.ecoguard.ui.component.StatSummaryCard
+import com.nativelap.ecoguard.ui.component.StatSummaryItem
+import com.nativelap.ecoguard.ui.component.StatSummaryRow
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppIconSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
@@ -91,32 +92,27 @@ fun ActivitySummaryContent(
             )
         }
 
-        Row(
+        StatSummaryRow(
+            statItems = listOf(
+                StatSummaryItem(
+                    label = stringResource(R.string.verification_status_approved),
+                    value = stringResource(R.string.format_times, activityContent.approvedCount),
+                ),
+                StatSummaryItem(
+                    label = stringResource(R.string.verification_status_rejected),
+                    value = stringResource(R.string.format_times, activityContent.rejectedCount),
+                ),
+                StatSummaryItem(
+                    label = stringResource(R.string.verification_status_not_submitted),
+                    value = stringResource(R.string.format_times, activityContent.notSubmittedCount),
+                ),
+            ),
             modifier = Modifier.padding(
                 start = AppSpacing.screenHorizontal,
                 end = AppSpacing.screenHorizontal,
                 bottom = AppSpacing.xl,
             ),
-            horizontalArrangement = Arrangement.spacedBy(AppSpacing.xs),
-        ) {
-            StatSummaryCard(
-                label = stringResource(R.string.verification_status_approved),
-                value = stringResource(R.string.format_times, activityContent.approvedCount),
-                modifier = Modifier.weight(1f),
-            )
-
-            StatSummaryCard(
-                label = stringResource(R.string.verification_status_rejected),
-                value = stringResource(R.string.format_times, activityContent.rejectedCount),
-                modifier = Modifier.weight(1f),
-            )
-
-            StatSummaryCard(
-                label = stringResource(R.string.verification_status_not_submitted),
-                value = stringResource(R.string.format_times, activityContent.notSubmittedCount),
-                modifier = Modifier.weight(1f),
-            )
-        }
+        )
     }
 }
 

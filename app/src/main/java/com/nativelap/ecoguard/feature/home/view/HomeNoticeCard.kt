@@ -20,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -29,7 +28,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.home.viewmodel.HomeNoticeUiModel
+import com.nativelap.ecoguard.ui.component.AdaptiveWidth
 import com.nativelap.ecoguard.ui.component.EcoCard
+import com.nativelap.ecoguard.ui.component.isCompactForText
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppIconSize
 import com.nativelap.ecoguard.ui.theme.AppRadius
@@ -43,7 +44,6 @@ private val noticeBadgeHorizontalPadding = 10.dp
 private val noticeBadgeVerticalPadding = 3.dp
 private val noticeCardBottomPadding = 18.dp
 private val noticeLinkSpacing = 2.dp
-private val noticeHeaderCompactWidth = 280.dp
 
 @Composable
 fun HomeNoticeCard(
@@ -64,7 +64,7 @@ fun HomeNoticeCard(
     ) {
         BoxWithConstraints {
             // 좁은 폭·큰 글자에서는 제목이 세로로 꺾이지 않도록 NEW 배지를 날짜 아래로 내린다.
-            val isCompactHeader = maxWidth / LocalDensity.current.fontScale < noticeHeaderCompactWidth
+            val isCompactHeader = isCompactForText(maxWidth, AdaptiveWidth.noticeHeader)
 
             Row(
                 horizontalArrangement = Arrangement.spacedBy(AppSpacing.sm),

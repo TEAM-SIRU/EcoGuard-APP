@@ -2,6 +2,7 @@ package com.nativelap.ecoguard.ui.component
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -26,52 +27,70 @@ private val twoLineRowVerticalPadding = 14.dp
 private val twoLineRowTextSpacing = 2.dp
 private val twoLineRowIconSpacing = 14.dp
 
-/** 본문 17·보조 14 두 줄 리스트 행. 선택적으로 앞에 22dp 강조색 아이콘을 둔다. */
+/**
+ * 본문 17·보조 14 두 줄 리스트 행. 선택적으로 앞에 22dp 강조색 아이콘, 뒤에 칩·화살표 등을 둔다.
+ * 폭이 좁거나 글자가 크면 뒤쪽 콘텐츠를 부제목 아래로 내린다.
+ */
 @Composable
 fun TwoLineTextRow(
     title: String,
     subtitle: String,
     modifier: Modifier = Modifier,
     @DrawableRes leadingIconRes: Int? = null,
-    trailingContent: @Composable RowScope.() -> Unit = {},
+    trailingContent: (@Composable RowScope.() -> Unit)? = null,
 ) {
-    Row(
+    BoxWithConstraints(
         modifier = modifier
             .fillMaxWidth()
             .padding(
                 horizontal = AppSpacing.screenHorizontal,
                 vertical = twoLineRowVerticalPadding,
             ),
-        horizontalArrangement = Arrangement.spacedBy(twoLineRowIconSpacing),
-        verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (leadingIconRes != null) {
-            Icon(
-                painter = painterResource(leadingIconRes),
-                contentDescription = null,
-                modifier = Modifier.size(AppIconSize.listTile),
-                tint = MaterialTheme.colorScheme.primary,
-            )
-        }
+        val isCompact = trailingContent != null && isCompactForText(maxWidth, AdaptiveWidth.trailingRow)
 
-        Column(
-            modifier = Modifier.weight(1f),
-            verticalArrangement = Arrangement.spacedBy(twoLineRowTextSpacing),
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(twoLineRowIconSpacing),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
+            if (leadingIconRes != null) {
+                Icon(
+                    painter = painterResource(leadingIconRes),
+                    contentDescription = null,
+                    modifier = Modifier.size(AppIconSize.listTile),
+                    tint = MaterialTheme.colorScheme.primary,
+                )
+            }
 
-            Text(
-                text = subtitle,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.extraColors.captionTextColor,
-            )
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(twoLineRowTextSpacing),
+            ) {
+                Text(
+                    text = title,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                )
+
+                Text(
+                    text = subtitle,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.extraColors.captionTextColor,
+                )
+
+                if (isCompact && trailingContent != null) {
+                    Row(
+                        modifier = Modifier.padding(top = AppSpacing.xxs),
+                        verticalAlignment = Alignment.CenterVertically,
+                        content = trailingContent,
+                    )
+                }
+            }
+
+            if (!isCompact && trailingContent != null) {
+                trailingContent()
+            }
         }
-
-        trailingContent()
     }
 }
 

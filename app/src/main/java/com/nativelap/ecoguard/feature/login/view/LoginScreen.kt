@@ -1,6 +1,5 @@
 package com.nativelap.ecoguard.feature.login.view
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -16,7 +15,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.layout
+import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -49,7 +48,7 @@ fun LoginScreen(
                 .consumeWindowInsets(innerPadding),
             contentAlignment = Alignment.TopCenter,
         ) {
-            Column(
+            CenteredGroupWithFooter(
                 modifier = Modifier
                     .widthIn(max = AppComponentSize.contentMaxWidth)
                     .fillMaxWidth()
@@ -59,39 +58,92 @@ fun LoginScreen(
                         horizontal = AppSpacing.screenHorizontal,
                         vertical = AppSpacing.xl,
                     ),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                LoginBrand()
+                footerSpacing = loginToastTopSpacing,
+                groupContent = {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        LoginBrand()
 
-                LoginActionContent(
-                    isLoggingIn = uiState.isLoggingIn,
-                    hasLoginFailed = uiState.hasLoginFailed,
-                    onLoginClick = { onEvent(LoginScreenEvent.LoginClick) },
-                    modifier = Modifier.padding(top = AppSpacing.sm),
-                )
-
-                if (uiState.hasLoginFailed) {
-                    EcoToast(
-                        message = stringResource(R.string.login_failed),
-                        modifier = Modifier.withoutLayoutHeight(topOffset = loginToastTopSpacing),
-                    )
-                }
-            }
+                        LoginActionContent(
+                            isLoggingIn = uiState.isLoggingIn,
+                            hasLoginFailed = uiState.hasLoginFailed,
+                            onLoginClick = { onEvent(LoginScreenEvent.LoginClick) },
+                            modifier = Modifier.padding(top = AppSpacing.sm),
+                        )
+                    }
+                },
+                footerContent = {
+                    if (uiState.hasLoginFailed) {
+                        EcoToast(message = stringResource(R.string.login_failed))
+                    }
+                },
+            )
         }
     }
 }
 
-// Figma처럼 토스트가 로고·버튼 묶음의 세로 중앙 정렬에 영향을 주지 않도록 높이를 0으로 측정한다.
-private fun Modifier.withoutLayoutHeight(topOffset: Dp): Modifier {
-    return layout { measurable, constraints ->
-        val toastPlaceable = measurable.measure(constraints)
+/**
+ * 로고·버튼 묶음을 세로 가운데에 두고, 그 아래에 토스트(footer)를 붙인다.
+ * Figma처럼 토스트가 있어도 묶음은 가운데를 유지하고, 큰 글자 등으로 공간이 부족하면
+ * 토스트가 가려지지 않도록 묶음을 위로 올린다. 그래도 넘치면 스크롤로 볼 수 있다.
+ */
+@Composable
+private fun CenteredGroupWithFooter(
+    footerSpacing: Dp,
+    groupContent: @Composable () -> Unit,
+    footerContent: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Layout(
+        contents = listOf(groupContent, footerContent),
+        modifier = modifier,
+    ) { (groupMeasurables, footerMeasurables), constraints ->
+        val childConstraints = constraints.copy(
+            minWidth = 0,
+            minHeight = 0,
+        )
+        val groupPlaceables = groupMeasurables.map { groupMeasurable ->
+            groupMeasurable.measure(childConstraints)
+        }
+        val footerPlaceables = footerMeasurables.map { footerMeasurable ->
+            footerMeasurable.measure(childConstraints)
+        }
+        val groupHeight = groupPlaceables.sumOf { groupPlaceable -> groupPlaceable.height }
+        val footerHeight = footerPlaceables.sumOf { footerPlaceable -> footerPlaceable.height }
+        val footerBlockHeight = if (footerPlaceables.isEmpty() || footerHeight == 0) {
+            0
+        } else {
+            footerSpacing.roundToPx() + footerHeight
+        }
+        val layoutHeight = maxOf(
+            constraints.minHeight,
+            groupHeight + footerBlockHeight,
+        )
+        // 공간이 충분하면 묶음을 세로 가운데에 두고, 부족하면 토스트가 화면 안에 보이도록 위로 올린다.
+        val groupTop = ((layoutHeight - groupHeight) / 2).coerceIn(
+            minimumValue = 0,
+            maximumValue = layoutHeight - groupHeight - footerBlockHeight,
+        )
 
-        layout(toastPlaceable.width, 0) {
-            toastPlaceable.place(
-                x = 0,
-                y = topOffset.roundToPx(),
-            )
+        layout(constraints.maxWidth, layoutHeight) {
+            var placeY = groupTop
+
+            groupPlaceables.forEach { groupPlaceable ->
+                groupPlaceable.place(
+                    x = (constraints.maxWidth - groupPlaceable.width) / 2,
+                    y = placeY,
+                )
+                placeY += groupPlaceable.height
+            }
+
+            placeY += footerSpacing.roundToPx()
+
+            footerPlaceables.forEach { footerPlaceable ->
+                footerPlaceable.place(
+                    x = (constraints.maxWidth - footerPlaceable.width) / 2,
+                    y = placeY,
+                )
+                placeY += footerPlaceable.height
+            }
         }
     }
 }

@@ -3,7 +3,6 @@ package com.nativelap.ecoguard.feature.verification.view
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationScreenEvent
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationStep
+import com.nativelap.ecoguard.ui.component.AdaptiveButtonRow
 import com.nativelap.ecoguard.ui.component.BottomCtaBar
 import com.nativelap.ecoguard.ui.component.EcoBackTopBar
 import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
@@ -61,19 +61,22 @@ fun PhotoConfirmScreen(
         },
         bottomBar = {
             BottomCtaBar {
-                Row(horizontalArrangement = Arrangement.spacedBy(AppSpacing.xs)) {
-                    EcoSecondaryButton(
-                        text = stringResource(R.string.photo_retake),
-                        onClick = { onEvent(VerificationScreenEvent.RetakeClick) },
-                        modifier = Modifier.weight(1f),
-                    )
-
-                    EcoPrimaryButton(
-                        text = stringResource(R.string.photo_send),
-                        onClick = { onEvent(VerificationScreenEvent.SendClick) },
-                        modifier = Modifier.weight(1f),
-                    )
-                }
+                AdaptiveButtonRow(
+                    firstButton = { itemModifier ->
+                        EcoSecondaryButton(
+                            text = stringResource(R.string.photo_retake),
+                            onClick = { onEvent(VerificationScreenEvent.RetakeClick) },
+                            modifier = itemModifier,
+                        )
+                    },
+                    secondButton = { itemModifier ->
+                        EcoPrimaryButton(
+                            text = stringResource(R.string.photo_send),
+                            onClick = { onEvent(VerificationScreenEvent.SendClick) },
+                            modifier = itemModifier,
+                        )
+                    },
+                )
             }
         },
     ) { innerPadding ->

@@ -1,12 +1,10 @@
 package com.nativelap.ecoguard.ui.component
 
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -41,47 +39,53 @@ fun EcoBackTopBar(
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .windowInsetsPadding(WindowInsets.statusBars)
-            .heightIn(min = AppComponentSize.backBarHeight)
-            .padding(horizontal = AppSpacing.sm),
-        contentAlignment = Alignment.CenterStart,
+            .windowInsetsPadding(topBarWindowInsets),
+        contentAlignment = Alignment.TopCenter,
     ) {
-        IconButton(
-            onClick = onBackClick,
-            modifier = Modifier.size(AppComponentSize.minTouchTarget),
+        Box(
+            modifier = Modifier
+                .contentColumnWidth()
+                .heightIn(min = AppComponentSize.backBarHeight)
+                .padding(horizontal = AppSpacing.sm),
+            contentAlignment = Alignment.CenterStart,
         ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_back),
-                contentDescription = stringResource(R.string.cd_back),
-                modifier = Modifier.size(AppIconSize.standard),
-                tint = MaterialTheme.colorScheme.onSurface,
-            )
-        }
+            IconButton(
+                onClick = onBackClick,
+                modifier = Modifier.size(AppComponentSize.minTouchTarget),
+            ) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_back),
+                    contentDescription = stringResource(R.string.cd_back),
+                    modifier = Modifier.size(AppIconSize.standard),
+                    tint = MaterialTheme.colorScheme.onSurface,
+                )
+            }
 
-        if (title != null) {
-            Text(
-                text = title,
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .padding(horizontal = AppComponentSize.minTouchTarget)
-                    .semantics { heading() },
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
-        }
+            if (title != null) {
+                Text(
+                    text = title,
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(horizontal = AppComponentSize.minTouchTarget)
+                        .semantics { heading() },
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+            }
 
-        if (trailingText != null) {
-            Text(
-                text = trailingText,
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(end = AppSpacing.xs),
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-                color = MaterialTheme.extraColors.captionTextColor,
-            )
+            if (trailingText != null) {
+                Text(
+                    text = trailingText,
+                    modifier = Modifier
+                        .align(Alignment.CenterEnd)
+                        .padding(end = AppSpacing.xs),
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+                    color = MaterialTheme.extraColors.captionTextColor,
+                )
+            }
         }
     }
 }

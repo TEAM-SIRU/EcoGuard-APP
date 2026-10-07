@@ -9,18 +9,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.menu.viewmodel.MenuUiState
 import com.nativelap.ecoguard.ui.theme.AppSpacing
@@ -30,6 +34,7 @@ import com.nativelap.ecoguard.ui.theme.extraColors
 private val profileAvatarSize = 56.dp
 private val profileSpacing = 14.dp
 private val profileTextSpacing = 2.dp
+private val profileInitialsMinFontSize = 10.sp
 
 @Composable
 fun MenuProfileHeader(
@@ -49,10 +54,18 @@ fun MenuProfileHeader(
                 .clearAndSetSemantics { },
             contentAlignment = Alignment.Center,
         ) {
-            Text(
+            // 원 크기는 고정이므로 큰 글자에서는 이니셜을 원 안에 맞게 줄인다.
+            BasicText(
                 text = menuState.profileInitials,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.padding(AppSpacing.xxs),
+                style = MaterialTheme.typography.titleMedium.copy(
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                ),
+                maxLines = 1,
+                autoSize = TextAutoSize.StepBased(
+                    minFontSize = profileInitialsMinFontSize / LocalDensity.current.fontScale,
+                    maxFontSize = MaterialTheme.typography.titleMedium.fontSize,
+                ),
             )
         }
 

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -39,13 +40,17 @@ fun AppealPhotoAddTile(
 ) {
     Column(
         modifier = modifier
-            .size(photoAddTileSize)
+            .defaultMinSize(
+                minWidth = photoAddTileSize,
+                minHeight = photoAddTileSize,
+            )
             .clip(RoundedCornerShape(AppRadius.tile))
             .background(MaterialTheme.colorScheme.surfaceVariant)
             .clickable(
                 role = Role.Button,
                 onClick = onClick,
-            ),
+            )
+            .padding(AppSpacing.xs),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(
             space = AppSpacing.xxs,

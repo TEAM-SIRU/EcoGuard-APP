@@ -2,7 +2,6 @@ package com.nativelap.ecoguard.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,32 +37,36 @@ fun EcoConfirmDialog(
             )
         }
 
-        Row(horizontalArrangement = Arrangement.spacedBy(AppSpacing.xs)) {
-            EcoDialogButton(
-                text = dismissText,
-                onClick = onDismissRequest,
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.weight(1f),
-            )
-
-            if (isDestructive) {
-                EcoDialogButton(
-                    text = confirmText,
-                    onClick = onConfirmClick,
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.weight(1f),
-                )
-            } else {
-                EcoDialogButton(
-                    text = confirmText,
-                    onClick = onConfirmClick,
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.weight(1f),
-                )
-            }
+        val confirmContainerColor = if (isDestructive) {
+            MaterialTheme.colorScheme.surfaceVariant
+        } else {
+            MaterialTheme.colorScheme.primary
         }
+        val confirmContentColor = if (isDestructive) {
+            MaterialTheme.colorScheme.error
+        } else {
+            MaterialTheme.colorScheme.onPrimary
+        }
+
+        AdaptiveButtonRow(
+            firstButton = { itemModifier ->
+                EcoDialogButton(
+                    text = dismissText,
+                    onClick = onDismissRequest,
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    modifier = itemModifier,
+                )
+            },
+            secondButton = { itemModifier ->
+                EcoDialogButton(
+                    text = confirmText,
+                    onClick = onConfirmClick,
+                    containerColor = confirmContainerColor,
+                    contentColor = confirmContentColor,
+                    modifier = itemModifier,
+                )
+            },
+        )
     }
 }

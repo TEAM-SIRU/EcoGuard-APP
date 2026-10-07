@@ -32,7 +32,8 @@ import com.nativelap.ecoguard.ui.component.EcoBottomTab
 import com.nativelap.ecoguard.ui.component.EcoBottomTabBar
 import com.nativelap.ecoguard.ui.component.MenuRow
 import com.nativelap.ecoguard.ui.component.SectionDivider
-import com.nativelap.ecoguard.ui.component.StatSummaryCard
+import com.nativelap.ecoguard.ui.component.StatSummaryItem
+import com.nativelap.ecoguard.ui.component.StatSummaryRow
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
@@ -67,7 +68,8 @@ fun MenuScreen(
                 modifier = Modifier
                     .widthIn(max = AppComponentSize.contentMaxWidth)
                     .fillMaxWidth()
-                    .verticalScroll(rememberScrollState()),
+                    .verticalScroll(rememberScrollState())
+                    .padding(bottom = AppComponentSize.cameraFabScrollClearance),
             ) {
                 MenuProfileHeader(
                     menuState = uiState,
@@ -79,26 +81,23 @@ fun MenuScreen(
                     ),
                 )
 
-                Row(
+                StatSummaryRow(
+                    statItems = listOf(
+                        StatSummaryItem(
+                            label = stringResource(R.string.profile_monthly_approvals),
+                            value = stringResource(R.string.format_times, uiState.monthlyApprovalCount),
+                        ),
+                        StatSummaryItem(
+                            label = stringResource(R.string.profile_activity_time),
+                            value = stringResource(R.string.format_minutes, uiState.monthlyMinutes),
+                        ),
+                    ),
                     modifier = Modifier.padding(
                         start = AppSpacing.screenHorizontal,
                         end = AppSpacing.screenHorizontal,
                         bottom = AppSpacing.lg,
                     ),
-                    horizontalArrangement = Arrangement.spacedBy(AppSpacing.xs),
-                ) {
-                    StatSummaryCard(
-                        label = stringResource(R.string.profile_monthly_approvals),
-                        value = stringResource(R.string.format_times, uiState.monthlyApprovalCount),
-                        modifier = Modifier.weight(1f),
-                    )
-
-                    StatSummaryCard(
-                        label = stringResource(R.string.profile_activity_time),
-                        value = stringResource(R.string.format_minutes, uiState.monthlyMinutes),
-                        modifier = Modifier.weight(1f),
-                    )
-                }
+                )
 
                 SectionDivider()
 

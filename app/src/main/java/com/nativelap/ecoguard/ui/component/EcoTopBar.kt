@@ -1,13 +1,12 @@
 package com.nativelap.ecoguard.ui.component
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,39 +36,45 @@ fun EcoTopBar(
     actionContentDescription: String? = stringResource(R.string.cd_notice),
     onActionClick: () -> Unit = {},
 ) {
-    Row(
+    Box(
         modifier = modifier
             .fillMaxWidth()
-            .windowInsetsPadding(WindowInsets.statusBars)
-            .heightIn(min = AppComponentSize.topBarHeight)
-            .padding(
-                start = AppSpacing.screenHorizontal,
-                end = AppSpacing.screenHorizontal - AppSpacing.xxs,
-            ),
-        verticalAlignment = Alignment.CenterVertically,
+            .windowInsetsPadding(topBarWindowInsets),
+        contentAlignment = Alignment.TopCenter,
     ) {
-        Text(
-            text = title,
+        Row(
             modifier = Modifier
-                .weight(1f)
-                .semantics { heading() },
-            style = MaterialTheme.typography.headlineSmall,
-            color = MaterialTheme.colorScheme.onSurface,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-        )
+                .contentColumnWidth()
+                .heightIn(min = AppComponentSize.topBarHeight)
+                .padding(
+                    start = AppSpacing.screenHorizontal,
+                    end = AppSpacing.screenHorizontal - AppSpacing.xxs,
+                ),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(
+                text = title,
+                modifier = Modifier
+                    .weight(1f)
+                    .semantics { heading() },
+                style = MaterialTheme.typography.headlineSmall,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
 
-        if (actionIconRes != null) {
-            IconButton(
-                onClick = onActionClick,
-                modifier = Modifier.size(AppComponentSize.minTouchTarget),
-            ) {
-                Icon(
-                    painter = painterResource(actionIconRes),
-                    contentDescription = actionContentDescription,
-                    modifier = Modifier.size(AppIconSize.standard),
-                    tint = MaterialTheme.colorScheme.onSurface,
-                )
+            if (actionIconRes != null) {
+                IconButton(
+                    onClick = onActionClick,
+                    modifier = Modifier.size(AppComponentSize.minTouchTarget),
+                ) {
+                    Icon(
+                        painter = painterResource(actionIconRes),
+                        contentDescription = actionContentDescription,
+                        modifier = Modifier.size(AppIconSize.standard),
+                        tint = MaterialTheme.colorScheme.onSurface,
+                    )
+                }
             }
         }
     }

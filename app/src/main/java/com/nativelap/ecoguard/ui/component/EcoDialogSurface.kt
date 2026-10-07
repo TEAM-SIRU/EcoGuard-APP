@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -39,7 +41,9 @@ fun EcoDialogSurface(
             color = MaterialTheme.colorScheme.surface,
         ) {
             Column(
-                modifier = Modifier.padding(AppSpacing.xl),
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(AppSpacing.xl),
                 verticalArrangement = Arrangement.spacedBy(AppSpacing.xl),
                 content = content,
             )

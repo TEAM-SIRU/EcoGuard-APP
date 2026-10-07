@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -28,14 +30,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.shadow.Shadow
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppIconSize
@@ -52,6 +55,7 @@ private val cameraFabShadowRadius = 14.dp
 private val cameraFabShadowOffsetY = 6.dp
 private const val CAMERA_FAB_SHADOW_ALPHA = 0.32f
 private val tabItemTopPadding = 10.dp
+private val tabLabelMinFontSize = 9.sp
 
 /** 홈·구역·카메라 FAB·기록·마이페이지로 구성된 하단 탭 바. */
 @Composable
@@ -65,7 +69,7 @@ fun EcoBottomTabBar(
         modifier = modifier.fillMaxWidth(),
         contentAlignment = Alignment.TopCenter,
     ) {
-        Row(
+        Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .dropShadow(
@@ -78,40 +82,46 @@ fun EcoBottomTabBar(
                     ),
                 )
                 .background(MaterialTheme.colorScheme.surface)
-                .windowInsetsPadding(WindowInsets.navigationBars)
-                .heightIn(min = AppComponentSize.tabBarHeight)
-                .padding(horizontal = AppSpacing.xs)
-                .selectableGroup(),
+                .windowInsetsPadding(WindowInsets.navigationBars),
+            contentAlignment = Alignment.TopCenter,
         ) {
-            EcoBottomTabItem(
-                tab = EcoBottomTab.HOME,
-                isSelected = selectedTab == EcoBottomTab.HOME,
-                onClick = { onTabSelected(EcoBottomTab.HOME) },
-                modifier = Modifier.weight(1f),
-            )
+            Row(
+                modifier = Modifier
+                    .contentColumnWidth()
+                    .heightIn(min = AppComponentSize.tabBarHeight)
+                    .padding(horizontal = AppSpacing.xs)
+                    .selectableGroup(),
+            ) {
+                EcoBottomTabItem(
+                    tab = EcoBottomTab.HOME,
+                    isSelected = selectedTab == EcoBottomTab.HOME,
+                    onClick = { onTabSelected(EcoBottomTab.HOME) },
+                    modifier = Modifier.weight(1f),
+                )
 
-            EcoBottomTabItem(
-                tab = EcoBottomTab.AREA,
-                isSelected = selectedTab == EcoBottomTab.AREA,
-                onClick = { onTabSelected(EcoBottomTab.AREA) },
-                modifier = Modifier.weight(1f),
-            )
+                EcoBottomTabItem(
+                    tab = EcoBottomTab.AREA,
+                    isSelected = selectedTab == EcoBottomTab.AREA,
+                    onClick = { onTabSelected(EcoBottomTab.AREA) },
+                    modifier = Modifier.weight(1f),
+                )
 
-            Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(1f))
 
-            EcoBottomTabItem(
-                tab = EcoBottomTab.ACTIVITY,
-                isSelected = selectedTab == EcoBottomTab.ACTIVITY,
-                onClick = { onTabSelected(EcoBottomTab.ACTIVITY) },
-                modifier = Modifier.weight(1f),
-            )
+                EcoBottomTabItem(
+                    tab = EcoBottomTab.ACTIVITY,
+                    isSelected = selectedTab == EcoBottomTab.ACTIVITY,
+                    onClick = { onTabSelected(EcoBottomTab.ACTIVITY) },
+                    modifier = Modifier.weight(1f),
+                )
 
-            EcoBottomTabItem(
-                tab = EcoBottomTab.MY_PAGE,
-                isSelected = selectedTab == EcoBottomTab.MY_PAGE,
-                onClick = { onTabSelected(EcoBottomTab.MY_PAGE) },
-                modifier = Modifier.weight(1f),
-            )
+                EcoBottomTabItem(
+                    tab = EcoBottomTab.MY_PAGE,
+                    isSelected = selectedTab == EcoBottomTab.MY_PAGE,
+                    onClick = { onTabSelected(EcoBottomTab.MY_PAGE) },
+                    modifier = Modifier.weight(1f),
+                )
+            }
         }
 
         CameraFab(
@@ -163,12 +173,19 @@ private fun EcoBottomTabItem(
             tint = contentColor,
         )
 
-        Text(
+        // 큰 글자에서도 라벨을 한 줄로 유지하도록 탭 폭에 맞춰 글자 크기를 줄인다.
+        BasicText(
             text = stringResource(tab.labelRes),
-            style = MaterialTheme.extraTypography.tabLabel.copy(fontWeight = labelWeight),
-            color = contentColor,
+            style = MaterialTheme.extraTypography.tabLabel.copy(
+                fontWeight = labelWeight,
+                color = contentColor,
+            ),
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
+            autoSize = TextAutoSize.StepBased(
+                // sp에는 글자 배율이 곱해지므로 최소 크기는 배율로 나눠 실제 화면 크기 기준으로 맞춘다.
+                minFontSize = tabLabelMinFontSize / LocalDensity.current.fontScale,
+                maxFontSize = MaterialTheme.extraTypography.tabLabel.fontSize,
+            ),
         )
     }
 }

@@ -5,6 +5,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.intl.LocaleList
+import androidx.compose.ui.text.style.LineBreak
 import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
@@ -38,9 +40,21 @@ private fun pretendardTextStyle(
 
 private val defaultTypography = Typography()
 
+// 제목·버튼처럼 짧은 한국어 문구는 어절 단위로, 줄 길이를 고르게 줄바꿈해 한두 글자만 다음 줄로 넘어가지 않게 한다.
+// 본문은 Figma처럼 기본(음절 단위) 줄바꿈을 유지한다.
+private val PhraseHeadingLineBreak = LineBreak.Heading.copy(wordBreak = LineBreak.WordBreak.Phrase)
+
+// 어절 단위 줄바꿈은 텍스트 언어가 한국어일 때만 적용되므로, 기기 언어와 무관하게 한국어로 지정한다.
+private val KoreanLocaleList = LocaleList("ko-KR")
+
+private fun TextStyle.withPhraseLineBreak() = copy(
+    lineBreak = PhraseHeadingLineBreak,
+    localeList = KoreanLocaleList,
+)
+
 private fun TextStyle.withPretendard() = copy(fontFamily = PretendardFontFamily)
 
-val EcoGuardTypography = defaultTypography.copy(
+private val BaseTypography = defaultTypography.copy(
     displayLarge = defaultTypography.displayLarge.withPretendard(),
     displayMedium = defaultTypography.displayMedium.withPretendard(),
     displaySmall = defaultTypography.displaySmall.withPretendard(),
@@ -127,13 +141,24 @@ val EcoGuardTypography = defaultTypography.copy(
     ),
 )
 
+val EcoGuardTypography = BaseTypography.copy(
+    headlineLarge = BaseTypography.headlineLarge.withPhraseLineBreak(),
+    headlineMedium = BaseTypography.headlineMedium.withPhraseLineBreak(),
+    headlineSmall = BaseTypography.headlineSmall.withPhraseLineBreak(),
+    titleLarge = BaseTypography.titleLarge.withPhraseLineBreak(),
+    titleMedium = BaseTypography.titleMedium.withPhraseLineBreak(),
+    titleSmall = BaseTypography.titleSmall.withPhraseLineBreak(),
+    labelLarge = BaseTypography.labelLarge.withPhraseLineBreak(),
+    labelMedium = BaseTypography.labelMedium.withPhraseLineBreak(),
+)
+
 val EcoGuardExtraTypography = AppExtraTypography(
     statusTitle = pretendardTextStyle(
         fontWeight = FontWeight.Bold,
         fontSize = 26.sp,
         lineHeight = 34.sp,
         letterSpacing = 0.sp,
-    ),
+    ).withPhraseLineBreak(),
     statusBody = pretendardTextStyle(
         fontWeight = FontWeight.Normal,
         fontSize = 15.sp,

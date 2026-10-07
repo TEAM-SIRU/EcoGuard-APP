@@ -3,6 +3,7 @@ package com.nativelap.ecoguard.feature.activity.view
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -121,6 +122,7 @@ private fun ActivityRecordList(
         modifier = Modifier
             .widthIn(max = AppComponentSize.contentMaxWidth)
             .fillMaxWidth(),
+        contentPadding = PaddingValues(bottom = AppComponentSize.cameraFabScrollClearance),
     ) {
         item {
             PageTitle(
@@ -226,8 +228,11 @@ private fun ActivityEmptyLayout(
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
                 .padding(
-                    horizontal = AppSpacing.screenHorizontal,
-                    vertical = AppSpacing.xl,
+                    start = AppSpacing.screenHorizontal,
+                    end = AppSpacing.screenHorizontal,
+                    top = AppSpacing.xl,
+                    // 빈 상태 버튼이 탭 바 위로 튀어나온 카메라 버튼에 가리지 않게 한다.
+                    bottom = AppComponentSize.cameraFabScrollClearance,
                 ),
             contentAlignment = Alignment.Center,
         ) {

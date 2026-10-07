@@ -30,6 +30,7 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
+import com.nativelap.ecoguard.ui.component.AdaptiveButtonRow
 import com.nativelap.ecoguard.ui.component.EcoDialogButton
 import com.nativelap.ecoguard.ui.component.EcoDialogSurface
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
@@ -121,23 +122,26 @@ fun MonthPickerDialog(
             }
         }
 
-        Row(horizontalArrangement = Arrangement.spacedBy(AppSpacing.xs)) {
-            EcoDialogButton(
-                text = stringResource(R.string.action_cancel),
-                onClick = onDismissRequest,
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier.weight(1f),
-            )
-
-            EcoDialogButton(
-                text = stringResource(R.string.action_apply),
-                onClick = { onApply(selectedYear, selectedMonth) },
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.weight(1f),
-            )
-        }
+        AdaptiveButtonRow(
+            firstButton = { itemModifier ->
+                EcoDialogButton(
+                    text = stringResource(R.string.action_cancel),
+                    onClick = onDismissRequest,
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    modifier = itemModifier,
+                )
+            },
+            secondButton = { itemModifier ->
+                EcoDialogButton(
+                    text = stringResource(R.string.action_apply),
+                    onClick = { onApply(selectedYear, selectedMonth) },
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    modifier = itemModifier,
+                )
+            },
+        )
     }
 }
 

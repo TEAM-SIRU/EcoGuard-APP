@@ -1,6 +1,7 @@
 package com.nativelap.ecoguard.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -10,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,47 +54,101 @@ fun CleaningRecordCard(
             vertical = AppSpacing.md,
         ),
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(AppSpacing.sm),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(recordTextSpacing),
-            ) {
-                Text(
-                    text = submittedDateTime,
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
+        BoxWithConstraints {
+            // 좁거나 글자가 크면 상태 칩과 적립 시간을 제출 정보 아래로 내린다.
+            if (isCompactForText(maxWidth, AdaptiveWidth.trailingRow)) {
+                Column(verticalArrangement = Arrangement.spacedBy(AppSpacing.xs)) {
+                    RecordSubmissionText(
+                        submittedDateTime = submittedDateTime,
+                        areaName = areaName,
+                    )
 
-                Text(
-                    text = areaName,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.extraColors.captionTextColor,
-                )
-            }
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(AppSpacing.xs),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        RecordStatusChip(status = status)
 
-            Column(
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.spacedBy(recordTextSpacing),
-            ) {
-                StatusChip(
-                    type = status,
-                    textStyle = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
-                )
+                        RecordEarnedTimeText(
+                            earnedTimeText = earnedTimeText,
+                            earnedTimeColor = earnedTimeColor,
+                        )
+                    }
+                }
+            } else {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(AppSpacing.sm),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    RecordSubmissionText(
+                        submittedDateTime = submittedDateTime,
+                        areaName = areaName,
+                        modifier = Modifier.weight(1f),
+                    )
 
-                Text(
-                    text = earnedTimeText,
-                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
-                    color = earnedTimeColor,
-                )
+                    Column(
+                        horizontalAlignment = Alignment.End,
+                        verticalArrangement = Arrangement.spacedBy(recordTextSpacing),
+                    ) {
+                        RecordStatusChip(status = status)
+
+                        RecordEarnedTimeText(
+                            earnedTimeText = earnedTimeText,
+                            earnedTimeColor = earnedTimeColor,
+                        )
+                    }
+                }
             }
         }
     }
 }
 
+@Composable
+private fun RecordSubmissionText(
+    submittedDateTime: String,
+    areaName: String,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(recordTextSpacing),
+    ) {
+        Text(
+            text = submittedDateTime,
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+
+        Text(
+            text = areaName,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.extraColors.captionTextColor,
+        )
+    }
+}
+
+@Composable
+private fun RecordStatusChip(status: StatusChipType) {
+    StatusChip(
+        type = status,
+        textStyle = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
+    )
+}
+
+@Composable
+private fun RecordEarnedTimeText(
+    earnedTimeText: String,
+    earnedTimeColor: Color,
+) {
+    Text(
+        text = earnedTimeText,
+        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
+        color = earnedTimeColor,
+    )
+}
+
 @Preview(showBackground = true, backgroundColor = 0xFFF8FAF9, widthDp = 390)
+@Preview(name = "Compact larger text", showBackground = true, backgroundColor = 0xFFF8FAF9, widthDp = 320, fontScale = 2f)
 @Composable
 private fun CleaningRecordCardPreview() {
     EcoGuardTheme {

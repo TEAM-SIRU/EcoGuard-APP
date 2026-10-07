@@ -72,7 +72,8 @@ fun AreaScreen(
                     modifier = Modifier
                         .widthIn(max = AppComponentSize.contentMaxWidth)
                         .fillMaxWidth()
-                        .verticalScroll(rememberScrollState()),
+                        .verticalScroll(rememberScrollState())
+                        .padding(bottom = AppComponentSize.cameraFabScrollClearance),
                 ) {
                     PageTitle(
                         title = stringResource(R.string.common_my_cleaning_area),
@@ -127,8 +128,11 @@ private fun AreaEmptyLayout(
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
                 .padding(
-                    horizontal = AppSpacing.screenHorizontal,
-                    vertical = AppSpacing.xl,
+                    start = AppSpacing.screenHorizontal,
+                    end = AppSpacing.screenHorizontal,
+                    top = AppSpacing.xl,
+                    // 빈 상태 버튼이 탭 바 위로 튀어나온 카메라 버튼에 가리지 않게 한다.
+                    bottom = AppComponentSize.cameraFabScrollClearance,
                 ),
             contentAlignment = Alignment.Center,
         ) {
