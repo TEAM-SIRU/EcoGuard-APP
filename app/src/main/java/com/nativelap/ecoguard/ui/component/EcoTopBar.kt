@@ -37,26 +37,29 @@ fun EcoTopBar(
     onActionClick: () -> Unit = {},
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .windowInsetsPadding(topBarWindowInsets),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .windowInsetsPadding(topBarWindowInsets),
         contentAlignment = Alignment.TopCenter,
     ) {
         Row(
-            modifier = Modifier
-                .contentColumnWidth()
-                .heightIn(min = AppComponentSize.topBarHeight)
-                .padding(
-                    start = AppSpacing.screenHorizontal,
-                    end = AppSpacing.screenHorizontal - AppSpacing.xxs,
-                ),
+            modifier =
+                Modifier
+                    .contentColumnWidth()
+                    .heightIn(min = AppComponentSize.topBarHeight)
+                    .padding(
+                        start = AppSpacing.screenHorizontal,
+                        end = AppSpacing.screenHorizontal - AppSpacing.xxs,
+                    ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = title,
-                modifier = Modifier
-                    .weight(1f)
-                    .semantics { heading() },
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .semantics { heading() },
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,

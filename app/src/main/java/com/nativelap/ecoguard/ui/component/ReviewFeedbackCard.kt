@@ -29,11 +29,12 @@ fun ReviewFeedbackCard(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(AppRadius.button))
-            .background(MaterialTheme.colorScheme.surfaceContainerLow)
-            .padding(AppSpacing.lg),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(AppRadius.button))
+                .background(MaterialTheme.colorScheme.surfaceContainerLow)
+                .padding(AppSpacing.lg),
         verticalArrangement = Arrangement.spacedBy(feedbackTextSpacing),
     ) {
         Text(

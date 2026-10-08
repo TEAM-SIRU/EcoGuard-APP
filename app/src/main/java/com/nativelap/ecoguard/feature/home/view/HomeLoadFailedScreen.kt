@@ -52,7 +52,13 @@ fun HomeLoadFailedScreen(
 }
 
 @Preview(name = "Home · load failed", showBackground = true, widthDp = 390, heightDp = 844)
-@Preview(name = "Home · load failed compact larger text", showBackground = true, widthDp = 320, heightDp = 596, fontScale = 1.5f)
+@Preview(
+    name = "Home · load failed compact larger text",
+    showBackground = true,
+    widthDp = 320,
+    heightDp = 596,
+    fontScale = 1.5f,
+)
 @Composable
 private fun HomeLoadFailedScreenPreview() {
     EcoGuardTheme {

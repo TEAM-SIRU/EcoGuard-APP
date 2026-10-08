@@ -35,16 +35,18 @@ fun PhotoPlaceholder(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(height)
-            .clip(RoundedCornerShape(AppRadius.card))
-            .background(MaterialTheme.colorScheme.surfaceVariant),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(height)
+                .clip(RoundedCornerShape(AppRadius.card))
+                .background(MaterialTheme.colorScheme.surfaceVariant),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(
-            space = AppSpacing.xs,
-            alignment = Alignment.CenterVertically,
-        ),
+        verticalArrangement =
+            Arrangement.spacedBy(
+                space = AppSpacing.xs,
+                alignment = Alignment.CenterVertically,
+            ),
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_image),

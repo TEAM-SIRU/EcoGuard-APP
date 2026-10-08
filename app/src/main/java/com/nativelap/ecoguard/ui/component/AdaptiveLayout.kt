@@ -34,14 +34,10 @@ object AdaptiveWidth {
 fun isCompactForText(
     availableWidth: Dp,
     requiredWidth: Dp,
-): Boolean {
-    return availableWidth / LocalDensity.current.fontScale < requiredWidth
-}
+): Boolean = availableWidth / LocalDensity.current.fontScale < requiredWidth
 
 /** 넓은 화면에서도 화면 콘텐츠와 같은 최대 폭(600dp) 안에 배치한다. 바깥 컨테이너는 가운데 정렬해야 한다. */
-fun Modifier.contentColumnWidth(): Modifier {
-    return widthIn(max = AppComponentSize.contentMaxWidth).fillMaxWidth()
-}
+fun Modifier.contentColumnWidth(): Modifier = widthIn(max = AppComponentSize.contentMaxWidth).fillMaxWidth()
 
 /** 상단 바가 피해야 하는 영역: 상태 바와 가로 방향 디스플레이 컷아웃. */
 val topBarWindowInsets: WindowInsets

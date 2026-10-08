@@ -11,10 +11,15 @@ fun AreaRoute(
     onEvent: (AreaScreenEvent) -> Unit = {},
 ) {
     when (uiState) {
-        AreaUiState.Loading -> AreaLoadingScreen()
-        else -> AreaScreen(
-            uiState = uiState,
-            onEvent = onEvent,
-        )
+        AreaUiState.Loading -> {
+            AreaLoadingScreen()
+        }
+
+        else -> {
+            AreaScreen(
+                uiState = uiState,
+                onEvent = onEvent,
+            )
+        }
     }
 }

@@ -56,11 +56,12 @@ fun CameraGuideScreen(
         topBar = {
             EcoBackTopBar(
                 onBackClick = { onEvent(VerificationScreenEvent.BackClick) },
-                trailingText = stringResource(
-                    R.string.format_step,
-                    VerificationStep.GUIDE.stepNumber,
-                    VerificationStep.totalStepCount,
-                ),
+                trailingText =
+                    stringResource(
+                        R.string.format_step,
+                        VerificationStep.GUIDE.stepNumber,
+                        VerificationStep.totalStepCount,
+                    ),
             )
         },
         bottomBar = {
@@ -74,45 +75,49 @@ fun CameraGuideScreen(
         },
     ) { innerPadding ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .consumeWindowInsets(innerPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding),
             contentAlignment = Alignment.TopCenter,
         ) {
             Column(
-                modifier = Modifier
-                    .widthIn(max = AppComponentSize.contentMaxWidth)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState()),
+                modifier =
+                    Modifier
+                        .widthIn(max = AppComponentSize.contentMaxWidth)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState()),
             ) {
                 PageTitle(
                     title = stringResource(R.string.camera_how_to_take_photo),
                     subtitle = stringResource(R.string.camera_one_photo_for_today),
-                    modifier = Modifier.padding(
-                        start = AppSpacing.screenHorizontal,
-                        end = AppSpacing.screenHorizontal,
-                        top = AppSpacing.xs,
-                        bottom = AppSpacing.lg,
-                    ),
+                    modifier =
+                        Modifier.padding(
+                            start = AppSpacing.screenHorizontal,
+                            end = AppSpacing.screenHorizontal,
+                            top = AppSpacing.xs,
+                            bottom = AppSpacing.lg,
+                        ),
                 )
 
                 Column(
-                    modifier = Modifier
-                        .padding(
-                            start = AppSpacing.screenHorizontal,
-                            end = AppSpacing.screenHorizontal,
-                            bottom = AppSpacing.xs,
-                        )
-                        .fillMaxWidth()
-                        .height(guideIllustrationHeight)
-                        .clip(RoundedCornerShape(AppRadius.card))
-                        .background(MaterialTheme.colorScheme.surfaceContainerLow),
+                    modifier =
+                        Modifier
+                            .padding(
+                                start = AppSpacing.screenHorizontal,
+                                end = AppSpacing.screenHorizontal,
+                                bottom = AppSpacing.xs,
+                            ).fillMaxWidth()
+                            .height(guideIllustrationHeight)
+                            .clip(RoundedCornerShape(AppRadius.card))
+                            .background(MaterialTheme.colorScheme.surfaceContainerLow),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(
-                        space = AppSpacing.sm,
-                        alignment = Alignment.CenterVertically,
-                    ),
+                    verticalArrangement =
+                        Arrangement.spacedBy(
+                            space = AppSpacing.sm,
+                            alignment = Alignment.CenterVertically,
+                        ),
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_frame),
@@ -151,7 +156,13 @@ fun CameraGuideScreen(
 }
 
 @Preview(name = "Camera guide", showBackground = true, widthDp = 390, heightDp = 844)
-@Preview(name = "Camera guide · compact larger text", showBackground = true, widthDp = 320, heightDp = 596, fontScale = 1.5f)
+@Preview(
+    name = "Camera guide · compact larger text",
+    showBackground = true,
+    widthDp = 320,
+    heightDp = 596,
+    fontScale = 1.5f,
+)
 @Composable
 private fun CameraGuideScreenPreview() {
     EcoGuardTheme {

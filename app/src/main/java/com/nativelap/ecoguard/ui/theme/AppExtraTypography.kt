@@ -17,9 +17,10 @@ data class AppExtraTypography(
     val highlightNumber: TextStyle,
 )
 
-val LocalAppExtraTypography = staticCompositionLocalOf<AppExtraTypography> {
-    error("AppExtraTypography was not provided.")
-}
+val LocalAppExtraTypography =
+    staticCompositionLocalOf<AppExtraTypography> {
+        error("AppExtraTypography was not provided.")
+    }
 
 val MaterialTheme.extraTypography: AppExtraTypography
     @Composable

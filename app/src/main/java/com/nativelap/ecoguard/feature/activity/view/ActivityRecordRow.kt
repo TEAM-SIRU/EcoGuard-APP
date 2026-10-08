@@ -33,39 +33,41 @@ fun ActivityRecordRow(
     val isNotSubmitted = activityRecord.status == StatusChipType.NOT_SUBMITTED
     val separator = stringResource(R.string.format_list_separator)
     val shouldShowAreaName = activityRecord.status != StatusChipType.APPROVED
-    val detailParts = buildList {
-        if (shouldShowAreaName) {
-            add(activityRecord.areaName)
-        }
+    val detailParts =
+        buildList {
+            if (shouldShowAreaName) {
+                add(activityRecord.areaName)
+            }
 
-        if (activityRecord.submittedTime != null) {
-            add(activityRecord.submittedTime)
-        }
+            if (activityRecord.submittedTime != null) {
+                add(activityRecord.submittedTime)
+            }
 
-        if (activityRecord.earnedMinutes > 0) {
-            add(stringResource(R.string.format_bonus_minutes, activityRecord.earnedMinutes))
-        }
+            if (activityRecord.earnedMinutes > 0) {
+                add(stringResource(R.string.format_bonus_minutes, activityRecord.earnedMinutes))
+            }
 
-        if (activityRecord.isAppealApproved) {
-            add(stringResource(R.string.activity_appeal_approved))
-        }
+            if (activityRecord.isAppealApproved) {
+                add(stringResource(R.string.activity_appeal_approved))
+            }
 
-        if (isNotSubmitted) {
-            add(stringResource(R.string.activity_not_verified))
+            if (isNotSubmitted) {
+                add(stringResource(R.string.activity_not_verified))
+            }
         }
-    }
 
     TwoLineTextRow(
         title = activityRecord.dateLabel,
         subtitle = detailParts.joinToString(separator = separator),
-        modifier = if (isNotSubmitted) {
-            modifier
-        } else {
-            modifier.clickable(
-                role = Role.Button,
-                onClick = onClick,
-            )
-        },
+        modifier =
+            if (isNotSubmitted) {
+                modifier
+            } else {
+                modifier.clickable(
+                    role = Role.Button,
+                    onClick = onClick,
+                )
+            },
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(AppSpacing.xs)) {
             StatusChip(type = activityRecord.status)
@@ -89,7 +91,11 @@ fun ActivityRecordRow(
 private fun ActivityRecordRowPreview() {
     EcoGuardTheme {
         ActivityRecordRow(
-            activityRecord = ActivityPreviewFixtures.weekGroups.first().records.first(),
+            activityRecord =
+                ActivityPreviewFixtures.weekGroups
+                    .first()
+                    .records
+                    .first(),
             onClick = {},
         )
     }

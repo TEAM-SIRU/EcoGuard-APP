@@ -65,7 +65,9 @@ fun MenuRoute(
             )
         }
 
-        null -> Unit
+        null -> {
+            Unit
+        }
     }
 }
 

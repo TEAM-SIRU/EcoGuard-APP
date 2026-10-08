@@ -43,20 +43,22 @@ fun EcoListRow(
     trailingContent: @Composable RowScope.() -> Unit = {},
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = AppSpacing.md,
-                vertical = listRowVerticalPadding,
-            ),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = AppSpacing.md,
+                    vertical = listRowVerticalPadding,
+                ),
         horizontalArrangement = Arrangement.spacedBy(listRowIconSpacing),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(
-            modifier = Modifier
-                .size(AppComponentSize.iconTile)
-                .clip(RoundedCornerShape(AppRadius.tile))
-                .background(MaterialTheme.colorScheme.surfaceVariant),
+            modifier =
+                Modifier
+                    .size(AppComponentSize.iconTile)
+                    .clip(RoundedCornerShape(AppRadius.tile))
+                    .background(MaterialTheme.colorScheme.surfaceVariant),
             contentAlignment = Alignment.Center,
         ) {
             Icon(

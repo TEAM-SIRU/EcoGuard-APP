@@ -21,28 +21,31 @@ fun RecruitmentInfoTable(
     InfoTableBox(modifier = modifier) {
         InfoRow(
             label = stringResource(R.string.recruitment_period),
-            value = stringResource(
-                R.string.format_time_range,
-                recruitment.periodStartDate,
-                recruitment.periodEndDate,
-            ),
+            value =
+                stringResource(
+                    R.string.format_time_range,
+                    recruitment.periodStartDate,
+                    recruitment.periodEndDate,
+                ),
         )
 
         InfoRow(
             label = stringResource(R.string.recruitment_headcount),
-            value = stringResource(
-                R.string.recruitment_max_per_class,
-                recruitment.maxApplicantsPerClass,
-            ),
+            value =
+                stringResource(
+                    R.string.recruitment_max_per_class,
+                    recruitment.maxApplicantsPerClass,
+                ),
         )
 
         InfoRow(
             label = stringResource(R.string.common_activity_time),
-            value = stringResource(
-                R.string.recruitment_daily_time,
-                recruitment.activityStartTime,
-                recruitment.activityEndTime,
-            ),
+            value =
+                stringResource(
+                    R.string.recruitment_daily_time,
+                    recruitment.activityStartTime,
+                    recruitment.activityEndTime,
+                ),
         )
     }
 }

@@ -29,10 +29,11 @@ fun EcoDialogButton(
         onClick = onClick,
         modifier = modifier.heightIn(min = dialogButtonHeight),
         shape = RoundedCornerShape(AppRadius.button),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = containerColor,
-            contentColor = contentColor,
-        ),
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = containerColor,
+                contentColor = contentColor,
+            ),
         contentPadding = PaddingValues(horizontal = AppSpacing.md),
     ) {
         Text(

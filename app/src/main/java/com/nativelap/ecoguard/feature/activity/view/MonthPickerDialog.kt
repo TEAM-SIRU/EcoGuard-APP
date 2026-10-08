@@ -155,31 +155,32 @@ private fun MonthItem(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
-            .heightIn(min = monthItemHeight)
-            .clip(RoundedCornerShape(AppRadius.button))
-            .background(
-                if (isSelected) {
-                    MaterialTheme.colorScheme.primary
-                } else {
-                    MaterialTheme.colorScheme.surfaceVariant
-                },
-            )
-            .selectable(
-                selected = isSelected,
-                onClick = onClick,
-                role = Role.RadioButton,
-            ),
+        modifier =
+            modifier
+                .heightIn(min = monthItemHeight)
+                .clip(RoundedCornerShape(AppRadius.button))
+                .background(
+                    if (isSelected) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.surfaceVariant
+                    },
+                ).selectable(
+                    selected = isSelected,
+                    onClick = onClick,
+                    role = Role.RadioButton,
+                ),
         contentAlignment = Alignment.Center,
     ) {
         Text(
             text = stringResource(R.string.format_month, month),
             style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
-            color = if (isSelected) {
-                MaterialTheme.colorScheme.onPrimary
-            } else {
-                MaterialTheme.colorScheme.onSurface
-            },
+            color =
+                if (isSelected) {
+                    MaterialTheme.colorScheme.onPrimary
+                } else {
+                    MaterialTheme.colorScheme.onSurface
+                },
         )
     }
 }

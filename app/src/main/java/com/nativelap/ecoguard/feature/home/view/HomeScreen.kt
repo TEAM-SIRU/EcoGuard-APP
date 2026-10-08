@@ -56,23 +56,25 @@ fun HomeScreen(
         },
     ) { innerPadding ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .consumeWindowInsets(innerPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding),
             contentAlignment = Alignment.TopCenter,
         ) {
             Column(
-                modifier = Modifier
-                    .widthIn(max = AppComponentSize.contentMaxWidth)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .padding(
-                        start = AppSpacing.screenHorizontal,
-                        end = AppSpacing.screenHorizontal,
-                        top = AppSpacing.xs,
-                        bottom = homeContentBottomPadding,
-                    ),
+                modifier =
+                    Modifier
+                        .widthIn(max = AppComponentSize.contentMaxWidth)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                        .padding(
+                            start = AppSpacing.screenHorizontal,
+                            end = AppSpacing.screenHorizontal,
+                            top = AppSpacing.xs,
+                            bottom = homeContentBottomPadding,
+                        ),
                 verticalArrangement = Arrangement.spacedBy(AppSpacing.sm),
             ) {
                 if (uiState.notice != null) {
@@ -98,13 +100,19 @@ private fun HomeSection(
     onEvent: (HomeScreenEvent) -> Unit,
 ) {
     when (section) {
-        is HomeSectionUiModel.Recruiting -> HomeRecruitmentCard(
-            recruiting = section,
-            onRecruitmentClick = { onEvent(HomeScreenEvent.RecruitmentClick) },
-        )
-        HomeSectionUiModel.WaitingAssignment -> HomeApplicationCompletedCard(
-            onApplicationResultClick = { onEvent(HomeScreenEvent.ApplicationResultClick) },
-        )
+        is HomeSectionUiModel.Recruiting -> {
+            HomeRecruitmentCard(
+                recruiting = section,
+                onRecruitmentClick = { onEvent(HomeScreenEvent.RecruitmentClick) },
+            )
+        }
+
+        HomeSectionUiModel.WaitingAssignment -> {
+            HomeApplicationCompletedCard(
+                onApplicationResultClick = { onEvent(HomeScreenEvent.ApplicationResultClick) },
+            )
+        }
+
         is HomeSectionUiModel.Cleaning -> {
             HomeTodayCleaningCard(
                 todayCleaning = section.todayCleaning,

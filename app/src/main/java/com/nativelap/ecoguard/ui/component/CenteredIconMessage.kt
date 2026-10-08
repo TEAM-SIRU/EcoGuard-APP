@@ -48,26 +48,32 @@ fun CenteredIconMessage(
             contentAlignment = Alignment.Center,
         ) {
             when (iconStyle) {
-                CenteredIconStyle.CIRCLE -> Box(
-                    modifier = Modifier
-                        .size(AppComponentSize.emptyIconCircle)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
-                    contentAlignment = Alignment.Center,
-                ) {
+                CenteredIconStyle.CIRCLE -> {
+                    Box(
+                        modifier =
+                            Modifier
+                                .size(AppComponentSize.emptyIconCircle)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.surfaceVariant),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Icon(
+                            painter = painterResource(iconRes),
+                            contentDescription = null,
+                            modifier = Modifier.size(AppIconSize.emptyState),
+                            tint = iconTint,
+                        )
+                    }
+                }
+
+                CenteredIconStyle.HERO -> {
                     Icon(
                         painter = painterResource(iconRes),
                         contentDescription = null,
-                        modifier = Modifier.size(AppIconSize.emptyState),
-                        tint = iconTint,
+                        modifier = Modifier.size(AppIconSize.hero),
+                        tint = Color.Unspecified,
                     )
                 }
-                CenteredIconStyle.HERO -> Icon(
-                    painter = painterResource(iconRes),
-                    contentDescription = null,
-                    modifier = Modifier.size(AppIconSize.hero),
-                    tint = Color.Unspecified,
-                )
             }
         }
 

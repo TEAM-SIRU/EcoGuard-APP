@@ -13,9 +13,7 @@ import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 /** 07 활동 기록 로딩. 회색 제목과 스켈레톤을 표시한다. */
 @Composable
-fun ActivityLoadingScreen(
-    modifier: Modifier = Modifier,
-) {
+fun ActivityLoadingScreen(modifier: Modifier = Modifier) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surface,

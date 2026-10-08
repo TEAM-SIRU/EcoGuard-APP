@@ -40,12 +40,13 @@ fun TwoLineTextRow(
     trailingContent: (@Composable RowScope.() -> Unit)? = null,
 ) {
     BoxWithConstraints(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = AppSpacing.screenHorizontal,
-                vertical = twoLineRowVerticalPadding,
-            ),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = AppSpacing.screenHorizontal,
+                    vertical = twoLineRowVerticalPadding,
+                ),
     ) {
         val isCompact = trailingContent != null && isCompactForText(maxWidth, AdaptiveWidth.trailingRow)
 

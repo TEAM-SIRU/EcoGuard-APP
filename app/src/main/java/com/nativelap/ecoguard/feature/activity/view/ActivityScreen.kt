@@ -37,12 +37,13 @@ import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 import com.nativelap.ecoguard.ui.theme.extraTypography
 
-private val activityTitleModifier = Modifier.padding(
-    start = AppSpacing.screenHorizontal,
-    end = AppSpacing.screenHorizontal,
-    top = AppSpacing.md,
-    bottom = AppSpacing.lg,
-)
+private val activityTitleModifier =
+    Modifier.padding(
+        start = AppSpacing.screenHorizontal,
+        end = AppSpacing.screenHorizontal,
+        top = AppSpacing.md,
+        bottom = AppSpacing.lg,
+    )
 
 /** 07 활동 기록. 월별 요약과 주 단위 기록 목록, 빈 상태·조회 실패를 표시한다. */
 @Composable
@@ -63,51 +64,60 @@ fun ActivityScreen(
         },
     ) { innerPadding ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .consumeWindowInsets(innerPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding),
             contentAlignment = Alignment.TopCenter,
         ) {
             when (uiState) {
-                is ActivityUiState.Content -> if (uiState.weekGroups.isEmpty()) {
-                    ActivityEmptyLayout(
-                        headerContent = {
-                            ActivitySummaryContent(
-                                activityContent = uiState,
-                                onMonthSelectorClick = { onEvent(ActivityScreenEvent.MonthSelectorClick) },
-                            )
+                is ActivityUiState.Content -> {
+                    if (uiState.weekGroups.isEmpty()) {
+                        ActivityEmptyLayout(
+                            headerContent = {
+                                ActivitySummaryContent(
+                                    activityContent = uiState,
+                                    onMonthSelectorClick = { onEvent(ActivityScreenEvent.MonthSelectorClick) },
+                                )
 
-                            SectionDivider()
-                        },
-                        emptyContent = {
-                            InlineEmptyState(
-                                iconRes = R.drawable.ic_list_30,
-                                title = stringResource(R.string.activity_empty_title),
-                                description = stringResource(R.string.activity_empty_description),
-                                actionText = stringResource(R.string.activity_start_verification),
-                                onActionClick = { onEvent(ActivityScreenEvent.StartVerificationClick) },
-                            )
-                        },
-                    )
-                } else {
-                    ActivityRecordList(
-                        activityContent = uiState,
-                        onEvent = onEvent,
-                    )
+                                SectionDivider()
+                            },
+                            emptyContent = {
+                                InlineEmptyState(
+                                    iconRes = R.drawable.ic_list_30,
+                                    title = stringResource(R.string.activity_empty_title),
+                                    description = stringResource(R.string.activity_empty_description),
+                                    actionText = stringResource(R.string.activity_start_verification),
+                                    onActionClick = { onEvent(ActivityScreenEvent.StartVerificationClick) },
+                                )
+                            },
+                        )
+                    } else {
+                        ActivityRecordList(
+                            activityContent = uiState,
+                            onEvent = onEvent,
+                        )
+                    }
                 }
-                ActivityUiState.LoadFailed -> ActivityEmptyLayout(
-                    headerContent = {},
-                ) {
-                    InlineEmptyState(
-                        iconRes = R.drawable.ic_map_30,
-                        title = stringResource(R.string.activity_load_failed),
-                        description = stringResource(R.string.common_try_again_later),
-                        actionText = stringResource(R.string.action_retry),
-                        onActionClick = { onEvent(ActivityScreenEvent.RetryClick) },
-                    )
+
+                ActivityUiState.LoadFailed -> {
+                    ActivityEmptyLayout(
+                        headerContent = {},
+                    ) {
+                        InlineEmptyState(
+                            iconRes = R.drawable.ic_map_30,
+                            title = stringResource(R.string.activity_load_failed),
+                            description = stringResource(R.string.common_try_again_later),
+                            actionText = stringResource(R.string.action_retry),
+                            onActionClick = { onEvent(ActivityScreenEvent.RetryClick) },
+                        )
+                    }
                 }
-                ActivityUiState.Loading -> Unit
+
+                ActivityUiState.Loading -> {
+                    Unit
+                }
             }
         }
     }
@@ -119,9 +129,10 @@ private fun ActivityRecordList(
     onEvent: (ActivityScreenEvent) -> Unit,
 ) {
     LazyColumn(
-        modifier = Modifier
-            .widthIn(max = AppComponentSize.contentMaxWidth)
-            .fillMaxWidth(),
+        modifier =
+            Modifier
+                .widthIn(max = AppComponentSize.contentMaxWidth)
+                .fillMaxWidth(),
         contentPadding = PaddingValues(bottom = AppComponentSize.cameraFabScrollClearance),
     ) {
         item {
@@ -168,25 +179,28 @@ private fun ActivityWeekHeader(
     weekGroup: ActivityWeekGroupUiModel,
     isFirstGroup: Boolean,
 ) {
-    val weekLabel = when (weekGroup.weeksAgo) {
-        0 -> stringResource(R.string.activity_this_week)
-        1 -> stringResource(R.string.activity_last_week)
-        else -> stringResource(R.string.activity_weeks_ago, weekGroup.weeksAgo)
-    }
-    val topPadding = if (isFirstGroup) {
-        AppSpacing.md
-    } else {
-        AppSpacing.lg
-    }
+    val weekLabel =
+        when (weekGroup.weeksAgo) {
+            0 -> stringResource(R.string.activity_this_week)
+            1 -> stringResource(R.string.activity_last_week)
+            else -> stringResource(R.string.activity_weeks_ago, weekGroup.weeksAgo)
+        }
+    val topPadding =
+        if (isFirstGroup) {
+            AppSpacing.md
+        } else {
+            AppSpacing.lg
+        }
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(
             text = weekLabel,
-            modifier = Modifier.padding(
-                start = AppSpacing.screenHorizontal,
-                end = AppSpacing.screenHorizontal,
-                top = topPadding,
-            ),
+            modifier =
+                Modifier.padding(
+                    start = AppSpacing.screenHorizontal,
+                    end = AppSpacing.screenHorizontal,
+                    top = topPadding,
+                ),
             style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
             color = MaterialTheme.extraColors.captionTextColor,
         )
@@ -194,10 +208,11 @@ private fun ActivityWeekHeader(
         weekGroup.holidayRangeTexts.forEach { holidayRangeText ->
             Text(
                 text = stringResource(R.string.activity_holiday_format, holidayRangeText),
-                modifier = Modifier.padding(
-                    horizontal = AppSpacing.screenHorizontal,
-                    vertical = AppSpacing.sm,
-                ),
+                modifier =
+                    Modifier.padding(
+                        horizontal = AppSpacing.screenHorizontal,
+                        vertical = AppSpacing.sm,
+                    ),
                 style = MaterialTheme.extraTypography.captionRegular,
                 color = MaterialTheme.extraColors.captionTextColor,
             )
@@ -211,9 +226,10 @@ private fun ActivityEmptyLayout(
     emptyContent: @Composable () -> Unit,
 ) {
     Column(
-        modifier = Modifier
-            .widthIn(max = AppComponentSize.contentMaxWidth)
-            .fillMaxSize(),
+        modifier =
+            Modifier
+                .widthIn(max = AppComponentSize.contentMaxWidth)
+                .fillMaxSize(),
     ) {
         PageTitle(
             title = stringResource(R.string.activity_title),
@@ -223,17 +239,18 @@ private fun ActivityEmptyLayout(
         headerContent()
 
         Box(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(
-                    start = AppSpacing.screenHorizontal,
-                    end = AppSpacing.screenHorizontal,
-                    top = AppSpacing.xl,
-                    // 빈 상태 버튼이 탭 바 위로 튀어나온 카메라 버튼에 가리지 않게 한다.
-                    bottom = AppComponentSize.cameraFabScrollClearance,
-                ),
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .padding(
+                        start = AppSpacing.screenHorizontal,
+                        end = AppSpacing.screenHorizontal,
+                        top = AppSpacing.xl,
+                        // 빈 상태 버튼이 탭 바 위로 튀어나온 카메라 버튼에 가리지 않게 한다.
+                        bottom = AppComponentSize.cameraFabScrollClearance,
+                    ),
             contentAlignment = Alignment.Center,
         ) {
             emptyContent()
@@ -242,7 +259,13 @@ private fun ActivityEmptyLayout(
 }
 
 @Preview(name = "Activity · content", showBackground = true, widthDp = 390, heightDp = 1372)
-@Preview(name = "Activity · compact larger text", showBackground = true, widthDp = 320, heightDp = 900, fontScale = 1.5f)
+@Preview(
+    name = "Activity · compact larger text",
+    showBackground = true,
+    widthDp = 320,
+    heightDp = 900,
+    fontScale = 1.5f,
+)
 @Composable
 private fun ActivityScreenPreview() {
     EcoGuardTheme {

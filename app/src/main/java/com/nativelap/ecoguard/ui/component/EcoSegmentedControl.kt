@@ -38,50 +38,54 @@ fun EcoSegmentedControl(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(AppRadius.tile))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(AppSpacing.xxs)
-            .selectableGroup(),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(AppRadius.tile))
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .padding(AppSpacing.xxs)
+                .selectableGroup(),
         horizontalArrangement = Arrangement.spacedBy(AppSpacing.xxs),
     ) {
         segmentLabels.forEachIndexed { segmentIndex, segmentLabel ->
             val isSelected = segmentIndex == selectedIndex
 
             Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .heightIn(min = AppComponentSize.minTouchTarget)
-                    .clip(RoundedCornerShape(segmentItemRadius))
-                    .background(
-                        if (isSelected) {
-                            MaterialTheme.colorScheme.surface
-                        } else {
-                            Color.Transparent
-                        },
-                    )
-                    .selectable(
-                        selected = isSelected,
-                        onClick = { onSegmentSelect(segmentIndex) },
-                        role = Role.Tab,
-                    ),
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .heightIn(min = AppComponentSize.minTouchTarget)
+                        .clip(RoundedCornerShape(segmentItemRadius))
+                        .background(
+                            if (isSelected) {
+                                MaterialTheme.colorScheme.surface
+                            } else {
+                                Color.Transparent
+                            },
+                        ).selectable(
+                            selected = isSelected,
+                            onClick = { onSegmentSelect(segmentIndex) },
+                            role = Role.Tab,
+                        ),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = segmentLabel,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = if (isSelected) {
-                            FontWeight.Bold
+                    style =
+                        MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight =
+                                if (isSelected) {
+                                    FontWeight.Bold
+                                } else {
+                                    FontWeight.Medium
+                                },
+                        ),
+                    color =
+                        if (isSelected) {
+                            MaterialTheme.colorScheme.onSurface
                         } else {
-                            FontWeight.Medium
+                            MaterialTheme.extraColors.captionTextColor
                         },
-                    ),
-                    color = if (isSelected) {
-                        MaterialTheme.colorScheme.onSurface
-                    } else {
-                        MaterialTheme.extraColors.captionTextColor
-                    },
                 )
             }
         }

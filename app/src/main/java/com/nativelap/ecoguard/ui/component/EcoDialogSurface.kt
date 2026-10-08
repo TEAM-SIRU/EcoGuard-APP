@@ -33,17 +33,19 @@ fun EcoDialogSurface(
         properties = DialogProperties(usePlatformDefaultWidth = false),
     ) {
         Surface(
-            modifier = modifier
-                .padding(horizontal = AppSpacing.screenHorizontal)
-                .widthIn(max = dialogMaxWidth)
-                .fillMaxWidth(),
+            modifier =
+                modifier
+                    .padding(horizontal = AppSpacing.screenHorizontal)
+                    .widthIn(max = dialogMaxWidth)
+                    .fillMaxWidth(),
             shape = RoundedCornerShape(AppRadius.logo),
             color = MaterialTheme.colorScheme.surface,
         ) {
             Column(
-                modifier = Modifier
-                    .verticalScroll(rememberScrollState())
-                    .padding(AppSpacing.xl),
+                modifier =
+                    Modifier
+                        .verticalScroll(rememberScrollState())
+                        .padding(AppSpacing.xl),
                 verticalArrangement = Arrangement.spacedBy(AppSpacing.xl),
                 content = content,
             )

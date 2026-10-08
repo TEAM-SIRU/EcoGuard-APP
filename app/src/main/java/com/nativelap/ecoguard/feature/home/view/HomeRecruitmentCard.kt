@@ -38,20 +38,22 @@ fun HomeRecruitmentCard(
 ) {
     EcoCard(
         modifier = modifier,
-        contentPadding = PaddingValues(
-            start = AppSpacing.lg,
-            end = AppSpacing.lg,
-            top = recruitmentCardTopPadding,
-            bottom = AppSpacing.lg,
-        ),
+        contentPadding =
+            PaddingValues(
+                start = AppSpacing.lg,
+                end = AppSpacing.lg,
+                top = recruitmentCardTopPadding,
+                bottom = AppSpacing.lg,
+            ),
     ) {
         EcoTag(text = stringResource(R.string.home_recruiting))
 
         Column(
-            modifier = Modifier.padding(
-                top = recruitmentTitleTopPadding,
-                bottom = AppSpacing.md,
-            ),
+            modifier =
+                Modifier.padding(
+                    top = recruitmentTitleTopPadding,
+                    bottom = AppSpacing.md,
+                ),
             verticalArrangement = Arrangement.spacedBy(recruitmentTextSpacing),
         ) {
             Text(
@@ -73,21 +75,23 @@ fun HomeRecruitmentCard(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
-                text = stringResource(
-                    R.string.format_grade_class,
-                    recruiting.grade,
-                    recruiting.classNumber,
-                ),
+                text =
+                    stringResource(
+                        R.string.format_grade_class,
+                        recruiting.grade,
+                        recruiting.classNumber,
+                    ),
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
             Text(
-                text = stringResource(
-                    R.string.format_application_headcount,
-                    recruiting.appliedCount,
-                    recruiting.maxApplicantsPerClass,
-                ),
+                text =
+                    stringResource(
+                        R.string.format_application_headcount,
+                        recruiting.appliedCount,
+                        recruiting.maxApplicantsPerClass,
+                    ),
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
                 color = MaterialTheme.colorScheme.primary,
             )

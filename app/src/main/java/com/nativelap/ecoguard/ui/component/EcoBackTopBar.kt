@@ -37,16 +37,18 @@ fun EcoBackTopBar(
     trailingText: String? = null,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .windowInsetsPadding(topBarWindowInsets),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .windowInsetsPadding(topBarWindowInsets),
         contentAlignment = Alignment.TopCenter,
     ) {
         Box(
-            modifier = Modifier
-                .contentColumnWidth()
-                .heightIn(min = AppComponentSize.backBarHeight)
-                .padding(horizontal = AppSpacing.sm),
+            modifier =
+                Modifier
+                    .contentColumnWidth()
+                    .heightIn(min = AppComponentSize.backBarHeight)
+                    .padding(horizontal = AppSpacing.sm),
             contentAlignment = Alignment.CenterStart,
         ) {
             IconButton(
@@ -64,10 +66,11 @@ fun EcoBackTopBar(
             if (title != null) {
                 Text(
                     text = title,
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .padding(horizontal = AppComponentSize.minTouchTarget)
-                        .semantics { heading() },
+                    modifier =
+                        Modifier
+                            .align(Alignment.Center)
+                            .padding(horizontal = AppComponentSize.minTouchTarget)
+                            .semantics { heading() },
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurface,
                     textAlign = TextAlign.Center,
@@ -79,9 +82,10 @@ fun EcoBackTopBar(
             if (trailingText != null) {
                 Text(
                     text = trailingText,
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd)
-                        .padding(end = AppSpacing.xs),
+                    modifier =
+                        Modifier
+                            .align(Alignment.CenterEnd)
+                            .padding(end = AppSpacing.xs),
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
                     color = MaterialTheme.extraColors.captionTextColor,
                 )

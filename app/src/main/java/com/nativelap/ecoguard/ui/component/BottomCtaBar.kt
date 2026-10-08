@@ -33,22 +33,24 @@ fun BottomCtaBar(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(containerColor)
-            .windowInsetsPadding(WindowInsets.navigationBars),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(containerColor)
+                .windowInsetsPadding(WindowInsets.navigationBars),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Column(
-            modifier = Modifier
-                .widthIn(max = AppComponentSize.contentMaxWidth)
-                .fillMaxWidth()
-                .padding(
-                    start = AppSpacing.screenHorizontal,
-                    end = AppSpacing.screenHorizontal,
-                    top = AppSpacing.sm,
-                    bottom = AppSpacing.md,
-                ),
+            modifier =
+                Modifier
+                    .widthIn(max = AppComponentSize.contentMaxWidth)
+                    .fillMaxWidth()
+                    .padding(
+                        start = AppSpacing.screenHorizontal,
+                        end = AppSpacing.screenHorizontal,
+                        top = AppSpacing.sm,
+                        bottom = AppSpacing.md,
+                    ),
             verticalArrangement = Arrangement.spacedBy(itemSpacing),
             horizontalAlignment = Alignment.CenterHorizontally,
             content = content,

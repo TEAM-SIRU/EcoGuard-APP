@@ -42,17 +42,19 @@ fun EcoSecondaryButton(
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = minHeight),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .heightIn(min = minHeight),
         enabled = enabled,
         shape = RoundedCornerShape(AppRadius.button),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-            disabledContentColor = MaterialTheme.extraColors.disabledContentColor,
-        ),
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                disabledContentColor = MaterialTheme.extraColors.disabledContentColor,
+            ),
         contentPadding = PaddingValues(horizontal = AppSpacing.md),
     ) {
         Row(

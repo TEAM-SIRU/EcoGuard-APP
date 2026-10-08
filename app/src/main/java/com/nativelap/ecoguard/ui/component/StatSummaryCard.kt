@@ -25,10 +25,11 @@ fun StatSummaryCard(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .clip(RoundedCornerShape(AppRadius.button))
-            .background(MaterialTheme.colorScheme.surfaceContainerLow)
-            .padding(AppSpacing.md),
+        modifier =
+            modifier
+                .clip(RoundedCornerShape(AppRadius.button))
+                .background(MaterialTheme.colorScheme.surfaceContainerLow)
+                .padding(AppSpacing.md),
         verticalArrangement = Arrangement.spacedBy(AppSpacing.xxs),
     ) {
         Text(

@@ -49,22 +49,24 @@ fun ApplicationScreen(
         },
     ) { innerPadding ->
         BoxWithConstraints(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .consumeWindowInsets(innerPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding),
             contentAlignment = Alignment.TopCenter,
         ) {
             Column(
-                modifier = Modifier
-                    .widthIn(max = AppComponentSize.contentMaxWidth)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .heightIn(min = maxHeight)
-                    .padding(
-                        horizontal = AppSpacing.screenHorizontal,
-                        vertical = AppSpacing.xl,
-                    ),
+                modifier =
+                    Modifier
+                        .widthIn(max = AppComponentSize.contentMaxWidth)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                        .heightIn(min = maxHeight)
+                        .padding(
+                            horizontal = AppSpacing.screenHorizontal,
+                            vertical = AppSpacing.xl,
+                        ),
                 verticalArrangement = Arrangement.Center,
             ) {
                 Column(verticalArrangement = Arrangement.spacedBy(applicationTitleSpacing)) {

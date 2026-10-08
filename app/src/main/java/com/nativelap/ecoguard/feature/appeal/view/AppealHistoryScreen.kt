@@ -47,37 +47,41 @@ fun AppealHistoryScreen(
         },
     ) { innerPadding ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .consumeWindowInsets(innerPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding),
             contentAlignment = Alignment.TopCenter,
         ) {
             LazyColumn(
-                modifier = Modifier
-                    .widthIn(max = AppComponentSize.contentMaxWidth)
-                    .fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .widthIn(max = AppComponentSize.contentMaxWidth)
+                        .fillMaxWidth(),
             ) {
                 item {
                     PageTitle(
                         title = stringResource(R.string.profile_appeal_history),
-                        modifier = Modifier.padding(
-                            start = AppSpacing.screenHorizontal,
-                            end = AppSpacing.screenHorizontal,
-                            top = AppSpacing.xs,
-                            bottom = AppSpacing.lg,
-                        ),
+                        modifier =
+                            Modifier.padding(
+                                start = AppSpacing.screenHorizontal,
+                                end = AppSpacing.screenHorizontal,
+                                top = AppSpacing.xs,
+                                bottom = AppSpacing.lg,
+                            ),
                     )
                 }
 
                 item {
                     Text(
                         text = stringResource(R.string.format_total_count, appealHistoryItems.size),
-                        modifier = Modifier.padding(
-                            start = AppSpacing.screenHorizontal,
-                            end = AppSpacing.screenHorizontal,
-                            top = AppSpacing.md,
-                        ),
+                        modifier =
+                            Modifier.padding(
+                                start = AppSpacing.screenHorizontal,
+                                end = AppSpacing.screenHorizontal,
+                                top = AppSpacing.md,
+                            ),
                         style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
                         color = MaterialTheme.extraColors.captionTextColor,
                     )
@@ -103,24 +107,27 @@ private fun AppealHistoryRow(
     onClick: () -> Unit,
 ) {
     val separator = stringResource(R.string.format_list_separator)
-    val subtitleParts = buildList {
-        add(stringResource(R.string.appeal_attempt, appealHistoryItem.attemptNumber))
-        add(stringResource(R.string.appeal_sent_suffix, appealHistoryItem.sentDateTime))
+    val subtitleParts =
+        buildList {
+            add(stringResource(R.string.appeal_attempt, appealHistoryItem.attemptNumber))
+            add(stringResource(R.string.appeal_sent_suffix, appealHistoryItem.sentDateTime))
 
-        if (appealHistoryItem.earnedMinutes != null) {
-            add(stringResource(R.string.format_bonus_minutes, appealHistoryItem.earnedMinutes))
+            if (appealHistoryItem.earnedMinutes != null) {
+                add(stringResource(R.string.format_bonus_minutes, appealHistoryItem.earnedMinutes))
+            }
         }
-    }
-    val chipLabel = if (appealHistoryItem.status == StatusChipType.REVIEWING) {
-        stringResource(R.string.appeal_review_pending)
-    } else {
-        stringResource(appealHistoryItem.status.labelRes)
-    }
+    val chipLabel =
+        if (appealHistoryItem.status == StatusChipType.REVIEWING) {
+            stringResource(R.string.appeal_review_pending)
+        } else {
+            stringResource(appealHistoryItem.status.labelRes)
+        }
 
     TwoLineTextRow(
         title = stringResource(R.string.verification_detail_title, appealHistoryItem.verificationDate),
         subtitle = subtitleParts.joinToString(separator = separator),
-        modifier = Modifier.clickable(
+        modifier =
+            Modifier.clickable(
                 role = Role.Button,
                 onClick = onClick,
             ),

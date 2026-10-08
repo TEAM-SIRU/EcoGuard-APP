@@ -28,13 +28,14 @@ fun EcoTag(
 ) {
     Text(
         text = text,
-        modifier = modifier
-            .clip(RoundedCornerShape(AppRadius.tag))
-            .background(containerColor)
-            .padding(
-                horizontal = tagHorizontalPadding,
-                vertical = tagVerticalPadding,
-            ),
+        modifier =
+            modifier
+                .clip(RoundedCornerShape(AppRadius.tag))
+                .background(containerColor)
+                .padding(
+                    horizontal = tagHorizontalPadding,
+                    vertical = tagVerticalPadding,
+                ),
         style = MaterialTheme.typography.labelSmall,
         color = contentColor,
     )

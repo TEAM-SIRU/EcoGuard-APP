@@ -25,11 +25,12 @@ fun HomeActivityRemovedScreen(
     onEvent: (HomeScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val removalDescription = listOf(
-        stringResource(R.string.home_removed_from_activity),
-        stringResource(R.string.home_removal_reason) + "\n" + removalReason,
-        stringResource(R.string.home_contact_teacher_about_reason),
-    ).joinToString(separator = PARAGRAPH_SEPARATOR)
+    val removalDescription =
+        listOf(
+            stringResource(R.string.home_removed_from_activity),
+            stringResource(R.string.home_removal_reason) + "\n" + removalReason,
+            stringResource(R.string.home_contact_teacher_about_reason),
+        ).joinToString(separator = PARAGRAPH_SEPARATOR)
 
     Scaffold(
         modifier = modifier.fillMaxSize(),

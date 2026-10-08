@@ -47,30 +47,34 @@ fun RecruitmentScreen(
         },
     ) { innerPadding ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .consumeWindowInsets(innerPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding),
             contentAlignment = Alignment.TopCenter,
         ) {
             Column(
-                modifier = Modifier
-                    .widthIn(max = AppComponentSize.contentMaxWidth)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState()),
+                modifier =
+                    Modifier
+                        .widthIn(max = AppComponentSize.contentMaxWidth)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState()),
             ) {
                 PageTitle(
                     title = stringResource(R.string.recruitment_title, uiState.semesterName),
-                    subtitle = stringResource(
-                        R.string.recruitment_first_come_policy,
-                        uiState.maxApplicantsPerClass,
-                    ),
-                    modifier = Modifier.padding(
-                        start = AppSpacing.screenHorizontal,
-                        end = AppSpacing.screenHorizontal,
-                        top = AppSpacing.md,
-                        bottom = AppSpacing.lg,
-                    ),
+                    subtitle =
+                        stringResource(
+                            R.string.recruitment_first_come_policy,
+                            uiState.maxApplicantsPerClass,
+                        ),
+                    modifier =
+                        Modifier.padding(
+                            start = AppSpacing.screenHorizontal,
+                            end = AppSpacing.screenHorizontal,
+                            top = AppSpacing.md,
+                            bottom = AppSpacing.lg,
+                        ),
                 )
 
                 RecruitmentInfoTable(
@@ -86,10 +90,11 @@ fun RecruitmentScreen(
                 SectionDivider()
 
                 TwoLineTextRow(
-                    title = stringResource(
-                        R.string.recruitment_volunteer_time_per_verification,
-                        uiState.volunteerMinutesPerVerification,
-                    ),
+                    title =
+                        stringResource(
+                            R.string.recruitment_volunteer_time_per_verification,
+                            uiState.volunteerMinutesPerVerification,
+                        ),
                     subtitle = stringResource(R.string.recruitment_approved_activity_record),
                 )
 
@@ -108,25 +113,39 @@ private fun RecruitmentBottomAction(
     onApplyClick: () -> Unit,
 ) {
     when (applicationStatus) {
-        is RecruitmentApplicationStatus.Open -> BottomCtaBar {
-            EcoPrimaryButton(
-                text = stringResource(R.string.recruitment_apply),
-                onClick = onApplyClick,
-            )
+        is RecruitmentApplicationStatus.Open -> {
+            BottomCtaBar {
+                EcoPrimaryButton(
+                    text = stringResource(R.string.recruitment_apply),
+                    onClick = onApplyClick,
+                )
+            }
         }
-        RecruitmentApplicationStatus.Closed -> BottomCtaBar {
-            EcoSecondaryButton(
-                text = stringResource(R.string.recruitment_closed),
-                onClick = {},
-                enabled = false,
-            )
+
+        RecruitmentApplicationStatus.Closed -> {
+            BottomCtaBar {
+                EcoSecondaryButton(
+                    text = stringResource(R.string.recruitment_closed),
+                    onClick = {},
+                    enabled = false,
+                )
+            }
         }
-        is RecruitmentApplicationStatus.AlreadyApplied -> Unit
+
+        is RecruitmentApplicationStatus.AlreadyApplied -> {
+            Unit
+        }
     }
 }
 
 @Preview(name = "Recruitment · open", showBackground = true, widthDp = 390, heightDp = 844)
-@Preview(name = "Recruitment · compact larger text", showBackground = true, widthDp = 320, heightDp = 596, fontScale = 1.5f)
+@Preview(
+    name = "Recruitment · compact larger text",
+    showBackground = true,
+    widthDp = 320,
+    heightDp = 596,
+    fontScale = 1.5f,
+)
 @Composable
 private fun RecruitmentScreenOpenPreview() {
     EcoGuardTheme {

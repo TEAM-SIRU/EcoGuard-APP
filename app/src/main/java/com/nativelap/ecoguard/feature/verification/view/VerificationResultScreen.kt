@@ -28,124 +28,144 @@ fun VerificationResultScreen(
     onEvent: (VerificationResultScreenEvent) -> Unit,
 ) {
     when (uiState) {
-        VerificationResultUiState.LoadFailed -> Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            containerColor = MaterialTheme.colorScheme.surface,
-            topBar = {
-                EcoBackTopBar(onBackClick = { onEvent(VerificationResultScreenEvent.BackClick) })
-            },
-            bottomBar = {
-                BottomCtaBar {
-                    EcoPrimaryButton(
-                        text = stringResource(R.string.result_check_again),
-                        onClick = { onEvent(VerificationResultScreenEvent.RetryClick) },
-                    )
+        VerificationResultUiState.LoadFailed -> {
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                containerColor = MaterialTheme.colorScheme.surface,
+                topBar = {
+                    EcoBackTopBar(onBackClick = { onEvent(VerificationResultScreenEvent.BackClick) })
+                },
+                bottomBar = {
+                    BottomCtaBar {
+                        EcoPrimaryButton(
+                            text = stringResource(R.string.result_check_again),
+                            onClick = { onEvent(VerificationResultScreenEvent.RetryClick) },
+                        )
 
-                    EcoSecondaryButton(
-                        text = stringResource(R.string.action_home),
-                        onClick = { onEvent(VerificationResultScreenEvent.HomeClick) },
+                        EcoSecondaryButton(
+                            text = stringResource(R.string.action_home),
+                            onClick = { onEvent(VerificationResultScreenEvent.HomeClick) },
+                        )
+                    }
+                },
+            ) { innerPadding ->
+                CenteredScrollContent(innerPadding = innerPadding) {
+                    StatusMessage(
+                        title = stringResource(R.string.result_load_failed),
+                        description = stringResource(R.string.result_load_failed_description),
                     )
                 }
-            },
-        ) { innerPadding ->
-            CenteredScrollContent(innerPadding = innerPadding) {
-                StatusMessage(
-                    title = stringResource(R.string.result_load_failed),
-                    description = stringResource(R.string.result_load_failed_description),
+            }
+        }
+
+        is VerificationResultUiState.Approved -> {
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                containerColor = MaterialTheme.colorScheme.surface,
+                bottomBar = {
+                    BottomCtaBar {
+                        EcoPrimaryButton(
+                            text = stringResource(R.string.action_confirm),
+                            onClick = { onEvent(VerificationResultScreenEvent.ConfirmClick) },
+                        )
+                    }
+                },
+            ) { innerPadding ->
+                CenteredScrollContent(innerPadding = innerPadding) {
+                    VerificationSummaryContent(
+                        resultIconRes = R.drawable.ic_check_64,
+                        title = stringResource(R.string.verification_completed),
+                        description =
+                            stringResource(
+                                R.string.verification_completed_description,
+                                uiState.earnedMinutes,
+                            ),
+                    ) {
+                        InfoRow(
+                            label = stringResource(R.string.common_assigned_area),
+                            value = uiState.areaName,
+                        )
+
+                        InfoRow(
+                            label = stringResource(R.string.verification_submitted_at),
+                            value = stringResource(R.string.format_today, uiState.submittedTime),
+                        )
+
+                        InfoRow(
+                            label = stringResource(R.string.verification_earned_time),
+                            value = stringResource(R.string.format_bonus_minutes, uiState.earnedMinutes),
+                            valueColor = MaterialTheme.colorScheme.primary,
+                        )
+                    }
+                }
+            }
+        }
+
+        is VerificationResultUiState.TeacherReviewing -> {
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                containerColor = MaterialTheme.colorScheme.surface,
+                bottomBar = {
+                    BottomCtaBar {
+                        EcoPrimaryButton(
+                            text = stringResource(R.string.action_confirm),
+                            onClick = { onEvent(VerificationResultScreenEvent.ConfirmClick) },
+                        )
+                    }
+                },
+            ) { innerPadding ->
+                CenteredScrollContent(innerPadding = innerPadding) {
+                    VerificationSummaryContent(
+                        resultIconRes = R.drawable.ic_clock_64,
+                        title = stringResource(R.string.verification_teacher_review_title),
+                        description = stringResource(R.string.verification_teacher_review_description),
+                    ) {
+                        InfoRow(
+                            label = stringResource(R.string.common_assigned_area),
+                            value = uiState.areaName,
+                        )
+
+                        InfoRow(
+                            label = stringResource(R.string.verification_submitted_at),
+                            value = stringResource(R.string.format_today, uiState.submittedTime),
+                        )
+
+                        InfoRow(
+                            label = stringResource(R.string.photo_status),
+                            value = stringResource(R.string.verification_teacher_review_pending),
+                            valueColor = MaterialTheme.extraColors.warningTextColor,
+                        )
+                    }
+                }
+            }
+        }
+
+        is VerificationResultUiState.Rejected -> {
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                containerColor = MaterialTheme.colorScheme.surface,
+                topBar = {
+                    EcoBackTopBar(onBackClick = { onEvent(VerificationResultScreenEvent.BackClick) })
+                },
+            ) { innerPadding ->
+                RejectionResultContent(
+                    innerPadding = innerPadding,
+                    title = stringResource(R.string.common_verification_rejected),
+                    summary =
+                        stringResource(
+                            R.string.result_submitted_summary,
+                            uiState.areaName,
+                            uiState.submittedTime,
+                        ),
+                    feedbackLabel = stringResource(R.string.verification_ai_review_result),
+                    feedbackHeadline = uiState.rejectionReason,
+                    feedbackBody = uiState.retakeGuide,
+                    primaryActionText = stringResource(R.string.home_appeal),
+                    actionCaption = stringResource(R.string.verification_request_teacher_review),
+                    onPrimaryActionClick = { onEvent(VerificationResultScreenEvent.AppealClick) },
+                    onHomeClick = { onEvent(VerificationResultScreenEvent.HomeClick) },
                 )
             }
-        }
-        is VerificationResultUiState.Approved -> Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            containerColor = MaterialTheme.colorScheme.surface,
-            bottomBar = {
-                BottomCtaBar {
-                    EcoPrimaryButton(
-                        text = stringResource(R.string.action_confirm),
-                        onClick = { onEvent(VerificationResultScreenEvent.ConfirmClick) },
-                    )
-                }
-            },
-        ) { innerPadding ->
-            CenteredScrollContent(innerPadding = innerPadding) {
-                VerificationSummaryContent(
-                    resultIconRes = R.drawable.ic_check_64,
-                    title = stringResource(R.string.verification_completed),
-                    description = stringResource(R.string.verification_completed_description, uiState.earnedMinutes),
-                ) {
-                    InfoRow(
-                        label = stringResource(R.string.common_assigned_area),
-                        value = uiState.areaName,
-                    )
-
-                    InfoRow(
-                        label = stringResource(R.string.verification_submitted_at),
-                        value = stringResource(R.string.format_today, uiState.submittedTime),
-                    )
-
-                    InfoRow(
-                        label = stringResource(R.string.verification_earned_time),
-                        value = stringResource(R.string.format_bonus_minutes, uiState.earnedMinutes),
-                        valueColor = MaterialTheme.colorScheme.primary,
-                    )
-                }
-            }
-        }
-        is VerificationResultUiState.TeacherReviewing -> Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            containerColor = MaterialTheme.colorScheme.surface,
-            bottomBar = {
-                BottomCtaBar {
-                    EcoPrimaryButton(
-                        text = stringResource(R.string.action_confirm),
-                        onClick = { onEvent(VerificationResultScreenEvent.ConfirmClick) },
-                    )
-                }
-            },
-        ) { innerPadding ->
-            CenteredScrollContent(innerPadding = innerPadding) {
-                VerificationSummaryContent(
-                    resultIconRes = R.drawable.ic_clock_64,
-                    title = stringResource(R.string.verification_teacher_review_title),
-                    description = stringResource(R.string.verification_teacher_review_description),
-                ) {
-                    InfoRow(
-                        label = stringResource(R.string.common_assigned_area),
-                        value = uiState.areaName,
-                    )
-
-                    InfoRow(
-                        label = stringResource(R.string.verification_submitted_at),
-                        value = stringResource(R.string.format_today, uiState.submittedTime),
-                    )
-
-                    InfoRow(
-                        label = stringResource(R.string.photo_status),
-                        value = stringResource(R.string.verification_teacher_review_pending),
-                        valueColor = MaterialTheme.extraColors.warningTextColor,
-                    )
-                }
-            }
-        }
-        is VerificationResultUiState.Rejected -> Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            containerColor = MaterialTheme.colorScheme.surface,
-            topBar = {
-                EcoBackTopBar(onBackClick = { onEvent(VerificationResultScreenEvent.BackClick) })
-            },
-        ) { innerPadding ->
-            RejectionResultContent(
-                innerPadding = innerPadding,
-                title = stringResource(R.string.common_verification_rejected),
-                summary = stringResource(R.string.result_submitted_summary, uiState.areaName, uiState.submittedTime),
-                feedbackLabel = stringResource(R.string.verification_ai_review_result),
-                feedbackHeadline = uiState.rejectionReason,
-                feedbackBody = uiState.retakeGuide,
-                primaryActionText = stringResource(R.string.home_appeal),
-                actionCaption = stringResource(R.string.verification_request_teacher_review),
-                onPrimaryActionClick = { onEvent(VerificationResultScreenEvent.AppealClick) },
-                onHomeClick = { onEvent(VerificationResultScreenEvent.HomeClick) },
-            )
         }
     }
 }
@@ -155,11 +175,12 @@ fun VerificationResultScreen(
 private fun VerificationResultApprovedPreview() {
     EcoGuardTheme {
         VerificationResultScreen(
-            uiState = VerificationResultUiState.Approved(
-                areaName = "본관 2층 복도 A",
-                submittedTime = "08:04",
-                earnedMinutes = 10,
-            ),
+            uiState =
+                VerificationResultUiState.Approved(
+                    areaName = "본관 2층 복도 A",
+                    submittedTime = "08:04",
+                    earnedMinutes = 10,
+                ),
             onEvent = {},
         )
     }
@@ -170,12 +191,13 @@ private fun VerificationResultApprovedPreview() {
 private fun VerificationResultRejectedPreview() {
     EcoGuardTheme {
         VerificationResultScreen(
-            uiState = VerificationResultUiState.Rejected(
-                areaName = "본관 2층 복도 A",
-                submittedTime = "08:04",
-                rejectionReason = "사진에 청소 구역이 잘 보이지 않아요",
-                retakeGuide = "복도 끝까지 보이도록 조금 뒤에서 찍으면 돼요",
-            ),
+            uiState =
+                VerificationResultUiState.Rejected(
+                    areaName = "본관 2층 복도 A",
+                    submittedTime = "08:04",
+                    rejectionReason = "사진에 청소 구역이 잘 보이지 않아요",
+                    retakeGuide = "복도 끝까지 보이도록 조금 뒤에서 찍으면 돼요",
+                ),
             onEvent = {},
         )
     }
@@ -186,10 +208,11 @@ private fun VerificationResultRejectedPreview() {
 private fun VerificationResultTeacherReviewingPreview() {
     EcoGuardTheme {
         VerificationResultScreen(
-            uiState = VerificationResultUiState.TeacherReviewing(
-                areaName = "본관 2층 복도 A",
-                submittedTime = "08:04",
-            ),
+            uiState =
+                VerificationResultUiState.TeacherReviewing(
+                    areaName = "본관 2층 복도 A",
+                    submittedTime = "08:04",
+                ),
             onEvent = {},
         )
     }
