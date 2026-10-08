@@ -20,9 +20,10 @@ data class AppExtraColors(
     val cameraOverlayColor: Color,
 )
 
-val LocalAppExtraColors = staticCompositionLocalOf<AppExtraColors> {
-    error("AppExtraColors was not provided.")
-}
+val LocalAppExtraColors =
+    staticCompositionLocalOf<AppExtraColors> {
+        error("AppExtraColors was not provided.")
+    }
 
 val MaterialTheme.extraColors: AppExtraColors
     @Composable

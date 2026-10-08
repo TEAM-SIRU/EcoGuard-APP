@@ -42,39 +42,39 @@ fun EcoCard(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val cardShape = RoundedCornerShape(cornerRadius)
-    val cardShadow = if (emphasized) {
-        Shadow(
-            radius = emphasizedCardShadowRadius,
-            color = MaterialTheme.extraColors.cardShadowColor,
-            offset = DpOffset(x = 0.dp, y = emphasizedCardShadowOffsetY),
-            alpha = EMPHASIZED_CARD_SHADOW_ALPHA,
-        )
-    } else {
-        Shadow(
-            radius = defaultCardShadowRadius,
-            color = MaterialTheme.extraColors.cardShadowColor,
-            offset = DpOffset(x = 0.dp, y = defaultCardShadowOffsetY),
-            alpha = DEFAULT_CARD_SHADOW_ALPHA,
-        )
-    }
+    val cardShadow =
+        if (emphasized) {
+            Shadow(
+                radius = emphasizedCardShadowRadius,
+                color = MaterialTheme.extraColors.cardShadowColor,
+                offset = DpOffset(x = 0.dp, y = emphasizedCardShadowOffsetY),
+                alpha = EMPHASIZED_CARD_SHADOW_ALPHA,
+            )
+        } else {
+            Shadow(
+                radius = defaultCardShadowRadius,
+                color = MaterialTheme.extraColors.cardShadowColor,
+                offset = DpOffset(x = 0.dp, y = defaultCardShadowOffsetY),
+                alpha = DEFAULT_CARD_SHADOW_ALPHA,
+            )
+        }
 
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .dropShadow(
-                shape = cardShape,
-                shadow = cardShadow,
-            )
-            .clip(cardShape)
-            .background(MaterialTheme.colorScheme.surface)
-            .then(
-                if (onClick != null) {
-                    Modifier.clickable(onClick = onClick)
-                } else {
-                    Modifier
-                },
-            )
-            .padding(contentPadding),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .dropShadow(
+                    shape = cardShape,
+                    shadow = cardShadow,
+                ).clip(cardShape)
+                .background(MaterialTheme.colorScheme.surface)
+                .then(
+                    if (onClick != null) {
+                        Modifier.clickable(onClick = onClick)
+                    } else {
+                        Modifier
+                    },
+                ).padding(contentPadding),
         content = content,
     )
 }

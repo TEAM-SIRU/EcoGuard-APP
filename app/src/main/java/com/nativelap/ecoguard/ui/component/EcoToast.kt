@@ -40,16 +40,16 @@ fun EcoToast(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = AppComponentSize.toastMinHeight)
-            .clip(RoundedCornerShape(AppRadius.toast))
-            .background(MaterialTheme.colorScheme.inverseSurface)
-            .padding(
-                horizontal = AppSpacing.md,
-                vertical = toastVerticalPadding,
-            )
-            .semantics { liveRegion = LiveRegionMode.Polite },
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .heightIn(min = AppComponentSize.toastMinHeight)
+                .clip(RoundedCornerShape(AppRadius.toast))
+                .background(MaterialTheme.colorScheme.inverseSurface)
+                .padding(
+                    horizontal = AppSpacing.md,
+                    vertical = toastVerticalPadding,
+                ).semantics { liveRegion = LiveRegionMode.Polite },
         horizontalArrangement = Arrangement.spacedBy(toastIconSpacing),
         verticalAlignment = Alignment.CenterVertically,
     ) {

@@ -39,23 +39,23 @@ fun AppealPhotoAddTile(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .defaultMinSize(
-                minWidth = photoAddTileSize,
-                minHeight = photoAddTileSize,
-            )
-            .clip(RoundedCornerShape(AppRadius.tile))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .clickable(
-                role = Role.Button,
-                onClick = onClick,
-            )
-            .padding(AppSpacing.xs),
+        modifier =
+            modifier
+                .defaultMinSize(
+                    minWidth = photoAddTileSize,
+                    minHeight = photoAddTileSize,
+                ).clip(RoundedCornerShape(AppRadius.tile))
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .clickable(
+                    role = Role.Button,
+                    onClick = onClick,
+                ).padding(AppSpacing.xs),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(
-            space = AppSpacing.xxs,
-            alignment = Alignment.CenterVertically,
-        ),
+        verticalArrangement =
+            Arrangement.spacedBy(
+                space = AppSpacing.xxs,
+                alignment = Alignment.CenterVertically,
+            ),
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_cam_24),

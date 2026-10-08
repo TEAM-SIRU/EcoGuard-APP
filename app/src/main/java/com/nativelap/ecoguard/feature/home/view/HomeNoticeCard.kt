@@ -55,12 +55,13 @@ fun HomeNoticeCard(
     EcoCard(
         modifier = modifier,
         emphasized = true,
-        contentPadding = PaddingValues(
-            start = AppSpacing.lg,
-            end = AppSpacing.lg,
-            top = AppSpacing.lg,
-            bottom = noticeCardBottomPadding,
-        ),
+        contentPadding =
+            PaddingValues(
+                start = AppSpacing.lg,
+                end = AppSpacing.lg,
+                top = AppSpacing.lg,
+                bottom = noticeCardBottomPadding,
+            ),
     ) {
         BoxWithConstraints {
             // 좁은 폭·큰 글자에서는 제목이 세로로 꺾이지 않도록 NEW 배지를 날짜 아래로 내린다.
@@ -71,9 +72,10 @@ fun HomeNoticeCard(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Box(
-                    modifier = Modifier
-                        .size(AppComponentSize.noticeIconFrame)
-                        .clip(RoundedCornerShape(AppRadius.iconFrame)),
+                    modifier =
+                        Modifier
+                            .size(AppComponentSize.noticeIconFrame)
+                            .clip(RoundedCornerShape(AppRadius.iconFrame)),
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(
@@ -125,10 +127,11 @@ fun HomeNoticeCard(
 
         Text(
             text = notice.headline,
-            modifier = Modifier.padding(
-                top = AppSpacing.md,
-                bottom = AppSpacing.xs,
-            ),
+            modifier =
+                Modifier.padding(
+                    top = AppSpacing.md,
+                    bottom = AppSpacing.xs,
+                ),
             style = MaterialTheme.typography.headlineSmall,
             color = MaterialTheme.colorScheme.onSurface,
         )
@@ -140,13 +143,14 @@ fun HomeNoticeCard(
         )
 
         Row(
-            modifier = Modifier
-                .padding(top = AppSpacing.xs)
-                .heightIn(min = AppComponentSize.minTouchTarget)
-                .clickable(
-                    role = Role.Button,
-                    onClick = onDetailClick,
-                ),
+            modifier =
+                Modifier
+                    .padding(top = AppSpacing.xs)
+                    .heightIn(min = AppComponentSize.minTouchTarget)
+                    .clickable(
+                        role = Role.Button,
+                        onClick = onDetailClick,
+                    ),
             horizontalArrangement = Arrangement.spacedBy(noticeLinkSpacing),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -170,20 +174,27 @@ fun HomeNoticeCard(
 private fun NoticeNewBadge() {
     Text(
         text = stringResource(R.string.badge_new),
-        modifier = Modifier
-            .clip(RoundedCornerShape(AppRadius.badge))
-            .background(MaterialTheme.colorScheme.primary)
-            .padding(
-                horizontal = noticeBadgeHorizontalPadding,
-                vertical = noticeBadgeVerticalPadding,
-            ),
+        modifier =
+            Modifier
+                .clip(RoundedCornerShape(AppRadius.badge))
+                .background(MaterialTheme.colorScheme.primary)
+                .padding(
+                    horizontal = noticeBadgeHorizontalPadding,
+                    vertical = noticeBadgeVerticalPadding,
+                ),
         style = MaterialTheme.typography.labelSmall,
         color = MaterialTheme.colorScheme.onPrimary,
     )
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFF8FAF9, widthDp = 390)
-@Preview(name = "Compact larger text", showBackground = true, backgroundColor = 0xFFF8FAF9, widthDp = 320, fontScale = 1.5f)
+@Preview(
+    name = "Compact larger text",
+    showBackground = true,
+    backgroundColor = 0xFFF8FAF9,
+    widthDp = 320,
+    fontScale = 1.5f,
+)
 @Composable
 private fun HomeNoticeCardPreview() {
     EcoGuardTheme {

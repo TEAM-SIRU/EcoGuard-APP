@@ -27,17 +27,17 @@ fun MenuTextAction(
 ) {
     Text(
         text = text,
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = AppComponentSize.minTouchTarget)
-            .clickable(
-                role = Role.Button,
-                onClick = onClick,
-            )
-            .padding(
-                horizontal = AppSpacing.screenHorizontal,
-                vertical = AppSpacing.md,
-            ),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .heightIn(min = AppComponentSize.minTouchTarget)
+                .clickable(
+                    role = Role.Button,
+                    onClick = onClick,
+                ).padding(
+                    horizontal = AppSpacing.screenHorizontal,
+                    vertical = AppSpacing.md,
+                ),
         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
         color = MaterialTheme.extraColors.captionTextColor,
     )

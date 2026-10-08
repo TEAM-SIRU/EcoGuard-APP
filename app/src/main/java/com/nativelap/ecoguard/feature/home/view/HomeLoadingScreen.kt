@@ -13,9 +13,7 @@ import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 /** 02 홈 로딩. 회색 제목과 스켈레톤을 표시한다. */
 @Composable
-fun HomeLoadingScreen(
-    modifier: Modifier = Modifier,
-) {
+fun HomeLoadingScreen(modifier: Modifier = Modifier) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surface,

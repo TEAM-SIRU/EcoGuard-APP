@@ -71,27 +71,29 @@ fun EcoBottomTabBar(
         contentAlignment = Alignment.TopCenter,
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .dropShadow(
-                    shape = RectangleShape,
-                    shadow = Shadow(
-                        radius = tabBarShadowRadius,
-                        color = MaterialTheme.extraColors.cardShadowColor,
-                        offset = DpOffset(x = 0.dp, y = tabBarShadowOffsetY),
-                        alpha = TAB_BAR_SHADOW_ALPHA,
-                    ),
-                )
-                .background(MaterialTheme.colorScheme.surface)
-                .windowInsetsPadding(WindowInsets.navigationBars),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .dropShadow(
+                        shape = RectangleShape,
+                        shadow =
+                            Shadow(
+                                radius = tabBarShadowRadius,
+                                color = MaterialTheme.extraColors.cardShadowColor,
+                                offset = DpOffset(x = 0.dp, y = tabBarShadowOffsetY),
+                                alpha = TAB_BAR_SHADOW_ALPHA,
+                            ),
+                    ).background(MaterialTheme.colorScheme.surface)
+                    .windowInsetsPadding(WindowInsets.navigationBars),
             contentAlignment = Alignment.TopCenter,
         ) {
             Row(
-                modifier = Modifier
-                    .contentColumnWidth()
-                    .heightIn(min = AppComponentSize.tabBarHeight)
-                    .padding(horizontal = AppSpacing.xs)
-                    .selectableGroup(),
+                modifier =
+                    Modifier
+                        .contentColumnWidth()
+                        .heightIn(min = AppComponentSize.tabBarHeight)
+                        .padding(horizontal = AppSpacing.xs)
+                        .selectableGroup(),
             ) {
                 EcoBottomTabItem(
                     tab = EcoBottomTab.HOME,
@@ -140,31 +142,34 @@ private fun EcoBottomTabItem(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val contentColor = if (isSelected) {
-        MaterialTheme.colorScheme.primary
-    } else {
-        MaterialTheme.extraColors.captionTextColor
-    }
-    val iconRes = if (isSelected) {
-        tab.selectedIconRes
-    } else {
-        tab.unselectedIconRes
-    }
-    val labelWeight = if (isSelected) {
-        FontWeight.Bold
-    } else {
-        FontWeight.Medium
-    }
+    val contentColor =
+        if (isSelected) {
+            MaterialTheme.colorScheme.primary
+        } else {
+            MaterialTheme.extraColors.captionTextColor
+        }
+    val iconRes =
+        if (isSelected) {
+            tab.selectedIconRes
+        } else {
+            tab.unselectedIconRes
+        }
+    val labelWeight =
+        if (isSelected) {
+            FontWeight.Bold
+        } else {
+            FontWeight.Medium
+        }
 
     Column(
-        modifier = modifier
-            .heightIn(min = AppComponentSize.tabBarHeight)
-            .selectable(
-                selected = isSelected,
-                onClick = onClick,
-                role = Role.Tab,
-            )
-            .padding(top = tabItemTopPadding),
+        modifier =
+            modifier
+                .heightIn(min = AppComponentSize.tabBarHeight)
+                .selectable(
+                    selected = isSelected,
+                    onClick = onClick,
+                    role = Role.Tab,
+                ).padding(top = tabItemTopPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(AppSpacing.xxs),
     ) {
@@ -178,16 +183,18 @@ private fun EcoBottomTabItem(
         // 큰 글자에서도 라벨을 한 줄로 유지하도록 탭 폭에 맞춰 글자 크기를 줄인다.
         BasicText(
             text = stringResource(tab.labelRes),
-            style = MaterialTheme.extraTypography.tabLabel.copy(
-                fontWeight = labelWeight,
-                color = contentColor,
-            ),
+            style =
+                MaterialTheme.extraTypography.tabLabel.copy(
+                    fontWeight = labelWeight,
+                    color = contentColor,
+                ),
             maxLines = 1,
-            autoSize = TextAutoSize.StepBased(
-                // sp에는 글자 배율이 곱해지므로 최소 크기는 배율로 나눠 실제 화면 크기 기준으로 맞춘다.
-                minFontSize = tabLabelMinFontSize / LocalDensity.current.fontScale,
-                maxFontSize = MaterialTheme.extraTypography.tabLabel.fontSize,
-            ),
+            autoSize =
+                TextAutoSize.StepBased(
+                    // sp에는 글자 배율이 곱해지므로 최소 크기는 배율로 나눠 실제 화면 크기 기준으로 맞춘다.
+                    minFontSize = tabLabelMinFontSize / LocalDensity.current.fontScale,
+                    maxFontSize = MaterialTheme.extraTypography.tabLabel.fontSize,
+                ),
         )
     }
 }
@@ -199,38 +206,43 @@ private fun CameraFab(
     modifier: Modifier = Modifier,
 ) {
     // 인증할 수 없는 상태(미가입·구역 배정 대기)에서는 회색으로 표시하고 그림자를 없앤다.
-    val fabContainerColor = if (isEnabled) {
-        MaterialTheme.colorScheme.primary
-    } else {
-        MaterialTheme.extraColors.disabledContentColor
-    }
-    val fabShadowAlpha = if (isEnabled) {
-        CAMERA_FAB_SHADOW_ALPHA
-    } else {
-        0f
-    }
+    val fabContainerColor =
+        if (isEnabled) {
+            MaterialTheme.colorScheme.primary
+        } else {
+            MaterialTheme.extraColors.disabledContentColor
+        }
+    val fabShadowAlpha =
+        if (isEnabled) {
+            CAMERA_FAB_SHADOW_ALPHA
+        } else {
+            0f
+        }
 
     Surface(
         onClick = onClick,
-        modifier = modifier
-            .size(AppComponentSize.cameraFab)
-            .dropShadow(
-                shape = CircleShape,
-                shadow = Shadow(
-                    radius = cameraFabShadowRadius,
-                    color = MaterialTheme.colorScheme.primary,
-                    offset = DpOffset(x = 0.dp, y = cameraFabShadowOffsetY),
-                    alpha = fabShadowAlpha,
+        modifier =
+            modifier
+                .size(AppComponentSize.cameraFab)
+                .dropShadow(
+                    shape = CircleShape,
+                    shadow =
+                        Shadow(
+                            radius = cameraFabShadowRadius,
+                            color = MaterialTheme.colorScheme.primary,
+                            offset = DpOffset(x = 0.dp, y = cameraFabShadowOffsetY),
+                            alpha = fabShadowAlpha,
+                        ),
                 ),
-            ),
         enabled = isEnabled,
         shape = CircleShape,
         color = fabContainerColor,
         contentColor = MaterialTheme.colorScheme.onPrimary,
-        border = BorderStroke(
-            width = AppComponentSize.cameraFabBorder,
-            color = MaterialTheme.colorScheme.surface,
-        ),
+        border =
+            BorderStroke(
+                width = AppComponentSize.cameraFabBorder,
+                color = MaterialTheme.colorScheme.surface,
+            ),
     ) {
         Box(contentAlignment = Alignment.Center) {
             Icon(

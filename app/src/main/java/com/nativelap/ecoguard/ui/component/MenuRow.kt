@@ -43,25 +43,26 @@ fun MenuRow(
     trailingContent: (@Composable RowScope.() -> Unit)? = null,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = AppComponentSize.minTouchTarget)
-            .then(
-                if (onClick != null) {
-                    Modifier.clickable(onClick = onClick)
-                } else {
-                    Modifier
-                },
-            )
-            .padding(
-                horizontal = AppSpacing.screenHorizontal,
-                vertical = menuRowVerticalPadding,
-            ),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .heightIn(min = AppComponentSize.minTouchTarget)
+                .then(
+                    if (onClick != null) {
+                        Modifier.clickable(onClick = onClick)
+                    } else {
+                        Modifier
+                    },
+                ).padding(
+                    horizontal = AppSpacing.screenHorizontal,
+                    vertical = menuRowVerticalPadding,
+                ),
         horizontalArrangement = Arrangement.spacedBy(menuRowSpacing),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         BoxWithConstraints(modifier = Modifier.weight(1f)) {
-            val isCompact = valueText != null && isCompactForText(maxWidth, AdaptiveWidth.trailingRow - menuChevronAllowance)
+            val isCompact =
+                valueText != null && isCompactForText(maxWidth, AdaptiveWidth.trailingRow - menuChevronAllowance)
 
             if (isCompact) {
                 Column {

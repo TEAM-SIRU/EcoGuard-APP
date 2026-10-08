@@ -42,54 +42,67 @@ fun ApplicationResultScreen(
         bottomBar = {
             BottomCtaBar {
                 when (uiState) {
-                    is ApplicationResultUiState.Completed -> EcoPrimaryButton(
-                        text = stringResource(R.string.action_home),
-                        onClick = { onEvent(RecruitmentScreenEvent.HomeClick) },
-                    )
-                    ApplicationResultUiState.FilledWhileApplying -> EcoSecondaryButton(
-                        text = stringResource(R.string.action_home),
-                        onClick = { onEvent(RecruitmentScreenEvent.HomeClick) },
-                    )
+                    is ApplicationResultUiState.Completed -> {
+                        EcoPrimaryButton(
+                            text = stringResource(R.string.action_home),
+                            onClick = { onEvent(RecruitmentScreenEvent.HomeClick) },
+                        )
+                    }
+
+                    ApplicationResultUiState.FilledWhileApplying -> {
+                        EcoSecondaryButton(
+                            text = stringResource(R.string.action_home),
+                            onClick = { onEvent(RecruitmentScreenEvent.HomeClick) },
+                        )
+                    }
                 }
             }
         },
     ) { innerPadding ->
         BoxWithConstraints(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .consumeWindowInsets(innerPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding),
             contentAlignment = Alignment.TopCenter,
         ) {
             Column(
-                modifier = Modifier
-                    .widthIn(max = AppComponentSize.contentMaxWidth)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .heightIn(min = maxHeight)
-                    .padding(
-                        horizontal = AppSpacing.screenHorizontal,
-                        vertical = AppSpacing.xl,
-                    ),
+                modifier =
+                    Modifier
+                        .widthIn(max = AppComponentSize.contentMaxWidth)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                        .heightIn(min = maxHeight)
+                        .padding(
+                            horizontal = AppSpacing.screenHorizontal,
+                            vertical = AppSpacing.xl,
+                        ),
                 verticalArrangement = Arrangement.Center,
             ) {
                 when (uiState) {
-                    is ApplicationResultUiState.Completed -> CenteredIconMessage(
-                        iconRes = R.drawable.ic_check_64,
-                        title = stringResource(R.string.home_became_guardian),
-                        description = stringResource(
-                            R.string.recruitment_application_position,
-                            uiState.applicationOrder,
-                            uiState.appliedDateTime,
-                        ),
-                        iconStyle = CenteredIconStyle.HERO,
-                    )
-                    ApplicationResultUiState.FilledWhileApplying -> CenteredIconMessage(
-                        iconRes = R.drawable.ic_x_64,
-                        title = stringResource(R.string.recruitment_application_failed),
-                        description = stringResource(R.string.recruitment_filled_while_applying),
-                        iconStyle = CenteredIconStyle.HERO,
-                    )
+                    is ApplicationResultUiState.Completed -> {
+                        CenteredIconMessage(
+                            iconRes = R.drawable.ic_check_64,
+                            title = stringResource(R.string.home_became_guardian),
+                            description =
+                                stringResource(
+                                    R.string.recruitment_application_position,
+                                    uiState.applicationOrder,
+                                    uiState.appliedDateTime,
+                                ),
+                            iconStyle = CenteredIconStyle.HERO,
+                        )
+                    }
+
+                    ApplicationResultUiState.FilledWhileApplying -> {
+                        CenteredIconMessage(
+                            iconRes = R.drawable.ic_x_64,
+                            title = stringResource(R.string.recruitment_application_failed),
+                            description = stringResource(R.string.recruitment_filled_while_applying),
+                            iconStyle = CenteredIconStyle.HERO,
+                        )
+                    }
                 }
             }
         }
@@ -101,10 +114,11 @@ fun ApplicationResultScreen(
 private fun ApplicationResultScreenCompletedPreview() {
     EcoGuardTheme {
         ApplicationResultScreen(
-            uiState = ApplicationResultUiState.Completed(
-                applicationOrder = 4,
-                appliedDateTime = "9월 1일(화) 12:34",
-            ),
+            uiState =
+                ApplicationResultUiState.Completed(
+                    applicationOrder = 4,
+                    appliedDateTime = "9월 1일(화) 12:34",
+                ),
             onEvent = {},
         )
     }

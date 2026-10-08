@@ -61,40 +61,44 @@ fun EcoInfoBottomSheet(
         modifier = modifier,
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         sheetMaxWidth = AppComponentSize.contentMaxWidth,
-        shape = RoundedCornerShape(
-            topStart = AppRadius.logo,
-            topEnd = AppRadius.logo,
-        ),
+        shape =
+            RoundedCornerShape(
+                topStart = AppRadius.logo,
+                topEnd = AppRadius.logo,
+            ),
         containerColor = MaterialTheme.colorScheme.surface,
         scrimColor = MaterialTheme.colorScheme.scrim.copy(alpha = BOTTOM_SHEET_SCRIM_ALPHA),
         dragHandle = {
             Box(
-                modifier = Modifier
-                    .padding(top = bottomSheetHandleTopPadding)
-                    .width(bottomSheetHandleWidth)
-                    .height(bottomSheetHandleHeight)
-                    .clip(RoundedCornerShape(AppRadius.progressBar))
-                    .background(MaterialTheme.colorScheme.outlineVariant),
+                modifier =
+                    Modifier
+                        .padding(top = bottomSheetHandleTopPadding)
+                        .width(bottomSheetHandleWidth)
+                        .height(bottomSheetHandleHeight)
+                        .clip(RoundedCornerShape(AppRadius.progressBar))
+                        .background(MaterialTheme.colorScheme.outlineVariant),
             )
         },
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(
-                    start = AppSpacing.screenHorizontal,
-                    end = AppSpacing.screenHorizontal,
-                    top = AppSpacing.xl,
-                    bottom = AppSpacing.md,
-                ),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .padding(
+                        start = AppSpacing.screenHorizontal,
+                        end = AppSpacing.screenHorizontal,
+                        top = AppSpacing.xl,
+                        bottom = AppSpacing.md,
+                    ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Box(
-                modifier = Modifier
-                    .size(AppComponentSize.emptyIconCircle)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                modifier =
+                    Modifier
+                        .size(AppComponentSize.emptyIconCircle)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.surfaceVariant),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(

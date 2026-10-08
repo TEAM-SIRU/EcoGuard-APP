@@ -29,32 +29,36 @@ fun EcoProgressBar(
     modifier: Modifier = Modifier,
     progressColor: Color = MaterialTheme.colorScheme.primary,
 ) {
-    val progressFraction = if (maxCount > 0) {
-        (currentCount.toFloat() / maxCount).coerceIn(0f, 1f)
-    } else {
-        0f
-    }
+    val progressFraction =
+        if (maxCount > 0) {
+            (currentCount.toFloat() / maxCount).coerceIn(0f, 1f)
+        } else {
+            0f
+        }
     val barShape = RoundedCornerShape(AppRadius.progressBar)
 
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(AppComponentSize.progressBarHeight)
-            .clip(barShape)
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .semantics {
-                progressBarRangeInfo = ProgressBarRangeInfo(
-                    current = progressFraction,
-                    range = 0f..1f,
-                )
-            },
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(AppComponentSize.progressBarHeight)
+                .clip(barShape)
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .semantics {
+                    progressBarRangeInfo =
+                        ProgressBarRangeInfo(
+                            current = progressFraction,
+                            range = 0f..1f,
+                        )
+                },
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth(progressFraction)
-                .fillMaxHeight()
-                .clip(barShape)
-                .background(progressColor),
+            modifier =
+                Modifier
+                    .fillMaxWidth(progressFraction)
+                    .fillMaxHeight()
+                    .clip(barShape)
+                    .background(progressColor),
         )
     }
 }

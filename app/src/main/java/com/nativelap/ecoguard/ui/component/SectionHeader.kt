@@ -30,17 +30,19 @@ fun SectionHeader(
     onActionClick: () -> Unit = {},
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = AppSpacing.xxs),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(horizontal = AppSpacing.xxs),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = title,
-            modifier = Modifier
-                .weight(1f)
-                .semantics { heading() },
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .semantics { heading() },
             style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onSurface,
         )
@@ -48,17 +50,17 @@ fun SectionHeader(
         if (actionText != null) {
             Text(
                 text = actionText,
-                modifier = Modifier
-                    .heightIn(min = AppComponentSize.minTouchTarget)
-                    .clickable(
-                        role = Role.Button,
-                        onClick = onActionClick,
-                    )
-                    .padding(
-                        start = AppSpacing.xs,
-                        top = AppSpacing.sm,
-                        bottom = AppSpacing.sm,
-                    ),
+                modifier =
+                    Modifier
+                        .heightIn(min = AppComponentSize.minTouchTarget)
+                        .clickable(
+                            role = Role.Button,
+                            onClick = onActionClick,
+                        ).padding(
+                            start = AppSpacing.xs,
+                            top = AppSpacing.sm,
+                            bottom = AppSpacing.sm,
+                        ),
                 style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
                 color = MaterialTheme.extraColors.captionTextColor,
             )

@@ -13,9 +13,7 @@ import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 /** 05 청소구역 로딩. 회색 제목과 스켈레톤을 표시한다. */
 @Composable
-fun AreaLoadingScreen(
-    modifier: Modifier = Modifier,
-) {
+fun AreaLoadingScreen(modifier: Modifier = Modifier) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surface,

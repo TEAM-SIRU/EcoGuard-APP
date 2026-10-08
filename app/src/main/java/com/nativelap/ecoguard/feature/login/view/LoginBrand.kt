@@ -25,9 +25,7 @@ import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 @Composable
-fun LoginBrand(
-    modifier: Modifier = Modifier,
-) {
+fun LoginBrand(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,

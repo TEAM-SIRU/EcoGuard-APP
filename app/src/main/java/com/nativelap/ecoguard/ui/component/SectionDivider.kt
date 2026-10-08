@@ -13,13 +13,12 @@ private val sectionDividerHeight = 12.dp
 
 /** 화면 섹션 사이를 나누는 12dp 회색 띠. */
 @Composable
-fun SectionDivider(
-    modifier: Modifier = Modifier,
-) {
+fun SectionDivider(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(sectionDividerHeight)
-            .background(MaterialTheme.colorScheme.surfaceVariant),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .height(sectionDividerHeight)
+                .background(MaterialTheme.colorScheme.surfaceVariant),
     )
 }

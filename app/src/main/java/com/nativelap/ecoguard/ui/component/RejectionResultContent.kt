@@ -52,32 +52,35 @@ fun RejectionResultContent(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(innerPadding)
-            .consumeWindowInsets(innerPadding),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding),
         contentAlignment = Alignment.TopCenter,
     ) {
         Column(
-            modifier = Modifier
-                .widthIn(max = AppComponentSize.contentMaxWidth)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(
-                    start = AppSpacing.screenHorizontal,
-                    end = AppSpacing.screenHorizontal,
-                    bottom = AppSpacing.xl,
-                ),
+            modifier =
+                Modifier
+                    .widthIn(max = AppComponentSize.contentMaxWidth)
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .padding(
+                        start = AppSpacing.screenHorizontal,
+                        end = AppSpacing.screenHorizontal,
+                        bottom = AppSpacing.xl,
+                    ),
         ) {
             CenteredIconMessage(
                 iconRes = R.drawable.ic_alert_64,
                 title = title,
                 description = summary,
                 iconStyle = CenteredIconStyle.HERO,
-                modifier = Modifier.padding(
-                    top = rejectionHeroTopPadding,
-                    bottom = rejectionHeroBottomPadding,
-                ),
+                modifier =
+                    Modifier.padding(
+                        top = rejectionHeroTopPadding,
+                        bottom = rejectionHeroBottomPadding,
+                    ),
             )
 
             ReviewFeedbackCard(

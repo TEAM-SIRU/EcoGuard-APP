@@ -52,45 +52,50 @@ fun MenuScreen(
         },
     ) { innerPadding ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .consumeWindowInsets(innerPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding),
             contentAlignment = Alignment.TopCenter,
         ) {
             Column(
-                modifier = Modifier
-                    .widthIn(max = AppComponentSize.contentMaxWidth)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .padding(bottom = AppComponentSize.cameraFabScrollClearance),
+                modifier =
+                    Modifier
+                        .widthIn(max = AppComponentSize.contentMaxWidth)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                        .padding(bottom = AppComponentSize.cameraFabScrollClearance),
             ) {
                 MenuProfileHeader(
                     menuState = uiState,
-                    modifier = Modifier.padding(
-                        start = AppSpacing.screenHorizontal,
-                        end = AppSpacing.screenHorizontal,
-                        top = AppSpacing.md,
-                        bottom = AppSpacing.lg,
-                    ),
+                    modifier =
+                        Modifier.padding(
+                            start = AppSpacing.screenHorizontal,
+                            end = AppSpacing.screenHorizontal,
+                            top = AppSpacing.md,
+                            bottom = AppSpacing.lg,
+                        ),
                 )
 
                 StatSummaryRow(
-                    statItems = listOf(
-                        StatSummaryItem(
-                            label = stringResource(R.string.profile_monthly_approvals),
-                            value = stringResource(R.string.format_times, uiState.monthlyApprovalCount),
+                    statItems =
+                        listOf(
+                            StatSummaryItem(
+                                label = stringResource(R.string.profile_monthly_approvals),
+                                value = stringResource(R.string.format_times, uiState.monthlyApprovalCount),
+                            ),
+                            StatSummaryItem(
+                                label = stringResource(R.string.profile_activity_time),
+                                value = stringResource(R.string.format_minutes, uiState.monthlyMinutes),
+                            ),
                         ),
-                        StatSummaryItem(
-                            label = stringResource(R.string.profile_activity_time),
-                            value = stringResource(R.string.format_minutes, uiState.monthlyMinutes),
+                    modifier =
+                        Modifier.padding(
+                            start = AppSpacing.screenHorizontal,
+                            end = AppSpacing.screenHorizontal,
+                            bottom = AppSpacing.lg,
                         ),
-                    ),
-                    modifier = Modifier.padding(
-                        start = AppSpacing.screenHorizontal,
-                        end = AppSpacing.screenHorizontal,
-                        bottom = AppSpacing.lg,
-                    ),
                 )
 
                 SectionDivider()
@@ -103,11 +108,12 @@ fun MenuScreen(
 
                 MenuRow(
                     title = stringResource(R.string.profile_application_result),
-                    valueText = if (uiState.isApplicationCompleted) {
-                        stringResource(R.string.home_application_completed)
-                    } else {
-                        null
-                    },
+                    valueText =
+                        if (uiState.isApplicationCompleted) {
+                            stringResource(R.string.home_application_completed)
+                        } else {
+                            null
+                        },
                     onClick = { onEvent(MenuScreenEvent.ApplicationResultClick) },
                 )
 
@@ -120,11 +126,12 @@ fun MenuScreen(
                     Switch(
                         checked = uiState.isCleaningNotificationEnabled,
                         onCheckedChange = null,
-                        colors = SwitchDefaults.colors(
-                            checkedTrackColor = MaterialTheme.colorScheme.primary,
-                            checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                            checkedBorderColor = MaterialTheme.colorScheme.primary,
-                        ),
+                        colors =
+                            SwitchDefaults.colors(
+                                checkedTrackColor = MaterialTheme.colorScheme.primary,
+                                checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
+                                checkedBorderColor = MaterialTheme.colorScheme.primary,
+                            ),
                     )
                 }
 

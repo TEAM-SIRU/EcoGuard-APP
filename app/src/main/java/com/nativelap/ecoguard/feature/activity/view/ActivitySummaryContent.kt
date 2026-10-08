@@ -37,22 +37,23 @@ fun ActivitySummaryContent(
     onMonthSelectorClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val monthlyMinutesColor = if (activityContent.monthlyMinutes > 0) {
-        MaterialTheme.colorScheme.primary
-    } else {
-        MaterialTheme.colorScheme.onSurface
-    }
+    val monthlyMinutesColor =
+        if (activityContent.monthlyMinutes > 0) {
+            MaterialTheme.colorScheme.primary
+        } else {
+            MaterialTheme.colorScheme.onSurface
+        }
 
     Column(modifier = modifier.fillMaxWidth()) {
         Row(
-            modifier = Modifier
-                .padding(horizontal = AppSpacing.xs)
-                .heightIn(min = AppComponentSize.minTouchTarget)
-                .clickable(
-                    role = Role.Button,
-                    onClick = onMonthSelectorClick,
-                )
-                .padding(horizontal = AppSpacing.md),
+            modifier =
+                Modifier
+                    .padding(horizontal = AppSpacing.xs)
+                    .heightIn(min = AppComponentSize.minTouchTarget)
+                    .clickable(
+                        role = Role.Button,
+                        onClick = onMonthSelectorClick,
+                    ).padding(horizontal = AppSpacing.md),
             horizontalArrangement = Arrangement.spacedBy(AppSpacing.xxs),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -71,12 +72,13 @@ fun ActivitySummaryContent(
         }
 
         Column(
-            modifier = Modifier.padding(
-                start = AppSpacing.screenHorizontal,
-                end = AppSpacing.screenHorizontal,
-                top = AppSpacing.xxs,
-                bottom = AppSpacing.md,
-            ),
+            modifier =
+                Modifier.padding(
+                    start = AppSpacing.screenHorizontal,
+                    end = AppSpacing.screenHorizontal,
+                    top = AppSpacing.xxs,
+                    bottom = AppSpacing.md,
+                ),
             verticalArrangement = Arrangement.spacedBy(monthlyTimeSpacing),
         ) {
             Text(
@@ -93,25 +95,27 @@ fun ActivitySummaryContent(
         }
 
         StatSummaryRow(
-            statItems = listOf(
-                StatSummaryItem(
-                    label = stringResource(R.string.verification_status_approved),
-                    value = stringResource(R.string.format_times, activityContent.approvedCount),
+            statItems =
+                listOf(
+                    StatSummaryItem(
+                        label = stringResource(R.string.verification_status_approved),
+                        value = stringResource(R.string.format_times, activityContent.approvedCount),
+                    ),
+                    StatSummaryItem(
+                        label = stringResource(R.string.verification_status_rejected),
+                        value = stringResource(R.string.format_times, activityContent.rejectedCount),
+                    ),
+                    StatSummaryItem(
+                        label = stringResource(R.string.verification_status_not_submitted),
+                        value = stringResource(R.string.format_times, activityContent.notSubmittedCount),
+                    ),
                 ),
-                StatSummaryItem(
-                    label = stringResource(R.string.verification_status_rejected),
-                    value = stringResource(R.string.format_times, activityContent.rejectedCount),
+            modifier =
+                Modifier.padding(
+                    start = AppSpacing.screenHorizontal,
+                    end = AppSpacing.screenHorizontal,
+                    bottom = AppSpacing.xl,
                 ),
-                StatSummaryItem(
-                    label = stringResource(R.string.verification_status_not_submitted),
-                    value = stringResource(R.string.format_times, activityContent.notSubmittedCount),
-                ),
-            ),
-            modifier = Modifier.padding(
-                start = AppSpacing.screenHorizontal,
-                end = AppSpacing.screenHorizontal,
-                bottom = AppSpacing.xl,
-            ),
         )
     }
 }

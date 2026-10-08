@@ -46,16 +46,18 @@ fun EcoTextArea(
         onValueChange = { changedText ->
             onValueChange(changedText.take(maxLength))
         },
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = textAreaMinHeight)
-            .border(
-                border = BorderStroke(
-                    width = textAreaBorderWidth,
-                    color = MaterialTheme.colorScheme.outlineVariant,
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .heightIn(min = textAreaMinHeight)
+                .border(
+                    border =
+                        BorderStroke(
+                            width = textAreaBorderWidth,
+                            color = MaterialTheme.colorScheme.outlineVariant,
+                        ),
+                    shape = textAreaShape,
                 ),
-                shape = textAreaShape,
-            ),
         textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface),
         cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
         decorationBox = { innerTextField ->

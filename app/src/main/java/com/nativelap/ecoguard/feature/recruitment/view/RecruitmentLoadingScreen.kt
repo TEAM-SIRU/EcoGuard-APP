@@ -13,9 +13,7 @@ import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 /** 03 모집 공고 로딩. 회색 제목과 스켈레톤을 표시한다. */
 @Composable
-fun RecruitmentLoadingScreen(
-    modifier: Modifier = Modifier,
-) {
+fun RecruitmentLoadingScreen(modifier: Modifier = Modifier) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.surface,

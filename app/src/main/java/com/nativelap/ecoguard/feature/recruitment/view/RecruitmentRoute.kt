@@ -11,11 +11,19 @@ fun RecruitmentRoute(
     onEvent: (RecruitmentScreenEvent) -> Unit = {},
 ) {
     when (uiState) {
-        RecruitmentUiState.Loading -> RecruitmentLoadingScreen()
-        RecruitmentUiState.LoadFailed -> RecruitmentLoadFailedScreen(onEvent = onEvent)
-        is RecruitmentUiState.Content -> RecruitmentScreen(
-            uiState = uiState,
-            onEvent = onEvent,
-        )
+        RecruitmentUiState.Loading -> {
+            RecruitmentLoadingScreen()
+        }
+
+        RecruitmentUiState.LoadFailed -> {
+            RecruitmentLoadFailedScreen(onEvent = onEvent)
+        }
+
+        is RecruitmentUiState.Content -> {
+            RecruitmentScreen(
+                uiState = uiState,
+                onEvent = onEvent,
+            )
+        }
     }
 }

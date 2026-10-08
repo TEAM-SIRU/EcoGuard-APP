@@ -77,14 +77,16 @@ fun InlineEmptyState(
         if (actionText != null) {
             Button(
                 onClick = onActionClick,
-                modifier = Modifier
-                    .heightIn(min = compactActionHeight)
-                    .widthIn(min = compactActionMinWidth),
+                modifier =
+                    Modifier
+                        .heightIn(min = compactActionHeight)
+                        .widthIn(min = compactActionMinWidth),
                 shape = RoundedCornerShape(AppRadius.button),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                ),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    ),
                 contentPadding = PaddingValues(horizontal = AppSpacing.xl),
             ) {
                 Text(

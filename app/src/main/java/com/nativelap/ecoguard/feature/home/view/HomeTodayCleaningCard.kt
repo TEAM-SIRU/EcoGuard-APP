@@ -51,12 +51,13 @@ fun HomeTodayCleaningCard(
 
     EcoCard(
         modifier = modifier,
-        contentPadding = PaddingValues(
-            start = AppSpacing.lg,
-            end = AppSpacing.lg,
-            top = todayCardTopPadding,
-            bottom = AppSpacing.lg,
-        ),
+        contentPadding =
+            PaddingValues(
+                start = AppSpacing.lg,
+                end = AppSpacing.lg,
+                top = todayCardTopPadding,
+                bottom = AppSpacing.lg,
+            ),
     ) {
         Text(
             text = stringResource(R.string.home_today_cleaning),
@@ -66,12 +67,12 @@ fun HomeTodayCleaningCard(
 
         Text(
             text = todayCleaningTitle(cleaningStatus),
-            modifier = Modifier
-                .padding(
-                    top = todayTitleTopPadding,
-                    bottom = AppSpacing.lg,
-                )
-                .semantics { heading() },
+            modifier =
+                Modifier
+                    .padding(
+                        top = todayTitleTopPadding,
+                        bottom = AppSpacing.lg,
+                    ).semantics { heading() },
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onSurface,
         )
@@ -79,11 +80,12 @@ fun HomeTodayCleaningCard(
         Column(verticalArrangement = Arrangement.spacedBy(AppSpacing.sm)) {
             InfoRow(
                 label = stringResource(R.string.home_cleaning_time),
-                value = stringResource(
-                    R.string.format_time_range,
-                    todayCleaning.cleaningStartTime,
-                    todayCleaning.cleaningEndTime,
-                ),
+                value =
+                    stringResource(
+                        R.string.format_time_range,
+                        todayCleaning.cleaningStartTime,
+                        todayCleaning.cleaningEndTime,
+                    ),
             )
 
             InfoRow(
@@ -108,74 +110,116 @@ fun HomeTodayCleaningCard(
 }
 
 @Composable
-private fun todayCleaningTitle(cleaningStatus: TodayCleaningStatus): String {
-    return when (cleaningStatus) {
-        is TodayCleaningStatus.NotSubmitted -> stringResource(R.string.home_not_submitted)
-        is TodayCleaningStatus.OutsideVerificationTime -> stringResource(
-            R.string.home_verification_available_from,
-            cleaningStatus.availableFromTime,
-        )
-        is TodayCleaningStatus.AiReviewing -> stringResource(R.string.home_ai_reviewing)
-        is TodayCleaningStatus.TeacherReviewing -> stringResource(R.string.home_teacher_reviewing)
-        is TodayCleaningStatus.Approved -> stringResource(R.string.home_cleaning_completed)
-        is TodayCleaningStatus.Rejected -> stringResource(R.string.common_verification_rejected)
+private fun todayCleaningTitle(cleaningStatus: TodayCleaningStatus): String =
+    when (cleaningStatus) {
+        is TodayCleaningStatus.NotSubmitted -> {
+            stringResource(R.string.home_not_submitted)
+        }
+
+        is TodayCleaningStatus.OutsideVerificationTime -> {
+            stringResource(
+                R.string.home_verification_available_from,
+                cleaningStatus.availableFromTime,
+            )
+        }
+
+        is TodayCleaningStatus.AiReviewing -> {
+            stringResource(R.string.home_ai_reviewing)
+        }
+
+        is TodayCleaningStatus.TeacherReviewing -> {
+            stringResource(R.string.home_teacher_reviewing)
+        }
+
+        is TodayCleaningStatus.Approved -> {
+            stringResource(R.string.home_cleaning_completed)
+        }
+
+        is TodayCleaningStatus.Rejected -> {
+            stringResource(R.string.common_verification_rejected)
+        }
     }
-}
 
 @Composable
 private fun TodayCleaningExtraInfoRow(cleaningStatus: TodayCleaningStatus) {
     when (cleaningStatus) {
-        is TodayCleaningStatus.AiReviewing -> InfoRow(
-            label = stringResource(R.string.home_submit),
-            value = stringResource(R.string.format_today, cleaningStatus.submittedTime),
-        )
-        is TodayCleaningStatus.TeacherReviewing -> InfoRow(
-            label = stringResource(R.string.home_submit),
-            value = stringResource(R.string.format_today, cleaningStatus.submittedTime),
-        )
-        is TodayCleaningStatus.Approved -> InfoRow(
-            label = stringResource(R.string.verification_earned_time),
-            value = stringResource(R.string.format_bonus_minutes, cleaningStatus.earnedMinutes),
-            valueColor = MaterialTheme.colorScheme.primary,
-        )
+        is TodayCleaningStatus.AiReviewing -> {
+            InfoRow(
+                label = stringResource(R.string.home_submit),
+                value = stringResource(R.string.format_today, cleaningStatus.submittedTime),
+            )
+        }
+
+        is TodayCleaningStatus.TeacherReviewing -> {
+            InfoRow(
+                label = stringResource(R.string.home_submit),
+                value = stringResource(R.string.format_today, cleaningStatus.submittedTime),
+            )
+        }
+
+        is TodayCleaningStatus.Approved -> {
+            InfoRow(
+                label = stringResource(R.string.verification_earned_time),
+                value = stringResource(R.string.format_bonus_minutes, cleaningStatus.earnedMinutes),
+                valueColor = MaterialTheme.colorScheme.primary,
+            )
+        }
+
         is TodayCleaningStatus.NotSubmitted,
         is TodayCleaningStatus.OutsideVerificationTime,
-        is TodayCleaningStatus.Rejected -> Unit
+        is TodayCleaningStatus.Rejected,
+        -> {
+            Unit
+        }
     }
 }
 
 @Composable
 private fun TodayCleaningNotice(cleaningStatus: TodayCleaningStatus) {
     when (cleaningStatus) {
-        is TodayCleaningStatus.NotSubmitted -> Text(
-            text = stringResource(
-                R.string.home_time_until_deadline,
-                cleaningStatus.timeUntilDeadline,
-            ),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.primary,
-        )
-        is TodayCleaningStatus.TeacherReviewing -> Text(
-            text = stringResource(R.string.home_ai_referred_to_teacher),
-            modifier = Modifier
-                .padding(top = AppSpacing.sm)
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(AppRadius.tile))
-                .background(MaterialTheme.colorScheme.surfaceVariant)
-                .padding(
-                    horizontal = reasonBoxHorizontalPadding,
-                    vertical = AppSpacing.sm,
-                ),
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        is TodayCleaningStatus.Rejected -> RejectionReasonBox(
-            rejectionReason = cleaningStatus.rejectionReason,
-            modifier = Modifier.padding(top = AppSpacing.sm),
-        )
+        is TodayCleaningStatus.NotSubmitted -> {
+            Text(
+                text =
+                    stringResource(
+                        R.string.home_time_until_deadline,
+                        cleaningStatus.timeUntilDeadline,
+                    ),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary,
+            )
+        }
+
+        is TodayCleaningStatus.TeacherReviewing -> {
+            Text(
+                text = stringResource(R.string.home_ai_referred_to_teacher),
+                modifier =
+                    Modifier
+                        .padding(top = AppSpacing.sm)
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(AppRadius.tile))
+                        .background(MaterialTheme.colorScheme.surfaceVariant)
+                        .padding(
+                            horizontal = reasonBoxHorizontalPadding,
+                            vertical = AppSpacing.sm,
+                        ),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+
+        is TodayCleaningStatus.Rejected -> {
+            RejectionReasonBox(
+                rejectionReason = cleaningStatus.rejectionReason,
+                modifier = Modifier.padding(top = AppSpacing.sm),
+            )
+        }
+
         is TodayCleaningStatus.OutsideVerificationTime,
         is TodayCleaningStatus.AiReviewing,
-        is TodayCleaningStatus.Approved -> Unit
+        is TodayCleaningStatus.Approved,
+        -> {
+            Unit
+        }
     }
 }
 
@@ -187,21 +231,22 @@ private fun RejectionReasonBox(
     val reasonShape = RoundedCornerShape(AppRadius.tile)
 
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(reasonShape)
-            .background(MaterialTheme.colorScheme.surface)
-            .border(
-                border = BorderStroke(
-                    width = reasonBorderWidth,
-                    color = MaterialTheme.colorScheme.outlineVariant,
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .clip(reasonShape)
+                .background(MaterialTheme.colorScheme.surface)
+                .border(
+                    border =
+                        BorderStroke(
+                            width = reasonBorderWidth,
+                            color = MaterialTheme.colorScheme.outlineVariant,
+                        ),
+                    shape = reasonShape,
+                ).padding(
+                    horizontal = reasonBoxHorizontalPadding,
+                    vertical = AppSpacing.sm,
                 ),
-                shape = reasonShape,
-            )
-            .padding(
-                horizontal = reasonBoxHorizontalPadding,
-                vertical = AppSpacing.sm,
-            ),
         verticalArrangement = Arrangement.spacedBy(reasonTextSpacing),
     ) {
         Text(
@@ -228,35 +273,50 @@ private fun TodayCleaningAction(
     modifier: Modifier = Modifier,
 ) {
     when (cleaningStatus) {
-        is TodayCleaningStatus.NotSubmitted -> EcoPrimaryButton(
-            text = stringResource(R.string.home_cleaning_submit),
-            onClick = onVerificationClick,
-            modifier = modifier,
-            leadingIconRes = R.drawable.ic_cam,
-        )
-        is TodayCleaningStatus.OutsideVerificationTime -> EcoSecondaryButton(
-            text = stringResource(R.string.home_outside_verification_time),
-            onClick = {},
-            modifier = modifier,
-            leadingIconRes = R.drawable.ic_clock_20,
-            enabled = false,
-        )
+        is TodayCleaningStatus.NotSubmitted -> {
+            EcoPrimaryButton(
+                text = stringResource(R.string.home_cleaning_submit),
+                onClick = onVerificationClick,
+                modifier = modifier,
+                leadingIconRes = R.drawable.ic_cam,
+            )
+        }
+
+        is TodayCleaningStatus.OutsideVerificationTime -> {
+            EcoSecondaryButton(
+                text = stringResource(R.string.home_outside_verification_time),
+                onClick = {},
+                modifier = modifier,
+                leadingIconRes = R.drawable.ic_clock_20,
+                enabled = false,
+            )
+        }
+
         is TodayCleaningStatus.AiReviewing,
-        is TodayCleaningStatus.TeacherReviewing -> EcoSecondaryButton(
-            text = stringResource(R.string.home_view_submitted_photo),
-            onClick = onSubmittedPhotoClick,
-            modifier = modifier,
-        )
-        is TodayCleaningStatus.Approved -> EcoSecondaryButton(
-            text = stringResource(R.string.home_view_activity_record),
-            onClick = onActivityRecordClick,
-            modifier = modifier,
-        )
-        is TodayCleaningStatus.Rejected -> EcoPrimaryButton(
-            text = stringResource(R.string.home_appeal),
-            onClick = onAppealClick,
-            modifier = modifier,
-        )
+        is TodayCleaningStatus.TeacherReviewing,
+        -> {
+            EcoSecondaryButton(
+                text = stringResource(R.string.home_view_submitted_photo),
+                onClick = onSubmittedPhotoClick,
+                modifier = modifier,
+            )
+        }
+
+        is TodayCleaningStatus.Approved -> {
+            EcoSecondaryButton(
+                text = stringResource(R.string.home_view_activity_record),
+                onClick = onActivityRecordClick,
+                modifier = modifier,
+            )
+        }
+
+        is TodayCleaningStatus.Rejected -> {
+            EcoPrimaryButton(
+                text = stringResource(R.string.home_appeal),
+                onClick = onAppealClick,
+                modifier = modifier,
+            )
+        }
     }
 }
 

@@ -36,12 +36,13 @@ import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 // Figma의 도면 영역 높이(308)에서 상하 여백(4·24)을 뺀 값. 도면 이미지는 서버 연동 시 채운다.
 private val floorPlanHeight = 280.dp
 
-private val areaTitlePadding = PaddingValues(
-    start = AppSpacing.screenHorizontal,
-    end = AppSpacing.screenHorizontal,
-    top = AppSpacing.xs,
-    bottom = AppSpacing.lg,
-)
+private val areaTitlePadding =
+    PaddingValues(
+        start = AppSpacing.screenHorizontal,
+        end = AppSpacing.screenHorizontal,
+        top = AppSpacing.xs,
+        bottom = AppSpacing.lg,
+    )
 
 @Composable
 fun AreaScreen(
@@ -61,61 +62,73 @@ fun AreaScreen(
         },
     ) { innerPadding ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .consumeWindowInsets(innerPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding),
             contentAlignment = Alignment.TopCenter,
         ) {
             when (uiState) {
-                is AreaUiState.Content -> Column(
-                    modifier = Modifier
-                        .widthIn(max = AppComponentSize.contentMaxWidth)
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
-                        .padding(bottom = AppComponentSize.cameraFabScrollClearance),
-                ) {
-                    PageTitle(
-                        title = stringResource(R.string.common_my_cleaning_area),
-                        subtitle = stringResource(R.string.area_selected_floor, uiState.selectedFloor),
-                        modifier = Modifier.padding(areaTitlePadding),
-                    )
+                is AreaUiState.Content -> {
+                    Column(
+                        modifier =
+                            Modifier
+                                .widthIn(max = AppComponentSize.contentMaxWidth)
+                                .fillMaxWidth()
+                                .verticalScroll(rememberScrollState())
+                                .padding(bottom = AppComponentSize.cameraFabScrollClearance),
+                    ) {
+                        PageTitle(
+                            title = stringResource(R.string.common_my_cleaning_area),
+                            subtitle = stringResource(R.string.area_selected_floor, uiState.selectedFloor),
+                            modifier = Modifier.padding(areaTitlePadding),
+                        )
 
-                    AreaDetailContent(
-                        areaContent = uiState,
-                        onFloorSelect = { selectedFloor -> onEvent(AreaScreenEvent.FloorSelect(selectedFloor)) },
-                    )
+                        AreaDetailContent(
+                            areaContent = uiState,
+                            onFloorSelect = { selectedFloor -> onEvent(AreaScreenEvent.FloorSelect(selectedFloor)) },
+                        )
+                    }
                 }
-                AreaUiState.NotAssigned -> AreaEmptyLayout {
-                    InlineEmptyState(
-                        iconRes = R.drawable.ic_map_30,
-                        title = stringResource(R.string.area_not_assigned_title),
-                        description = stringResource(R.string.area_not_assigned_description),
-                    )
+
+                AreaUiState.NotAssigned -> {
+                    AreaEmptyLayout {
+                        InlineEmptyState(
+                            iconRes = R.drawable.ic_map_30,
+                            title = stringResource(R.string.area_not_assigned_title),
+                            description = stringResource(R.string.area_not_assigned_description),
+                        )
+                    }
                 }
-                AreaUiState.LoadFailed -> AreaEmptyLayout {
-                    InlineEmptyState(
-                        iconRes = R.drawable.ic_map_30,
-                        title = stringResource(R.string.area_load_failed),
-                        description = stringResource(R.string.area_load_failed_description),
-                        actionText = stringResource(R.string.action_retry),
-                        onActionClick = { onEvent(AreaScreenEvent.RetryClick) },
-                    )
+
+                AreaUiState.LoadFailed -> {
+                    AreaEmptyLayout {
+                        InlineEmptyState(
+                            iconRes = R.drawable.ic_map_30,
+                            title = stringResource(R.string.area_load_failed),
+                            description = stringResource(R.string.area_load_failed_description),
+                            actionText = stringResource(R.string.action_retry),
+                            onActionClick = { onEvent(AreaScreenEvent.RetryClick) },
+                        )
+                    }
                 }
-                AreaUiState.Loading -> Unit
+
+                AreaUiState.Loading -> {
+                    Unit
+                }
             }
         }
     }
 }
 
 @Composable
-private fun AreaEmptyLayout(
-    emptyContent: @Composable () -> Unit,
-) {
+private fun AreaEmptyLayout(emptyContent: @Composable () -> Unit) {
     Column(
-        modifier = Modifier
-            .widthIn(max = AppComponentSize.contentMaxWidth)
-            .fillMaxSize(),
+        modifier =
+            Modifier
+                .widthIn(max = AppComponentSize.contentMaxWidth)
+                .fillMaxSize(),
     ) {
         PageTitle(
             title = stringResource(R.string.common_my_cleaning_area),
@@ -123,17 +136,18 @@ private fun AreaEmptyLayout(
         )
 
         Box(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(
-                    start = AppSpacing.screenHorizontal,
-                    end = AppSpacing.screenHorizontal,
-                    top = AppSpacing.xl,
-                    // 빈 상태 버튼이 탭 바 위로 튀어나온 카메라 버튼에 가리지 않게 한다.
-                    bottom = AppComponentSize.cameraFabScrollClearance,
-                ),
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .padding(
+                        start = AppSpacing.screenHorizontal,
+                        end = AppSpacing.screenHorizontal,
+                        top = AppSpacing.xl,
+                        // 빈 상태 버튼이 탭 바 위로 튀어나온 카메라 버튼에 가리지 않게 한다.
+                        bottom = AppComponentSize.cameraFabScrollClearance,
+                    ),
             contentAlignment = Alignment.Center,
         ) {
             emptyContent()
@@ -146,37 +160,41 @@ private fun AreaDetailContent(
     areaContent: AreaUiState.Content,
     onFloorSelect: (Int) -> Unit,
 ) {
-    val floorLabels = areaContent.floors.map { floor ->
-        stringResource(R.string.format_floor, floor)
-    }
+    val floorLabels =
+        areaContent.floors.map { floor ->
+            stringResource(R.string.format_floor, floor)
+        }
     val memberSeparator = stringResource(R.string.format_list_separator)
-    val memberNames = (areaContent.teammateNames + stringResource(R.string.area_member_me, areaContent.myName))
-        .joinToString(separator = memberSeparator)
+    val memberNames =
+        (areaContent.teammateNames + stringResource(R.string.area_member_me, areaContent.myName))
+            .joinToString(separator = memberSeparator)
 
     Column {
         EcoSegmentedControl(
             segmentLabels = floorLabels,
-            selectedIndex = areaContent.floors
-                .indexOf(areaContent.selectedFloor)
-                .coerceAtLeast(0),
+            selectedIndex =
+                areaContent.floors
+                    .indexOf(areaContent.selectedFloor)
+                    .coerceAtLeast(0),
             onSegmentSelect = { selectedIndex -> onFloorSelect(areaContent.floors[selectedIndex]) },
-            modifier = Modifier.padding(
-                start = AppSpacing.screenHorizontal,
-                end = AppSpacing.screenHorizontal,
-                bottom = AppSpacing.md,
-            ),
+            modifier =
+                Modifier.padding(
+                    start = AppSpacing.screenHorizontal,
+                    end = AppSpacing.screenHorizontal,
+                    bottom = AppSpacing.md,
+                ),
         )
 
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = AppSpacing.screenHorizontal,
-                    end = AppSpacing.screenHorizontal,
-                    top = AppSpacing.xxs,
-                    bottom = AppSpacing.xl,
-                )
-                .height(floorPlanHeight),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = AppSpacing.screenHorizontal,
+                        end = AppSpacing.screenHorizontal,
+                        top = AppSpacing.xxs,
+                        bottom = AppSpacing.xl,
+                    ).height(floorPlanHeight),
         )
 
         SectionDivider()
@@ -187,11 +205,12 @@ private fun AreaDetailContent(
         )
 
         TwoLineTextRow(
-            title = stringResource(
-                R.string.recruitment_daily_time,
-                areaContent.cleaningStartTime,
-                areaContent.cleaningEndTime,
-            ),
+            title =
+                stringResource(
+                    R.string.recruitment_daily_time,
+                    areaContent.cleaningStartTime,
+                    areaContent.cleaningEndTime,
+                ),
             subtitle = stringResource(R.string.home_cleaning_time),
         )
 
@@ -225,7 +244,13 @@ private fun AreaScreenNotAssignedPreview() {
 }
 
 @Preview(name = "Area · load failed", showBackground = true, widthDp = 390, heightDp = 844)
-@Preview(name = "Area · load failed compact larger text", showBackground = true, widthDp = 320, heightDp = 596, fontScale = 1.5f)
+@Preview(
+    name = "Area · load failed compact larger text",
+    showBackground = true,
+    widthDp = 320,
+    heightDp = 596,
+    fontScale = 1.5f,
+)
 @Composable
 private fun AreaScreenLoadFailedPreview() {
     EcoGuardTheme {

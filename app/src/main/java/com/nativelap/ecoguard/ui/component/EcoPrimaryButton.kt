@@ -41,40 +41,45 @@ fun EcoPrimaryButton(
     enabled: Boolean = true,
     isLoading: Boolean = false,
 ) {
-    val iconRes = if (isLoading) {
-        R.drawable.ic_loader
-    } else {
-        leadingIconRes
-    }
+    val iconRes =
+        if (isLoading) {
+            R.drawable.ic_loader
+        } else {
+            leadingIconRes
+        }
 
     Button(
         onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = AppComponentSize.primaryButtonHeight)
-            .alpha(
-                if (isLoading) {
-                    PRIMARY_BUTTON_LOADING_ALPHA
-                } else {
-                    1f
-                },
-            ),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .heightIn(min = AppComponentSize.primaryButtonHeight)
+                .alpha(
+                    if (isLoading) {
+                        PRIMARY_BUTTON_LOADING_ALPHA
+                    } else {
+                        1f
+                    },
+                ),
         enabled = enabled && !isLoading,
         shape = RoundedCornerShape(AppRadius.button),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = if (isLoading) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.surfaceVariant
-            },
-            disabledContentColor = if (isLoading) {
-                MaterialTheme.colorScheme.onPrimary
-            } else {
-                MaterialTheme.extraColors.disabledContentColor
-            },
-        ),
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                disabledContainerColor =
+                    if (isLoading) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        MaterialTheme.colorScheme.surfaceVariant
+                    },
+                disabledContentColor =
+                    if (isLoading) {
+                        MaterialTheme.colorScheme.onPrimary
+                    } else {
+                        MaterialTheme.extraColors.disabledContentColor
+                    },
+            ),
         contentPadding = PaddingValues(horizontal = AppSpacing.md),
     ) {
         Row(

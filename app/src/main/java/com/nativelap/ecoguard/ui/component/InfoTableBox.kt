@@ -23,11 +23,12 @@ fun InfoTableBox(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(AppRadius.button))
-            .background(MaterialTheme.colorScheme.surfaceContainerLow)
-            .padding(AppSpacing.lg),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(AppRadius.button))
+                .background(MaterialTheme.colorScheme.surfaceContainerLow)
+                .padding(AppSpacing.lg),
         verticalArrangement = Arrangement.spacedBy(AppSpacing.sm),
         content = content,
     )

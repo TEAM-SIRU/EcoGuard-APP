@@ -34,35 +34,40 @@ fun LoadingSkeletonContent(
         verticalArrangement = Arrangement.spacedBy(itemSpacing),
     ) {
         SkeletonPlaceholder(
-            modifier = Modifier
-                .widthIn(max = skeletonTitleSkeletonWidth)
-                .fillMaxWidth()
-                .height(skeletonBarHeight),
+            modifier =
+                Modifier
+                    .widthIn(max = skeletonTitleSkeletonWidth)
+                    .fillMaxWidth()
+                    .height(skeletonBarHeight),
         )
 
         SkeletonPlaceholder(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(skeletonMainSkeletonHeight),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(skeletonMainSkeletonHeight),
         )
 
         SkeletonPlaceholder(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(skeletonRowSkeletonHeight),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(skeletonRowSkeletonHeight),
         )
 
         SkeletonPlaceholder(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(skeletonRowSkeletonHeight),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(skeletonRowSkeletonHeight),
         )
 
         SkeletonPlaceholder(
-            modifier = Modifier
-                .widthIn(max = skeletonFooterSkeletonWidth)
-                .fillMaxWidth()
-                .height(skeletonBarHeight),
+            modifier =
+                Modifier
+                    .widthIn(max = skeletonFooterSkeletonWidth)
+                    .fillMaxWidth()
+                    .height(skeletonBarHeight),
         )
 
         LoadingStatusText()

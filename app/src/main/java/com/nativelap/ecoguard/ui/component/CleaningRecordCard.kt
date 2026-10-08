@@ -34,25 +34,28 @@ fun CleaningRecordCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val earnedTimeText = if (earnedMinutes > 0) {
-        stringResource(R.string.format_bonus_minutes, earnedMinutes)
-    } else {
-        stringResource(R.string.format_minutes, earnedMinutes)
-    }
-    val earnedTimeColor = if (earnedMinutes > 0) {
-        MaterialTheme.colorScheme.onSurfaceVariant
-    } else {
-        MaterialTheme.extraColors.disabledContentColor
-    }
+    val earnedTimeText =
+        if (earnedMinutes > 0) {
+            stringResource(R.string.format_bonus_minutes, earnedMinutes)
+        } else {
+            stringResource(R.string.format_minutes, earnedMinutes)
+        }
+    val earnedTimeColor =
+        if (earnedMinutes > 0) {
+            MaterialTheme.colorScheme.onSurfaceVariant
+        } else {
+            MaterialTheme.extraColors.disabledContentColor
+        }
 
     EcoCard(
         modifier = modifier,
         onClick = onClick,
         cornerRadius = AppRadius.button,
-        contentPadding = PaddingValues(
-            horizontal = AppSpacing.lg,
-            vertical = AppSpacing.md,
-        ),
+        contentPadding =
+            PaddingValues(
+                horizontal = AppSpacing.lg,
+                vertical = AppSpacing.md,
+            ),
     ) {
         BoxWithConstraints {
             // 좁거나 글자가 크면 상태 칩과 적립 시간을 제출 정보 아래로 내린다.
@@ -148,7 +151,13 @@ private fun RecordEarnedTimeText(
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFF8FAF9, widthDp = 390)
-@Preview(name = "Compact larger text", showBackground = true, backgroundColor = 0xFFF8FAF9, widthDp = 320, fontScale = 2f)
+@Preview(
+    name = "Compact larger text",
+    showBackground = true,
+    backgroundColor = 0xFFF8FAF9,
+    widthDp = 320,
+    fontScale = 2f,
+)
 @Composable
 private fun CleaningRecordCardPreview() {
     EcoGuardTheme {

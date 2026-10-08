@@ -18,14 +18,13 @@ import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 @Composable
-fun SkeletonPlaceholder(
-    modifier: Modifier = Modifier,
-) {
+fun SkeletonPlaceholder(modifier: Modifier = Modifier) {
     Box(
-        modifier = modifier
-            .clearAndSetSemantics { }
-            .clip(RoundedCornerShape(AppRadius.tile))
-            .background(MaterialTheme.colorScheme.surfaceVariant),
+        modifier =
+            modifier
+                .clearAndSetSemantics { }
+                .clip(RoundedCornerShape(AppRadius.tile))
+                .background(MaterialTheme.colorScheme.surfaceVariant),
     )
 }
 
@@ -38,9 +37,10 @@ private fun SkeletonPlaceholderPreview() {
             color = MaterialTheme.colorScheme.surface,
         ) {
             SkeletonPlaceholder(
-                modifier = Modifier
-                    .padding(24.dp)
-                    .size(width = 342.dp, height = 156.dp),
+                modifier =
+                    Modifier
+                        .padding(24.dp)
+                        .size(width = 342.dp, height = 156.dp),
             )
         }
     }

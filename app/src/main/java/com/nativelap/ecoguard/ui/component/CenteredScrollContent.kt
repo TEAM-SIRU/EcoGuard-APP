@@ -36,22 +36,24 @@ fun CenteredScrollContent(
     content: @Composable ColumnScope.() -> Unit,
 ) {
     BoxWithConstraints(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(innerPadding)
-            .consumeWindowInsets(innerPadding),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding),
         contentAlignment = Alignment.TopCenter,
     ) {
         Column(
-            modifier = Modifier
-                .widthIn(max = AppComponentSize.contentMaxWidth)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .heightIn(min = maxHeight)
-                .padding(
-                    horizontal = AppSpacing.screenHorizontal,
-                    vertical = AppSpacing.xl,
-                ),
+            modifier =
+                Modifier
+                    .widthIn(max = AppComponentSize.contentMaxWidth)
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .heightIn(min = maxHeight)
+                    .padding(
+                        horizontal = AppSpacing.screenHorizontal,
+                        vertical = AppSpacing.xl,
+                    ),
             verticalArrangement = Arrangement.Center,
             content = content,
         )

@@ -35,29 +35,33 @@ fun LoadingSkeletonScrollContent(
     modifier: Modifier = Modifier,
 ) {
     BoxWithConstraints(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(innerPadding)
-            .consumeWindowInsets(innerPadding),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding),
         contentAlignment = Alignment.TopCenter,
     ) {
-        val isCompactLargeText = maxHeight < skeletonCompactHeightThreshold &&
-            LocalDensity.current.fontScale >= SKELETON_LARGE_FONT_SCALE_THRESHOLD
-        val itemSpacing = if (isCompactLargeText) {
-            AppSpacing.lg
-        } else {
-            AppSpacing.xl
-        }
+        val isCompactLargeText =
+            maxHeight < skeletonCompactHeightThreshold &&
+                LocalDensity.current.fontScale >= SKELETON_LARGE_FONT_SCALE_THRESHOLD
+        val itemSpacing =
+            if (isCompactLargeText) {
+                AppSpacing.lg
+            } else {
+                AppSpacing.xl
+            }
 
         Column(
-            modifier = Modifier
-                .widthIn(max = AppComponentSize.contentMaxWidth)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(
-                    horizontal = AppSpacing.screenHorizontal,
-                    vertical = AppSpacing.xl,
-                ),
+            modifier =
+                Modifier
+                    .widthIn(max = AppComponentSize.contentMaxWidth)
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .padding(
+                        horizontal = AppSpacing.screenHorizontal,
+                        vertical = AppSpacing.xl,
+                    ),
             verticalArrangement = Arrangement.spacedBy(itemSpacing),
         ) {
             LoadingTitle(title = title)

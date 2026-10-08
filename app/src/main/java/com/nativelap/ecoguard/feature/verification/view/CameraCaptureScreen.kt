@@ -84,20 +84,22 @@ fun CameraCaptureScreen(
     val shutterDescription = stringResource(R.string.cd_shutter)
 
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(cameraColors.cameraBackgroundColor)
-            .windowInsetsPadding(WindowInsets.statusBars),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(cameraColors.cameraBackgroundColor)
+                .windowInsetsPadding(WindowInsets.statusBars),
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = AppSpacing.sm,
-                    end = AppSpacing.lg,
-                    top = AppSpacing.xxs,
-                    bottom = AppSpacing.sm,
-                ),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = AppSpacing.sm,
+                        end = AppSpacing.lg,
+                        top = AppSpacing.xxs,
+                        bottom = AppSpacing.sm,
+                    ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton(
@@ -125,11 +127,12 @@ fun CameraCaptureScreen(
                 )
 
                 Text(
-                    text = stringResource(
-                        R.string.camera_step_capture,
-                        VerificationStep.CAPTURE.stepNumber,
-                        VerificationStep.totalStepCount,
-                    ),
+                    text =
+                        stringResource(
+                            R.string.camera_step_capture,
+                            VerificationStep.CAPTURE.stepNumber,
+                            VerificationStep.totalStepCount,
+                        ),
                     style = MaterialTheme.extraTypography.captionRegular,
                     color = cameraColors.cameraSecondaryTextColor,
                 )
@@ -139,10 +142,11 @@ fun CameraCaptureScreen(
         }
 
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = countdownBarHeight)
-                .background(MaterialTheme.colorScheme.primary),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = countdownBarHeight)
+                    .background(MaterialTheme.colorScheme.primary),
             contentAlignment = Alignment.Center,
         ) {
             Text(
@@ -153,31 +157,34 @@ fun CameraCaptureScreen(
         }
 
         Box(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .background(cameraColors.cameraSurfaceColor)
-                .padding(
-                    horizontal = AppSpacing.screenHorizontal,
-                    vertical = AppSpacing.lg,
-                ),
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .background(cameraColors.cameraSurfaceColor)
+                    .padding(
+                        horizontal = AppSpacing.screenHorizontal,
+                        vertical = AppSpacing.lg,
+                    ),
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .dashedGuideFrame()
-                    .padding(AppSpacing.lg),
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .dashedGuideFrame()
+                        .padding(AppSpacing.lg),
                 contentAlignment = Alignment.BottomCenter,
             ) {
                 Text(
                     text = stringResource(R.string.camera_frame_guide),
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(AppRadius.pill))
-                        .background(cameraColors.cameraOverlayColor.copy(alpha = GUIDE_MESSAGE_OVERLAY_ALPHA))
-                        .padding(
-                            horizontal = guideMessageHorizontalPadding,
-                            vertical = AppSpacing.xs,
-                        ),
+                    modifier =
+                        Modifier
+                            .clip(RoundedCornerShape(AppRadius.pill))
+                            .background(cameraColors.cameraOverlayColor.copy(alpha = GUIDE_MESSAGE_OVERLAY_ALPHA))
+                            .padding(
+                                horizontal = guideMessageHorizontalPadding,
+                                vertical = AppSpacing.xs,
+                            ),
                     style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
                     color = MaterialTheme.colorScheme.onPrimary,
                     textAlign = TextAlign.Center,
@@ -186,15 +193,16 @@ fun CameraCaptureScreen(
         }
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .windowInsetsPadding(WindowInsets.navigationBars)
-                .padding(
-                    start = controlsHorizontalPadding,
-                    end = controlsHorizontalPadding,
-                    top = controlsTopPadding,
-                    bottom = controlsBottomPadding,
-                ),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .windowInsetsPadding(WindowInsets.navigationBars)
+                    .padding(
+                        start = controlsHorizontalPadding,
+                        end = controlsHorizontalPadding,
+                        top = controlsTopPadding,
+                        bottom = controlsBottomPadding,
+                    ),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -202,30 +210,34 @@ fun CameraCaptureScreen(
 
             Surface(
                 onClick = { onEvent(VerificationScreenEvent.ShutterClick) },
-                modifier = Modifier
-                    .size(shutterSize)
-                    .semantics { contentDescription = shutterDescription },
+                modifier =
+                    Modifier
+                        .size(shutterSize)
+                        .semantics { contentDescription = shutterDescription },
                 shape = CircleShape,
                 color = cameraColors.cameraBackgroundColor,
-                border = BorderStroke(
-                    width = shutterBorderWidth,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                ),
+                border =
+                    BorderStroke(
+                        width = shutterBorderWidth,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                    ),
             ) {
                 Box(
-                    modifier = Modifier
-                        .padding(shutterInnerPadding)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.onPrimary),
+                    modifier =
+                        Modifier
+                            .padding(shutterInnerPadding)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.onPrimary),
                 )
             }
 
             IconButton(
                 onClick = { onEvent(VerificationScreenEvent.FlipCameraClick) },
-                modifier = Modifier
-                    .size(sideControlSize)
-                    .clip(CircleShape)
-                    .background(cameraColors.cameraSurfaceColor),
+                modifier =
+                    Modifier
+                        .size(sideControlSize)
+                        .clip(CircleShape)
+                        .background(cameraColors.cameraSurfaceColor),
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_flip),
@@ -250,20 +262,24 @@ private fun Modifier.dashedGuideFrame(): Modifier {
         drawRoundRect(
             color = frameColor,
             topLeft = Offset(strokeWidthPx / 2, strokeWidthPx / 2),
-            size = Size(
-                width = size.width - strokeWidthPx,
-                height = size.height - strokeWidthPx,
-            ),
-            cornerRadius = CornerRadius(cornerRadiusPx, cornerRadiusPx),
-            style = Stroke(
-                width = strokeWidthPx,
-                pathEffect = PathEffect.dashPathEffect(
-                    intervals = floatArrayOf(
-                        guideFrameDashLength.toPx(),
-                        guideFrameDashGap.toPx(),
-                    ),
+            size =
+                Size(
+                    width = size.width - strokeWidthPx,
+                    height = size.height - strokeWidthPx,
                 ),
-            ),
+            cornerRadius = CornerRadius(cornerRadiusPx, cornerRadiusPx),
+            style =
+                Stroke(
+                    width = strokeWidthPx,
+                    pathEffect =
+                        PathEffect.dashPathEffect(
+                            intervals =
+                                floatArrayOf(
+                                    guideFrameDashLength.toPx(),
+                                    guideFrameDashGap.toPx(),
+                                ),
+                        ),
+                ),
         )
     }
 }

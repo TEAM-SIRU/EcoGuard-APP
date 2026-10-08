@@ -14,14 +14,13 @@ import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraTypography
 
 @Composable
-fun LoadingStatusText(
-    modifier: Modifier = Modifier,
-) {
+fun LoadingStatusText(modifier: Modifier = Modifier) {
     Text(
         text = stringResource(R.string.common_loading),
-        modifier = modifier.semantics {
-            liveRegion = LiveRegionMode.Polite
-        },
+        modifier =
+            modifier.semantics {
+                liveRegion = LiveRegionMode.Polite
+            },
         style = MaterialTheme.extraTypography.loadingStatus,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )

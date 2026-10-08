@@ -34,11 +34,10 @@ enum class StatusChipType(
 /** 인증 상태별 강조색. 칩·정보 표 등 상태를 색으로 표현하는 곳에서 같은 기준을 쓴다. */
 @Composable
 @ReadOnlyComposable
-fun StatusChipType.contentColor(): Color {
-    return when (this) {
+fun StatusChipType.contentColor(): Color =
+    when (this) {
         StatusChipType.APPROVED -> MaterialTheme.colorScheme.primary
         StatusChipType.REVIEWING -> MaterialTheme.extraColors.warningTextColor
         StatusChipType.REJECTED -> MaterialTheme.colorScheme.error
         StatusChipType.NOT_SUBMITTED -> MaterialTheme.colorScheme.onSurfaceVariant
     }
-}

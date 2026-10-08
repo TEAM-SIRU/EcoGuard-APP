@@ -24,14 +24,16 @@ fun VerificationDayOffScreen(
     onEvent: (VerificationScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val titleRes = when (dayOffReason) {
-        VerificationDayOffReason.WEEKEND -> R.string.verification_weekend_title
-        VerificationDayOffReason.SCHOOL_VACATION -> R.string.verification_vacation_title
-    }
-    val descriptionRes = when (dayOffReason) {
-        VerificationDayOffReason.WEEKEND -> R.string.verification_weekend_description
-        VerificationDayOffReason.SCHOOL_VACATION -> R.string.verification_vacation_description
-    }
+    val titleRes =
+        when (dayOffReason) {
+            VerificationDayOffReason.WEEKEND -> R.string.verification_weekend_title
+            VerificationDayOffReason.SCHOOL_VACATION -> R.string.verification_vacation_title
+        }
+    val descriptionRes =
+        when (dayOffReason) {
+            VerificationDayOffReason.WEEKEND -> R.string.verification_weekend_description
+            VerificationDayOffReason.SCHOOL_VACATION -> R.string.verification_vacation_description
+        }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),

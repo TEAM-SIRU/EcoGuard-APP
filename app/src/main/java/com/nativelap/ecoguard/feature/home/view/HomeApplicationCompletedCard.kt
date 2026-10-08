@@ -32,20 +32,22 @@ fun HomeApplicationCompletedCard(
 ) {
     EcoCard(
         modifier = modifier,
-        contentPadding = PaddingValues(
-            start = AppSpacing.lg,
-            end = AppSpacing.lg,
-            top = applicationCardTopPadding,
-            bottom = AppSpacing.lg,
-        ),
+        contentPadding =
+            PaddingValues(
+                start = AppSpacing.lg,
+                end = AppSpacing.lg,
+                top = applicationCardTopPadding,
+                bottom = AppSpacing.lg,
+            ),
     ) {
         EcoTag(text = stringResource(R.string.home_application_completed))
 
         Column(
-            modifier = Modifier.padding(
-                top = applicationTitleTopPadding,
-                bottom = AppSpacing.md,
-            ),
+            modifier =
+                Modifier.padding(
+                    top = applicationTitleTopPadding,
+                    bottom = AppSpacing.md,
+                ),
             verticalArrangement = Arrangement.spacedBy(applicationTextSpacing),
         ) {
             Text(

@@ -60,20 +60,22 @@ fun HomeWeekCleaningCard(
             )
 
             Text(
-                text = stringResource(
-                    R.string.format_cleaning_days,
-                    weekCleaning.completedDayCount,
-                    weekCleaning.totalDayCount,
-                ),
+                text =
+                    stringResource(
+                        R.string.format_cleaning_days,
+                        weekCleaning.completedDayCount,
+                        weekCleaning.totalDayCount,
+                    ),
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
                 color = MaterialTheme.colorScheme.primary,
             )
         }
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = AppSpacing.md),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = AppSpacing.md),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             weekCleaning.days.forEach { weekDay ->
@@ -84,66 +86,80 @@ fun HomeWeekCleaningCard(
 }
 
 @Composable
-private fun WeekDayIndicator(
-    weekDay: WeekDayUiModel,
-) {
+private fun WeekDayIndicator(weekDay: WeekDayUiModel) {
     val dayName = weekDay.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREAN)
-    val dayLabel = if (weekDay.isToday) {
-        stringResource(R.string.home_today)
-    } else {
-        dayName
-    }
-    val statusDescription = if (weekDay.isCompleted) {
-        stringResource(R.string.verification_status_approved)
-    } else {
-        stringResource(R.string.verification_status_not_submitted)
-    }
+    val dayLabel =
+        if (weekDay.isToday) {
+            stringResource(R.string.home_today)
+        } else {
+            dayName
+        }
+    val statusDescription =
+        if (weekDay.isCompleted) {
+            stringResource(R.string.verification_status_approved)
+        } else {
+            stringResource(R.string.verification_status_not_submitted)
+        }
 
     Column(
-        modifier = Modifier.clearAndSetSemantics {
-            contentDescription = "$dayLabel $statusDescription"
-        },
+        modifier =
+            Modifier.clearAndSetSemantics {
+                contentDescription = "$dayLabel $statusDescription"
+            },
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(weekDayLabelSpacing),
     ) {
-        val indicatorModifier = Modifier
-            .size(AppComponentSize.weekDayIndicator)
-            .clip(CircleShape)
+        val indicatorModifier =
+            Modifier
+                .size(AppComponentSize.weekDayIndicator)
+                .clip(CircleShape)
 
         when {
-            weekDay.isCompleted -> Box(
-                modifier = indicatorModifier.background(MaterialTheme.colorScheme.primary),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_check_18),
-                    contentDescription = null,
-                    modifier = Modifier.size(AppIconSize.small),
-                    tint = MaterialTheme.colorScheme.onPrimary,
+            weekDay.isCompleted -> {
+                Box(
+                    modifier = indicatorModifier.background(MaterialTheme.colorScheme.primary),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_check_18),
+                        contentDescription = null,
+                        modifier = Modifier.size(AppIconSize.small),
+                        tint = MaterialTheme.colorScheme.onPrimary,
+                    )
+                }
+            }
+
+            weekDay.isToday -> {
+                Box(
+                    modifier =
+                        indicatorModifier
+                            .background(MaterialTheme.colorScheme.surface)
+                            .border(
+                                border =
+                                    BorderStroke(
+                                        width = todayIndicatorBorderWidth,
+                                        color = MaterialTheme.colorScheme.primary,
+                                    ),
+                                shape = CircleShape,
+                            ),
                 )
             }
-            weekDay.isToday -> Box(
-                modifier = indicatorModifier
-                    .background(MaterialTheme.colorScheme.surface)
-                    .border(
-                        border = BorderStroke(
-                            width = todayIndicatorBorderWidth,
-                            color = MaterialTheme.colorScheme.primary,
-                        ),
-                        shape = CircleShape,
-                    ),
-            )
-            else -> Box(
-                modifier = indicatorModifier
-                    .background(MaterialTheme.colorScheme.surface)
-                    .border(
-                        border = BorderStroke(
-                            width = upcomingIndicatorBorderWidth,
-                            color = MaterialTheme.colorScheme.outlineVariant,
-                        ),
-                        shape = CircleShape,
-                    ),
-            )
+
+            else -> {
+                Box(
+                    modifier =
+                        indicatorModifier
+                            .background(MaterialTheme.colorScheme.surface)
+                            .border(
+                                border =
+                                    BorderStroke(
+                                        width = upcomingIndicatorBorderWidth,
+                                        color = MaterialTheme.colorScheme.outlineVariant,
+                                    ),
+                                shape = CircleShape,
+                            ),
+                )
+            }
         }
 
         if (weekDay.isToday) {

@@ -11,15 +11,26 @@ fun HomeRoute(
     onEvent: (HomeScreenEvent) -> Unit = {},
 ) {
     when (uiState) {
-        HomeUiState.Loading -> HomeLoadingScreen()
-        HomeUiState.LoadFailed -> HomeLoadFailedScreen(onEvent = onEvent)
-        is HomeUiState.RemovedFromActivity -> HomeActivityRemovedScreen(
-            removalReason = uiState.removalReason,
-            onEvent = onEvent,
-        )
-        is HomeUiState.Content -> HomeScreen(
-            uiState = uiState,
-            onEvent = onEvent,
-        )
+        HomeUiState.Loading -> {
+            HomeLoadingScreen()
+        }
+
+        HomeUiState.LoadFailed -> {
+            HomeLoadFailedScreen(onEvent = onEvent)
+        }
+
+        is HomeUiState.RemovedFromActivity -> {
+            HomeActivityRemovedScreen(
+                removalReason = uiState.removalReason,
+                onEvent = onEvent,
+            )
+        }
+
+        is HomeUiState.Content -> {
+            HomeScreen(
+                uiState = uiState,
+                onEvent = onEvent,
+            )
+        }
     }
 }

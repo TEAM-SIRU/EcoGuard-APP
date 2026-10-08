@@ -33,59 +33,61 @@ private val lightOutlineColor = Color(0xFFB3BAB6)
 private val lightOutlineVariantColor = Color(0xFFE5E9E7)
 private val lightScrimColor = Color(0xFF1A1F1D)
 
-private val LightColorScheme = lightColorScheme(
-    primary = lightPrimaryColor,
-    onPrimary = lightOnPrimaryColor,
-    primaryContainer = lightPrimaryContainerColor,
-    onPrimaryContainer = lightOnPrimaryContainerColor,
-    inversePrimary = lightPrimaryColor,
-    secondary = lightSecondaryColor,
-    onSecondary = lightOnSecondaryColor,
-    secondaryContainer = lightSecondaryContainerColor,
-    onSecondaryContainer = lightOnSecondaryContainerColor,
-    tertiary = lightTertiaryColor,
-    onTertiary = lightOnTertiaryColor,
-    tertiaryContainer = lightTertiaryContainerColor,
-    onTertiaryContainer = lightOnTertiaryContainerColor,
-    background = lightBackgroundColor,
-    onBackground = lightOnBackgroundColor,
-    surface = lightSurfaceColor,
-    onSurface = lightOnSurfaceColor,
-    surfaceVariant = lightSurfaceVariantColor,
-    onSurfaceVariant = lightOnSurfaceVariantColor,
-    surfaceTint = lightPrimaryColor,
-    inverseSurface = lightOnSurfaceColor,
-    inverseOnSurface = lightSurfaceColor,
-    error = lightErrorColor,
-    onError = lightOnErrorColor,
-    errorContainer = lightSurfaceColor,
-    onErrorContainer = lightErrorColor,
-    outline = lightOutlineColor,
-    outlineVariant = lightOutlineVariantColor,
-    scrim = lightScrimColor,
-    surfaceBright = lightSurfaceColor,
-    surfaceDim = lightSurfaceVariantColor,
-    surfaceContainerLowest = lightSurfaceColor,
-    surfaceContainerLow = lightSurfaceContainerLowColor,
-    surfaceContainer = lightSurfaceColor,
-    surfaceContainerHigh = lightSurfaceColor,
-    surfaceContainerHighest = lightSurfaceContainerHighestColor,
-)
+private val LightColorScheme =
+    lightColorScheme(
+        primary = lightPrimaryColor,
+        onPrimary = lightOnPrimaryColor,
+        primaryContainer = lightPrimaryContainerColor,
+        onPrimaryContainer = lightOnPrimaryContainerColor,
+        inversePrimary = lightPrimaryColor,
+        secondary = lightSecondaryColor,
+        onSecondary = lightOnSecondaryColor,
+        secondaryContainer = lightSecondaryContainerColor,
+        onSecondaryContainer = lightOnSecondaryContainerColor,
+        tertiary = lightTertiaryColor,
+        onTertiary = lightOnTertiaryColor,
+        tertiaryContainer = lightTertiaryContainerColor,
+        onTertiaryContainer = lightOnTertiaryContainerColor,
+        background = lightBackgroundColor,
+        onBackground = lightOnBackgroundColor,
+        surface = lightSurfaceColor,
+        onSurface = lightOnSurfaceColor,
+        surfaceVariant = lightSurfaceVariantColor,
+        onSurfaceVariant = lightOnSurfaceVariantColor,
+        surfaceTint = lightPrimaryColor,
+        inverseSurface = lightOnSurfaceColor,
+        inverseOnSurface = lightSurfaceColor,
+        error = lightErrorColor,
+        onError = lightOnErrorColor,
+        errorContainer = lightSurfaceColor,
+        onErrorContainer = lightErrorColor,
+        outline = lightOutlineColor,
+        outlineVariant = lightOutlineVariantColor,
+        scrim = lightScrimColor,
+        surfaceBright = lightSurfaceColor,
+        surfaceDim = lightSurfaceVariantColor,
+        surfaceContainerLowest = lightSurfaceColor,
+        surfaceContainerLow = lightSurfaceContainerLowColor,
+        surfaceContainer = lightSurfaceColor,
+        surfaceContainerHigh = lightSurfaceColor,
+        surfaceContainerHighest = lightSurfaceContainerHighestColor,
+    )
 
 // Figma에 다크 디자인이 없어 확정 전까지 다크 모드도 라이트 값을 사용한다.
 private val DarkColorScheme = LightColorScheme
 
-private val LightExtraColors = AppExtraColors(
-    captionTextColor = Color(0xFF6B7470),
-    disabledContentColor = Color(0xFFB3BAB6),
-    warningTextColor = Color(0xFFB35F00),
-    warningAccentColor = Color(0xFFF08C00),
-    cardShadowColor = Color(0xFF1A211F),
-    cameraBackgroundColor = Color(0xFF101214),
-    cameraSurfaceColor = Color(0xFF2B2F33),
-    cameraSecondaryTextColor = Color(0xFFC4CAD1),
-    cameraOverlayColor = Color.Black,
-)
+private val LightExtraColors =
+    AppExtraColors(
+        captionTextColor = Color(0xFF6B7470),
+        disabledContentColor = Color(0xFFB3BAB6),
+        warningTextColor = Color(0xFFB35F00),
+        warningAccentColor = Color(0xFFF08C00),
+        cardShadowColor = Color(0xFF1A211F),
+        cameraBackgroundColor = Color(0xFF101214),
+        cameraSurfaceColor = Color(0xFF2B2F33),
+        cameraSecondaryTextColor = Color(0xFFC4CAD1),
+        cameraOverlayColor = Color.Black,
+    )
 
 private val DarkExtraColors = LightExtraColors
 
@@ -94,21 +96,24 @@ fun EcoGuardTheme(
     themeMode: ThemeMode = ThemeMode.LIGHT,
     content: @Composable () -> Unit,
 ) {
-    val useDarkTheme = when (themeMode) {
-        ThemeMode.SYSTEM -> isSystemInDarkTheme()
-        ThemeMode.LIGHT -> false
-        ThemeMode.DARK -> true
-    }
-    val colorScheme = if (useDarkTheme) {
-        DarkColorScheme
-    } else {
-        LightColorScheme
-    }
-    val extraColors = if (useDarkTheme) {
-        DarkExtraColors
-    } else {
-        LightExtraColors
-    }
+    val useDarkTheme =
+        when (themeMode) {
+            ThemeMode.SYSTEM -> isSystemInDarkTheme()
+            ThemeMode.LIGHT -> false
+            ThemeMode.DARK -> true
+        }
+    val colorScheme =
+        if (useDarkTheme) {
+            DarkColorScheme
+        } else {
+            LightColorScheme
+        }
+    val extraColors =
+        if (useDarkTheme) {
+            DarkExtraColors
+        } else {
+            LightExtraColors
+        }
 
     CompositionLocalProvider(
         LocalAppExtraColors provides extraColors,
