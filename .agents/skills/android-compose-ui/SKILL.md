@@ -7,7 +7,7 @@ description: Jetpack Compose 화면, Route, Screen, UiState, UiModel, 공용 Com
 
 ## 가독성
 
-- Composable 본문, 조건문, 상태 갱신, 객체 생성은 한 줄로 압축하지 않는다. 인자 또는 UI 요소가 둘 이상이면 줄바꿈과 들여쓰기를 사용한다.
+- Composable 본문, 조건문, 상태 갱신, 객체 생성은 작성 중 한 줄로 써도 되지만, 파일 작성을 마치면 자동 줄바꿈(`./gradlew spotlessApply`)을 적용해 인자 또는 UI 요소가 둘 이상이면 줄바꿈과 들여쓰기된 상태로 끝낸다.
 
 ## 실행 Hook
 
