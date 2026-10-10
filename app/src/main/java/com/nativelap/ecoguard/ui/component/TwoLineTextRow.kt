@@ -44,7 +44,7 @@ fun TwoLineTextRow(
             modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = AppSpacing.screenHorizontal,
+                    horizontal = AppSpacing.md,
                     vertical = twoLineRowVerticalPadding,
                 ),
     ) {

@@ -1,6 +1,7 @@
 package com.nativelap.ecoguard.ui.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
@@ -24,12 +25,12 @@ import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 
-private val defaultCardShadowRadius = 10.dp
-private val defaultCardShadowOffsetY = 2.dp
-private const val DEFAULT_CARD_SHADOW_ALPHA = 0.06f
-private val emphasizedCardShadowRadius = 16.dp
-private val emphasizedCardShadowOffsetY = 4.dp
-private const val EMPHASIZED_CARD_SHADOW_ALPHA = 0.08f
+private val defaultCardShadowRadius = 18.dp
+private val defaultCardShadowOffsetY = 6.dp
+private const val DEFAULT_CARD_SHADOW_ALPHA = 0.07f
+private val emphasizedCardShadowRadius = 18.dp
+private val emphasizedCardShadowOffsetY = 6.dp
+private const val EMPHASIZED_CARD_SHADOW_ALPHA = 0.07f
 
 /** 흰 배경과 Figma 카드 그림자를 가진 기본 카드. emphasized는 공지 카드의 강한 그림자. */
 @Composable
@@ -66,7 +67,17 @@ fun EcoCard(
                 .dropShadow(
                     shape = cardShape,
                     shadow = cardShadow,
+                ).dropShadow(
+                    shape = cardShape,
+                    shadow =
+                        Shadow(
+                            radius = 3.dp,
+                            color = MaterialTheme.extraColors.cardShadowColor,
+                            offset = DpOffset(0.dp, 1.dp),
+                            alpha = 0.04f,
+                        ),
                 ).clip(cardShape)
+                .border(1.dp, MaterialTheme.colorScheme.outlineVariant, cardShape)
                 .background(MaterialTheme.colorScheme.surface)
                 .then(
                     if (onClick != null) {

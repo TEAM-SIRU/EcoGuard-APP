@@ -3,6 +3,7 @@ package com.nativelap.ecoguard.feature.home.view
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,6 +26,8 @@ import com.nativelap.ecoguard.feature.home.viewmodel.HomeUiState
 import com.nativelap.ecoguard.ui.component.EcoBottomTab
 import com.nativelap.ecoguard.ui.component.EcoBottomTabBar
 import com.nativelap.ecoguard.ui.component.EcoTopBar
+import com.nativelap.ecoguard.ui.component.isExpandedLayout
+import com.nativelap.ecoguard.ui.component.twoPaneContentMaxWidth
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
@@ -66,7 +69,7 @@ fun HomeScreen(
             Column(
                 modifier =
                     Modifier
-                        .widthIn(max = AppComponentSize.contentMaxWidth)
+                        .widthIn(max = twoPaneContentMaxWidth())
                         .fillMaxWidth()
                         .verticalScroll(rememberScrollState())
                         .padding(
@@ -114,22 +117,44 @@ private fun HomeSection(
         }
 
         is HomeSectionUiModel.Cleaning -> {
-            HomeTodayCleaningCard(
-                todayCleaning = section.todayCleaning,
-                onVerificationClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
-                onSubmittedPhotoClick = { onEvent(HomeScreenEvent.SubmittedPhotoClick) },
-                onActivityRecordClick = { onEvent(HomeScreenEvent.ActivityRecordClick) },
-                onAppealClick = { onEvent(HomeScreenEvent.AppealClick) },
-            )
+            if (isExpandedLayout()) {
+                Row(horizontalArrangement = Arrangement.spacedBy(AppSpacing.xl)) {
+                    Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(AppSpacing.sm)) {
+                        HomeTodayCleaningCard(
+                            todayCleaning = section.todayCleaning,
+                            onVerificationClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
+                            onSubmittedPhotoClick = { onEvent(HomeScreenEvent.SubmittedPhotoClick) },
+                            onActivityRecordClick = { onEvent(HomeScreenEvent.ActivityRecordClick) },
+                            onAppealClick = { onEvent(HomeScreenEvent.AppealClick) },
+                        )
 
-            HomeWeekCleaningCard(weekCleaning = section.weekCleaning)
+                        HomeWeekCleaningCard(weekCleaning = section.weekCleaning)
+                    }
+                    HomeRecentRecordsContent(
+                        recentRecords = section.recentRecords,
+                        onAllRecordsClick = { onEvent(HomeScreenEvent.AllRecordsClick) },
+                        onRecordClick = { onEvent(HomeScreenEvent.RecordClick(it)) },
+                        modifier = Modifier.weight(1f),
+                    )
+                }
+            } else {
+                HomeTodayCleaningCard(
+                    todayCleaning = section.todayCleaning,
+                    onVerificationClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
+                    onSubmittedPhotoClick = { onEvent(HomeScreenEvent.SubmittedPhotoClick) },
+                    onActivityRecordClick = { onEvent(HomeScreenEvent.ActivityRecordClick) },
+                    onAppealClick = { onEvent(HomeScreenEvent.AppealClick) },
+                )
 
-            HomeRecentRecordsContent(
-                recentRecords = section.recentRecords,
-                onAllRecordsClick = { onEvent(HomeScreenEvent.AllRecordsClick) },
-                onRecordClick = { recordId -> onEvent(HomeScreenEvent.RecordClick(recordId)) },
-                modifier = Modifier.padding(top = AppSpacing.sm),
-            )
+                HomeWeekCleaningCard(weekCleaning = section.weekCleaning)
+
+                HomeRecentRecordsContent(
+                    recentRecords = section.recentRecords,
+                    onAllRecordsClick = { onEvent(HomeScreenEvent.AllRecordsClick) },
+                    onRecordClick = { recordId -> onEvent(HomeScreenEvent.RecordClick(recordId)) },
+                    modifier = Modifier.padding(top = AppSpacing.sm),
+                )
+            }
         }
     }
 }
@@ -177,5 +202,37 @@ private fun HomeScreenWaitingAssignmentPreview() {
             uiState = HomePreviewFixtures.waitingAssignmentHome,
             onEvent = {},
         )
+    }
+}
+
+@Preview(name = "Home · OutsideTime", showBackground = true, widthDp = 390, heightDp = 844)
+@Composable
+private fun HomeOutsideTimePreview() {
+    EcoGuardTheme {
+        HomeScreen(uiState = HomePreviewFixtures.cleaningHome(HomePreviewFixtures.todayStatuses[1]), onEvent = {})
+    }
+}
+
+@Preview(name = "Home · AiReviewing", showBackground = true, widthDp = 390, heightDp = 844)
+@Composable
+private fun HomeAiReviewingPreview() {
+    EcoGuardTheme {
+        HomeScreen(uiState = HomePreviewFixtures.cleaningHome(HomePreviewFixtures.todayStatuses[2]), onEvent = {})
+    }
+}
+
+@Preview(name = "Home · TeacherReviewing", showBackground = true, widthDp = 390, heightDp = 844)
+@Composable
+private fun HomeTeacherReviewingPreview() {
+    EcoGuardTheme {
+        HomeScreen(uiState = HomePreviewFixtures.cleaningHome(HomePreviewFixtures.todayStatuses[3]), onEvent = {})
+    }
+}
+
+@Preview(name = "Home · Approved", showBackground = true, widthDp = 390, heightDp = 844)
+@Composable
+private fun HomeApprovedPreview() {
+    EcoGuardTheme {
+        HomeScreen(uiState = HomePreviewFixtures.cleaningHome(HomePreviewFixtures.todayStatuses[4]), onEvent = {})
     }
 }

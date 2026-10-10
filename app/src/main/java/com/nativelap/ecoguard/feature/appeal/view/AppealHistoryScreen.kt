@@ -2,6 +2,7 @@ package com.nativelap.ecoguard.feature.appeal.view
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,11 +24,13 @@ import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.appeal.viewmodel.AppealHistoryItemUiModel
 import com.nativelap.ecoguard.feature.appeal.viewmodel.AppealScreenEvent
 import com.nativelap.ecoguard.ui.component.EcoBackTopBar
+import com.nativelap.ecoguard.ui.component.EcoCard
 import com.nativelap.ecoguard.ui.component.PageTitle
 import com.nativelap.ecoguard.ui.component.StatusChip
 import com.nativelap.ecoguard.ui.component.StatusChipType
 import com.nativelap.ecoguard.ui.component.TwoLineTextRow
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
+import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
@@ -41,7 +44,7 @@ fun AppealHistoryScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             EcoBackTopBar(onBackClick = { onEvent(AppealScreenEvent.BackClick) })
         },
@@ -87,14 +90,18 @@ fun AppealHistoryScreen(
                     )
                 }
 
-                items(
-                    items = appealHistoryItems,
-                    key = { appealHistoryItem -> appealHistoryItem.appealId },
-                ) { appealHistoryItem ->
-                    AppealHistoryRow(
-                        appealHistoryItem = appealHistoryItem,
-                        onClick = { onEvent(AppealScreenEvent.HistoryItemClick(appealHistoryItem.appealId)) },
-                    )
+                item {
+                    EcoCard(
+                        modifier = Modifier.padding(horizontal = AppSpacing.md, vertical = AppSpacing.sm),
+                        cornerRadius = AppRadius.listCard,
+                        contentPadding = PaddingValues(vertical = AppSpacing.xxs),
+                    ) {
+                        appealHistoryItems.forEach { appealHistoryItem ->
+                            AppealHistoryRow(appealHistoryItem = appealHistoryItem, onClick = {
+                                onEvent(AppealScreenEvent.HistoryItemClick(appealHistoryItem.appealId))
+                            })
+                        }
+                    }
                 }
             }
         }

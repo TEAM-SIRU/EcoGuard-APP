@@ -12,5 +12,8 @@ object AppRadius {
     val button = 16.dp
     val card = 20.dp
     val logo = 24.dp
+    val listCard = 24.dp
+    val recordCard = 16.dp
+    val input = 12.dp
     val pill = 999.dp
 }

@@ -39,15 +39,15 @@ fun EcoConfirmDialog(
 
         val confirmContainerColor =
             if (isDestructive) {
-                MaterialTheme.colorScheme.surfaceVariant
+                MaterialTheme.colorScheme.error
             } else {
-                MaterialTheme.colorScheme.primary
+                MaterialTheme.colorScheme.secondary
             }
         val confirmContentColor =
             if (isDestructive) {
-                MaterialTheme.colorScheme.error
+                MaterialTheme.colorScheme.onError
             } else {
-                MaterialTheme.colorScheme.onPrimary
+                MaterialTheme.colorScheme.onSecondary
             }
 
         AdaptiveButtonRow(

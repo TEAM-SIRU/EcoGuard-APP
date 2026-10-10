@@ -50,11 +50,11 @@ fun CleaningRecordCard(
     EcoCard(
         modifier = modifier,
         onClick = onClick,
-        cornerRadius = AppRadius.button,
+        cornerRadius = AppRadius.recordCard,
         contentPadding =
             PaddingValues(
-                horizontal = AppSpacing.lg,
-                vertical = AppSpacing.md,
+                horizontal = AppSpacing.md,
+                vertical = 14.dp,
             ),
     ) {
         BoxWithConstraints {
@@ -118,7 +118,7 @@ private fun RecordSubmissionText(
     ) {
         Text(
             text = submittedDateTime,
-            style = MaterialTheme.typography.titleSmall,
+            style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.onSurface,
         )
 

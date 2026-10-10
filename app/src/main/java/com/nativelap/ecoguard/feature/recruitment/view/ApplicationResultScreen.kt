@@ -38,7 +38,7 @@ fun ApplicationResultScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             BottomCtaBar {
                 when (uiState) {
@@ -83,7 +83,7 @@ fun ApplicationResultScreen(
                 when (uiState) {
                     is ApplicationResultUiState.Completed -> {
                         CenteredIconMessage(
-                            iconRes = R.drawable.ic_check_64,
+                            iconRes = R.drawable.ic_application_completed_64,
                             title = stringResource(R.string.home_became_guardian),
                             description =
                                 stringResource(
@@ -97,7 +97,7 @@ fun ApplicationResultScreen(
 
                     ApplicationResultUiState.FilledWhileApplying -> {
                         CenteredIconMessage(
-                            iconRes = R.drawable.ic_x_64,
+                            iconRes = R.drawable.ic_alert_64,
                             title = stringResource(R.string.recruitment_application_failed),
                             description = stringResource(R.string.recruitment_filled_while_applying),
                             iconStyle = CenteredIconStyle.HERO,

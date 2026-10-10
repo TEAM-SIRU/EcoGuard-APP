@@ -22,6 +22,7 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppIconSize
@@ -66,11 +67,11 @@ fun CenteredIconMessage(
                     }
                 }
 
-                CenteredIconStyle.HERO -> {
+                CenteredIconStyle.HERO, CenteredIconStyle.GUIDE -> {
                     Icon(
                         painter = painterResource(iconRes),
                         contentDescription = null,
-                        modifier = Modifier.size(AppIconSize.hero),
+                        modifier = Modifier.size(if (iconStyle == CenteredIconStyle.GUIDE) 48.dp else AppIconSize.hero),
                         tint = Color.Unspecified,
                     )
                 }

@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationScreenEvent
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationStep
+import com.nativelap.ecoguard.ui.component.EcoSystemBarIcons
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppIconSize
 import com.nativelap.ecoguard.ui.theme.AppRadius
@@ -80,6 +81,7 @@ fun CameraCaptureScreen(
     onEvent: (VerificationScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    EcoSystemBarIcons(useDarkIcons = false)
     val cameraColors = MaterialTheme.extraColors
     val shutterDescription = stringResource(R.string.cd_shutter)
 
@@ -145,15 +147,32 @@ fun CameraCaptureScreen(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .heightIn(min = countdownBarHeight)
-                    .background(MaterialTheme.colorScheme.primary),
+                    .heightIn(min = countdownBarHeight),
             contentAlignment = Alignment.Center,
         ) {
-            Text(
-                text = stringResource(R.string.camera_time_remaining, timeRemaining, deadlineTime),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onPrimary,
-            )
+            Row(
+                modifier =
+                    Modifier
+                        .clip(
+                            RoundedCornerShape(AppRadius.pill),
+                        ).background(
+                            cameraColors.cameraOverlayColor,
+                        ).padding(horizontal = AppSpacing.md, vertical = AppSpacing.xs),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(AppSpacing.xs),
+            ) {
+                Icon(
+                    painterResource(R.drawable.ic_capture_clock),
+                    null,
+                    modifier = Modifier.size(AppIconSize.chip),
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                )
+                Text(
+                    text = stringResource(R.string.camera_time_remaining, timeRemaining, deadlineTime),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                )
+            }
         }
 
         Box(

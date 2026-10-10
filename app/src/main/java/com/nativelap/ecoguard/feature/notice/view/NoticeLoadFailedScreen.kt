@@ -33,7 +33,7 @@ fun NoticeLoadFailedScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             EcoBackTopBar(onBackClick = onBackClick)
         },
@@ -70,8 +70,10 @@ fun NoticeLoadFailedScreen(
                             .fillMaxWidth()
                             .verticalScroll(rememberScrollState())
                             .padding(
-                                horizontal = AppSpacing.screenHorizontal,
-                                vertical = AppSpacing.xl,
+                                start = AppSpacing.screenHorizontal,
+                                end = AppSpacing.screenHorizontal,
+                                top = AppSpacing.xl,
+                                bottom = AppComponentSize.emptyStateBottomClearance,
                             ),
                     contentAlignment = Alignment.Center,
                 ) {

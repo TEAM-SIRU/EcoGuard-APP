@@ -39,7 +39,7 @@ fun LoginScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
     ) { innerPadding ->
         BoxWithConstraints(
             modifier =
@@ -143,7 +143,7 @@ private fun CenteredGroupWithFooter(
                 placeY += groupPlaceable.height
             }
 
-            placeY += footerSpacing.roundToPx()
+            placeY = maxOf(placeY + footerSpacing.roundToPx(), layoutHeight - footerHeight)
 
             footerPlaceables.forEach { footerPlaceable ->
                 footerPlaceable.place(

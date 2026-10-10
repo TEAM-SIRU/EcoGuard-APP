@@ -2,6 +2,7 @@ package com.nativelap.ecoguard.feature.recruitment.view
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,12 +22,14 @@ import com.nativelap.ecoguard.feature.recruitment.viewmodel.RecruitmentApplicati
 import com.nativelap.ecoguard.feature.recruitment.viewmodel.RecruitmentScreenEvent
 import com.nativelap.ecoguard.feature.recruitment.viewmodel.RecruitmentUiState
 import com.nativelap.ecoguard.ui.component.BottomCtaBar
+import com.nativelap.ecoguard.ui.component.EcoCard
 import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
 import com.nativelap.ecoguard.ui.component.EcoSecondaryButton
 import com.nativelap.ecoguard.ui.component.PageTitle
 import com.nativelap.ecoguard.ui.component.SectionDivider
 import com.nativelap.ecoguard.ui.component.TwoLineTextRow
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
+import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
@@ -38,7 +41,7 @@ fun RecruitmentScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             RecruitmentBottomAction(
                 applicationStatus = uiState.applicationStatus,
@@ -89,19 +92,25 @@ fun RecruitmentScreen(
 
                 SectionDivider()
 
-                TwoLineTextRow(
-                    title =
-                        stringResource(
-                            R.string.recruitment_volunteer_time_per_verification,
-                            uiState.volunteerMinutesPerVerification,
-                        ),
-                    subtitle = stringResource(R.string.recruitment_approved_activity_record),
-                )
+                EcoCard(
+                    modifier = Modifier.padding(horizontal = AppSpacing.md),
+                    cornerRadius = AppRadius.listCard,
+                    contentPadding = PaddingValues(vertical = AppSpacing.xxs),
+                ) {
+                    TwoLineTextRow(
+                        title =
+                            stringResource(
+                                R.string.recruitment_volunteer_time_per_verification,
+                                uiState.volunteerMinutesPerVerification,
+                            ),
+                        subtitle = stringResource(R.string.recruitment_approved_activity_record),
+                    )
 
-                TwoLineTextRow(
-                    title = stringResource(R.string.recruitment_simple_photo_verification),
-                    subtitle = stringResource(R.string.recruitment_take_photo_to_submit),
-                )
+                    TwoLineTextRow(
+                        title = stringResource(R.string.recruitment_simple_photo_verification),
+                        subtitle = stringResource(R.string.recruitment_take_photo_to_submit),
+                    )
+                }
             }
         }
     }

@@ -40,7 +40,7 @@
     <string name="login_in_progress">로그인하는 중이에요</string>
     <string name="login_failed">로그인하지 못했어요. 다시 시도해 주세요</string>
     <string name="teacher_web_only_title">선생님은 웹에서 이용해 주세요</string>
-    <string name="teacher_web_only_description">모집·청소 구역·이의신청 관리는 웹 관리자 페이지에서 할 수 있어요</string>
+    <string name="teacher_web_only_description">모집·청소 구역·이의신청 관리는\n웹 관리자 페이지에서 할 수 있어요</string>
     <string name="web_address_copy">웹 주소 복사</string>
     <string name="web_address_share">웹 주소 공유</string>
     <string name="logout_confirmation_title">로그아웃할까요?</string>
@@ -59,7 +59,7 @@
     <string name="home_not_submitted">아직 인증하지 않았어요</string>
     <string name="home_ai_reviewing">AI가 사진을 확인하고 있어요</string>
     <string name="home_teacher_reviewing">선생님이 사진을 확인하고 있어요</string>
-    <string name="home_ai_referred_to_teacher">AI가 판단하기 어려운 사진이라 선생님께 넘겼어요</string>
+    <string name="home_ai_referred_to_teacher">AI가 판단하기 어려운 사진이라\n선생님께 넘겼어요</string>
     <string name="home_cleaning_completed">오늘 청소를 마쳤어요</string>
     <string name="common_verification_rejected">인증이 반려됐어요</string>
     <string name="home_recruiting">모집 중</string>
@@ -135,7 +135,7 @@
     <string name="camera_one_submission_per_day">하루 1번만 제출할 수 있어요</string>
     <string name="camera_take_photo">촬영하기</string>
     <string name="camera_step_capture">%1$d/%2$d · 촬영</string>
-    <string name="camera_time_remaining">남은 시간 %1$s · %2$s 마감</string>
+    <string name="camera_time_remaining">%1$s 남음 · %2$s 마감</string>
     <string name="camera_frame_guide">구역 전체가 프레임 안에 들어오게 맞춰 주세요</string>
     <string name="camera_permission_title">카메라 권한이 필요해요</string>
     <string name="camera_permission_description">갤러리 사진은 쓸 수 없어서 카메라 접근이 필요해요. 설정에서 허용해 주세요</string>
@@ -230,19 +230,19 @@
     <string name="home_load_failed">홈을 불러오지 못했어요</string>
     <string name="home_load_failed_description">네트워크 연결을 확인한 뒤 다시 시도해 주세요.</string>
     <string name="result_load_failed">결과를 불러오지 못했어요</string>
-    <string name="result_load_failed_description">조회 오류로 제출 결과를 확인하지 못했어요. 사진을 다시 제출하지 말고 결과 조회를 다시 시도해 주세요.</string>
+    <string name="result_load_failed_description">조회 오류로 제출 결과를 확인하지 못했어요.\n사진을 다시 제출하지 말고 결과 조회를 다시 시도해 주세요.</string>
     <string name="result_check_again">결과 다시 확인</string>
     <string name="upload_status_check">업로드 상태 확인</string>
     <string name="recruitment_load_failed">모집 공고를 불러오지 못했어요</string>
-    <string name="recruitment_load_failed_description">모집 상태를 확인하지 못했어요. 다시 불러온 뒤 신청 가능 여부를 확인해 주세요.</string>
+    <string name="recruitment_load_failed_description">모집 상태를 확인하지 못했어요.\n다시 불러온 뒤 신청 가능 여부를 확인해 주세요.</string>
     <string name="photo_upload_failed">사진을 보내지 못했어요</string>
-    <string name="photo_upload_failed_description">네트워크 연결을 확인하고 다시 시도해 주세요.\n%1$s 전에 업로드를 시작한 사진은 마감 후에도 같은 사진으로 재시도할 수 있어요.\n새 사진으로 바꾸면 마감 후 제출할 수 없어요.</string>
+    <string name="photo_upload_failed_description">네트워크 연결을 확인하고 다시 시도해 주세요.\n%1$s 전에 업로드를 시작한 사진은\n마감 후에도 같은 사진으로 다시 보낼 수 있어요.\n새 사진으로 바꾸면 마감 후 제출할 수 없어요.</string>
     <string name="verification_time_ended">오늘 인증 시간이 끝났어요</string>
     <string name="verification_time_ended_description">%1$s이 지나 새 인증은 제출할 수 없어요.\n마감 전에 업로드를 시작했다면 기존 사진의 업로드를 이어갈 수 있어요.\n이의신청용 촬영은 별도로 가능해요.</string>
-    <string name="verification_weekend_title">오늘은 주말이에요!</string>
-    <string name="verification_weekend_description">다음 주부터 봉사 활동을 시작해주세요.</string>
-    <string name="verification_vacation_title">오늘은 방학이에요!</string>
-    <string name="verification_vacation_description">다음 환경지킴이를 신청해주세요.</string>
+    <string name="verification_weekend_title">오늘은 인증하는 날이 아니에요</string>
+    <string name="verification_weekend_description">청소 인증은 평일에만 해요. 월요일에 다시 만나요</string>
+    <string name="verification_vacation_title">방학에는 인증하지 않아요</string>
+    <string name="verification_vacation_description">다음 학기 모집 공고가 올라오면 홈에서 알려 드려요</string>
     <string name="notice_load_failed">공지를 불러오지 못했어요</string>
 
     <!-- Dynamic values formatted by the caller -->
@@ -263,4 +263,15 @@
     <string name="format_time_range">%1$s – %2$s</string>
     <string name="format_grade_class">%1$d학년 %2$d반</string>
     <string name="format_today">오늘 %1$s</string>
+    <string name="application_student_number">학번</string>
+    <string name="application_student_name">이름</string>
+    <string name="application_student_identity">%1$d학년 %2$d반 %3$d번</string>
+    <string name="application_identity_helper">DataGSM 정보로 자동 입력돼요. 직접 바꿀 수 없어요.</string>
+    <string name="application_motivation">신청 동기</string>
+    <string name="application_motivation_placeholder">예) 우리 반 교실과 복도를 깨끗하게 지키고 싶어요</string>
+    <string name="area_floor_plan_description">내 구역은 핀과 테두리로 표시돼요</string>
+    <string name="cd_floor_plan">학교 청소 구역 도면</string>
+    <string name="home_verification_deadline">인증 마감</string>
+    <string name="home_deadline_remaining">%1$s 남음</string>
+    <string name="activity_appeal_label">이의신청</string>
 </resources>

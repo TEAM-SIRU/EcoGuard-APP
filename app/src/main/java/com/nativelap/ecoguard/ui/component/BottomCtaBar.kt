@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.MaterialTheme
@@ -29,7 +32,8 @@ private val bottomCtaDefaultSpacing = 8.dp
 fun BottomCtaBar(
     modifier: Modifier = Modifier,
     itemSpacing: Dp = bottomCtaDefaultSpacing,
-    containerColor: Color = MaterialTheme.colorScheme.surface,
+    containerColor: Color = MaterialTheme.colorScheme.background,
+    minHeight: Dp = 0.dp,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Column(
@@ -37,8 +41,10 @@ fun BottomCtaBar(
             modifier
                 .fillMaxWidth()
                 .background(containerColor)
-                .windowInsetsPadding(WindowInsets.navigationBars),
+                .heightIn(min = minHeight)
+                .windowInsetsPadding(WindowInsets.navigationBars.union(WindowInsets.ime)),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Bottom,
     ) {
         Column(
             modifier =

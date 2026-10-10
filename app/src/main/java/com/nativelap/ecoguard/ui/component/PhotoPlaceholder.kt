@@ -34,32 +34,30 @@ fun PhotoPlaceholder(
     height: Dp,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .height(height)
-                .clip(RoundedCornerShape(AppRadius.card))
-                .background(MaterialTheme.colorScheme.surfaceVariant),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement =
-            Arrangement.spacedBy(
-                space = AppSpacing.xs,
-                alignment = Alignment.CenterVertically,
-            ),
+    EcoCard(
+        modifier = modifier.height(height),
+        contentPadding =
+            androidx.compose.foundation.layout
+                .PaddingValues(0.dp),
     ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_image),
-            contentDescription = null,
-            modifier = Modifier.size(photoIconSize),
-            tint = MaterialTheme.extraColors.captionTextColor,
-        )
+        Column(
+            modifier = Modifier.fillMaxWidth().height(height),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(AppSpacing.xs, Alignment.CenterVertically),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_image),
+                contentDescription = null,
+                modifier = Modifier.size(photoIconSize),
+                tint = MaterialTheme.extraColors.captionTextColor,
+            )
 
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.extraColors.captionTextColor,
-        )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.extraColors.captionTextColor,
+            )
+        }
     }
 }
 

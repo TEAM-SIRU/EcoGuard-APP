@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
@@ -37,7 +38,19 @@ fun isCompactForText(
 ): Boolean = availableWidth / LocalDensity.current.fontScale < requiredWidth
 
 /** 넓은 화면에서도 화면 콘텐츠와 같은 최대 폭(600dp) 안에 배치한다. 바깥 컨테이너는 가운데 정렬해야 한다. */
-fun Modifier.contentColumnWidth(): Modifier = widthIn(max = AppComponentSize.contentMaxWidth).fillMaxWidth()
+fun Modifier.contentColumnWidth(maxWidth: Dp = AppComponentSize.contentMaxWidth): Modifier =
+    widthIn(max = maxWidth).fillMaxWidth()
+
+@Composable
+fun isExpandedLayout(): Boolean =
+    with(LocalDensity.current) {
+        LocalWindowInfo.current.containerSize.width
+            .toDp() >= AppComponentSize.expandedLayoutMinWidth
+    }
+
+@Composable
+fun twoPaneContentMaxWidth(): Dp =
+    if (isExpandedLayout()) AppComponentSize.expandedContentMaxWidth else AppComponentSize.contentMaxWidth
 
 /** 상단 바가 피해야 하는 영역: 상태 바와 가로 방향 디스플레이 컷아웃. */
 val topBarWindowInsets: WindowInsets

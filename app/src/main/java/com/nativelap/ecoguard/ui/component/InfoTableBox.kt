@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
@@ -22,16 +23,15 @@ fun InfoTableBox(
     modifier: Modifier = Modifier,
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    Column(
-        modifier =
-            modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(AppRadius.button))
-                .background(MaterialTheme.colorScheme.surfaceContainerLow)
-                .padding(AppSpacing.lg),
-        verticalArrangement = Arrangement.spacedBy(AppSpacing.sm),
-        content = content,
-    )
+    EcoCard(
+        modifier = modifier,
+        cornerRadius = AppRadius.recordCard,
+        contentPadding =
+            androidx.compose.foundation.layout
+                .PaddingValues(AppSpacing.md),
+    ) {
+        Column(verticalArrangement = Arrangement.spacedBy(10.dp), content = content)
+    }
 }
 
 @Preview(showBackground = true, widthDp = 390)

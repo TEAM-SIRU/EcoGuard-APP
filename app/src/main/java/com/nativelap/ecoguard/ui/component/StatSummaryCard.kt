@@ -24,13 +24,12 @@ fun StatSummaryCard(
     value: String,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier =
-            modifier
-                .clip(RoundedCornerShape(AppRadius.button))
-                .background(MaterialTheme.colorScheme.surfaceContainerLow)
-                .padding(AppSpacing.md),
-        verticalArrangement = Arrangement.spacedBy(AppSpacing.xxs),
+    EcoCard(
+        modifier = modifier,
+        cornerRadius = AppRadius.recordCard,
+        contentPadding =
+            androidx.compose.foundation.layout
+                .PaddingValues(AppSpacing.md),
     ) {
         Text(
             text = label,

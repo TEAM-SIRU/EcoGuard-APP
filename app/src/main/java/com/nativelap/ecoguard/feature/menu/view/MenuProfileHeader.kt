@@ -46,31 +46,13 @@ fun MenuProfileHeader(
         horizontalArrangement = Arrangement.spacedBy(profileSpacing),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Box(
-            modifier =
-                Modifier
-                    .size(profileAvatarSize)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primaryContainer)
-                    .clearAndSetSemantics { },
-            contentAlignment = Alignment.Center,
-        ) {
-            // 원 크기는 고정이므로 큰 글자에서는 이니셜을 원 안에 맞게 줄인다.
-            BasicText(
-                text = menuState.profileInitials,
-                modifier = Modifier.padding(AppSpacing.xxs),
-                style =
-                    MaterialTheme.typography.titleMedium.copy(
-                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    ),
-                maxLines = 1,
-                autoSize =
-                    TextAutoSize.StepBased(
-                        minFontSize = profileInitialsMinFontSize / LocalDensity.current.fontScale,
-                        maxFontSize = MaterialTheme.typography.titleMedium.fontSize,
-                    ),
-            )
-        }
+        androidx.compose.foundation.Image(
+            painter =
+                androidx.compose.ui.res
+                    .painterResource(R.drawable.ic_avatar),
+            contentDescription = null,
+            modifier = Modifier.size(profileAvatarSize),
+        )
 
         Column(
             modifier = Modifier.weight(1f),

@@ -15,6 +15,7 @@ import com.nativelap.ecoguard.ui.component.EcoBackTopBar
 import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
 import com.nativelap.ecoguard.ui.component.EcoSecondaryButton
 import com.nativelap.ecoguard.ui.component.StatusMessage
+import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 /** 06-5 업로드 실패. 같은 사진으로 다시 보내거나 홈으로 돌아간다. */
@@ -26,12 +27,12 @@ fun UploadFailedScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             EcoBackTopBar(onBackClick = { onEvent(VerificationScreenEvent.BackClick) })
         },
         bottomBar = {
-            BottomCtaBar {
+            BottomCtaBar(minHeight = AppComponentSize.stateBottomCtaMinHeight) {
                 EcoPrimaryButton(
                     text = stringResource(R.string.photo_resend_same),
                     onClick = { onEvent(VerificationScreenEvent.ResendSamePhotoClick) },

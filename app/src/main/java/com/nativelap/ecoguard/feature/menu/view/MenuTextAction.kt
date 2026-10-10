@@ -24,22 +24,22 @@ fun MenuTextAction(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    isDestructive: Boolean = false,
 ) {
     Text(
         text = text,
         modifier =
             modifier
-                .fillMaxWidth()
                 .heightIn(min = AppComponentSize.minTouchTarget)
                 .clickable(
                     role = Role.Button,
                     onClick = onClick,
                 ).padding(
-                    horizontal = AppSpacing.screenHorizontal,
+                    horizontal = AppSpacing.xxs,
                     vertical = AppSpacing.md,
                 ),
         style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-        color = MaterialTheme.extraColors.captionTextColor,
+        color = if (isDestructive) MaterialTheme.colorScheme.error else MaterialTheme.extraColors.captionTextColor,
     )
 }
 

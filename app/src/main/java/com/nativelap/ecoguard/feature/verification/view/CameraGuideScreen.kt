@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,6 +33,7 @@ import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationScreenE
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationStep
 import com.nativelap.ecoguard.ui.component.BottomCtaBar
 import com.nativelap.ecoguard.ui.component.EcoBackTopBar
+import com.nativelap.ecoguard.ui.component.EcoCard
 import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
 import com.nativelap.ecoguard.ui.component.PageTitle
 import com.nativelap.ecoguard.ui.component.TwoLineTextRow
@@ -52,7 +54,7 @@ fun CameraGuideScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             EcoBackTopBar(
                 onBackClick = { onEvent(VerificationScreenEvent.BackClick) },
@@ -101,55 +103,63 @@ fun CameraGuideScreen(
                         ),
                 )
 
-                Column(
+                EcoCard(
+                    contentPadding = PaddingValues(0.dp),
                     modifier =
                         Modifier
                             .padding(
                                 start = AppSpacing.screenHorizontal,
                                 end = AppSpacing.screenHorizontal,
                                 bottom = AppSpacing.xs,
-                            ).fillMaxWidth()
-                            .height(guideIllustrationHeight)
-                            .clip(RoundedCornerShape(AppRadius.card))
-                            .background(MaterialTheme.colorScheme.surfaceContainerLow),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement =
-                        Arrangement.spacedBy(
-                            space = AppSpacing.sm,
-                            alignment = Alignment.CenterVertically,
-                        ),
+                            ),
                 ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_frame),
-                        contentDescription = null,
-                        modifier = Modifier.size(guideIllustrationIconSize),
-                        tint = MaterialTheme.colorScheme.primary,
-                    )
+                    Column(
+                        modifier = Modifier.fillMaxWidth().height(guideIllustrationHeight),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement =
+                            Arrangement.spacedBy(
+                                space = AppSpacing.sm,
+                                alignment = Alignment.CenterVertically,
+                            ),
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_frame),
+                            contentDescription = null,
+                            modifier = Modifier.size(guideIllustrationIconSize),
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
 
-                    Text(
-                        text = areaName,
-                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
+                        Text(
+                            text = areaName,
+                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
                 }
 
-                TwoLineTextRow(
-                    title = stringResource(R.string.camera_show_entire_area),
-                    subtitle = stringResource(R.string.camera_capture_end_of_corridor),
-                    leadingIconRes = R.drawable.ic_frame_22,
-                )
+                EcoCard(
+                    modifier = Modifier.padding(horizontal = AppSpacing.md, vertical = AppSpacing.xxs),
+                    cornerRadius = AppRadius.listCard,
+                    contentPadding = PaddingValues(vertical = AppSpacing.xxs),
+                ) {
+                    TwoLineTextRow(
+                        title = stringResource(R.string.camera_show_entire_area),
+                        subtitle = stringResource(R.string.camera_capture_end_of_corridor),
+                        leadingIconRes = R.drawable.ic_frame_22,
+                    )
 
-                TwoLineTextRow(
-                    title = stringResource(R.string.camera_take_clear_photo),
-                    subtitle = stringResource(R.string.camera_dark_photo_may_be_rejected),
-                    leadingIconRes = R.drawable.ic_sun,
-                )
+                    TwoLineTextRow(
+                        title = stringResource(R.string.camera_take_clear_photo),
+                        subtitle = stringResource(R.string.camera_dark_photo_may_be_rejected),
+                        leadingIconRes = R.drawable.ic_sun,
+                    )
 
-                TwoLineTextRow(
-                    title = stringResource(R.string.camera_gallery_not_available),
-                    subtitle = stringResource(R.string.camera_one_submission_per_day),
-                    leadingIconRes = R.drawable.ic_ban,
-                )
+                    TwoLineTextRow(
+                        title = stringResource(R.string.camera_gallery_not_available),
+                        subtitle = stringResource(R.string.camera_one_submission_per_day),
+                        leadingIconRes = R.drawable.ic_ban,
+                    )
+                }
             }
         }
     }

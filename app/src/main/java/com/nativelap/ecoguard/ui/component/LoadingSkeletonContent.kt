@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.ThemeMode
@@ -46,6 +47,8 @@ fun LoadingSkeletonContent(
                 Modifier
                     .fillMaxWidth()
                     .height(skeletonMainSkeletonHeight),
+            containerColor = MaterialTheme.colorScheme.surface,
+            cornerRadius = AppRadius.card,
         )
 
         SkeletonPlaceholder(
@@ -53,6 +56,8 @@ fun LoadingSkeletonContent(
                 Modifier
                     .fillMaxWidth()
                     .height(skeletonRowSkeletonHeight),
+            containerColor = MaterialTheme.colorScheme.surface,
+            cornerRadius = AppRadius.card,
         )
 
         SkeletonPlaceholder(
@@ -60,6 +65,8 @@ fun LoadingSkeletonContent(
                 Modifier
                     .fillMaxWidth()
                     .height(skeletonRowSkeletonHeight),
+            containerColor = MaterialTheme.colorScheme.surface,
+            cornerRadius = AppRadius.card,
         )
 
         SkeletonPlaceholder(
