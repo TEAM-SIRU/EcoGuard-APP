@@ -12,7 +12,7 @@ fun AreaRoute(
 ) {
     when (uiState) {
         AreaUiState.Loading -> {
-            AreaLoadingScreen()
+            AreaLoadingScreen(onEvent = onEvent)
         }
 
         else -> {

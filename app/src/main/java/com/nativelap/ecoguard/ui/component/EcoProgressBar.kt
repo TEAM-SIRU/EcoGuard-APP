@@ -27,7 +27,7 @@ fun EcoProgressBar(
     currentCount: Int,
     maxCount: Int,
     modifier: Modifier = Modifier,
-    progressColor: Color = MaterialTheme.colorScheme.primary,
+    progressColor: Color = MaterialTheme.colorScheme.secondary,
 ) {
     val progressFraction =
         if (maxCount > 0) {

@@ -12,9 +12,9 @@ import com.nativelap.ecoguard.feature.home.viewmodel.HomeScreenEvent
 import com.nativelap.ecoguard.ui.component.BottomCtaBar
 import com.nativelap.ecoguard.ui.component.CenteredScrollContent
 import com.nativelap.ecoguard.ui.component.EcoBackTopBar
-import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
 import com.nativelap.ecoguard.ui.component.EcoSecondaryButton
 import com.nativelap.ecoguard.ui.component.StatusMessage
+import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 private const val PARAGRAPH_SEPARATOR = "\n\n"
@@ -34,13 +34,13 @@ fun HomeActivityRemovedScreen(
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             EcoBackTopBar(onBackClick = { onEvent(HomeScreenEvent.BackClick) })
         },
         bottomBar = {
-            BottomCtaBar {
-                EcoPrimaryButton(
+            BottomCtaBar(minHeight = AppComponentSize.stateBottomCtaMinHeight) {
+                EcoSecondaryButton(
                     text = stringResource(R.string.action_home),
                     onClick = { onEvent(HomeScreenEvent.HomeClick) },
                 )
@@ -54,6 +54,7 @@ fun HomeActivityRemovedScreen(
     ) { innerPadding ->
         CenteredScrollContent(innerPadding = innerPadding) {
             StatusMessage(
+                iconRes = R.drawable.ic_activity_removed_64,
                 title = stringResource(R.string.home_activity_cancelled),
                 description = removalDescription,
             )

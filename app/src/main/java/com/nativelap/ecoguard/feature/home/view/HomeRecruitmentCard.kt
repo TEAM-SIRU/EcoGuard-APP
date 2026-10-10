@@ -110,7 +110,7 @@ fun HomeRecruitmentCard(
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFF8FAF9, widthDp = 390)
+@Preview(showBackground = true, backgroundColor = 0xFFFAFBFA, widthDp = 390)
 @Composable
 private fun HomeRecruitmentCardPreview() {
     EcoGuardTheme {

@@ -117,7 +117,7 @@ private fun WeekDayIndicator(weekDay: WeekDayUiModel) {
         when {
             weekDay.isCompleted -> {
                 Box(
-                    modifier = indicatorModifier.background(MaterialTheme.colorScheme.primary),
+                    modifier = indicatorModifier.background(MaterialTheme.colorScheme.secondary),
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(
@@ -178,7 +178,7 @@ private fun WeekDayIndicator(weekDay: WeekDayUiModel) {
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFF8FAF9, widthDp = 390)
+@Preview(showBackground = true, backgroundColor = 0xFFFAFBFA, widthDp = 390)
 @Composable
 private fun HomeWeekCleaningCardPreview() {
     EcoGuardTheme {

@@ -32,7 +32,7 @@ fun AppealSubmittedScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             BottomCtaBar {
                 EcoSecondaryButton(

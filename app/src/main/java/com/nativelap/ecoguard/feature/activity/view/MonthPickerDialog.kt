@@ -53,9 +53,34 @@ fun MonthPickerDialog(
     initialMonth: Int,
     onDismissRequest: () -> Unit,
     onApply: (year: Int, month: Int) -> Unit,
+    latestYear: Int? = null,
+    latestMonth: Int = 12,
 ) {
-    var selectedYear by rememberSaveable { mutableIntStateOf(initialYear) }
-    var selectedMonth by rememberSaveable { mutableIntStateOf(initialMonth) }
+    var selectedYear by rememberSaveable {
+        mutableIntStateOf(
+            if (latestYear ==
+                null
+            ) {
+                initialYear
+            } else {
+                minOf(initialYear, latestYear)
+            },
+        )
+    }
+    var selectedMonth by rememberSaveable {
+        mutableIntStateOf(
+            initialMonth.coerceIn(
+                1,
+                if (selectedYear ==
+                    latestYear
+                ) {
+                    latestMonth.coerceIn(1, 12)
+                } else {
+                    12
+                },
+            ),
+        )
+    }
 
     EcoDialogSurface(onDismissRequest = onDismissRequest) {
         Column(verticalArrangement = Arrangement.spacedBy(AppSpacing.xs)) {
@@ -83,7 +108,7 @@ fun MonthPickerDialog(
                 modifier = Modifier.size(AppComponentSize.minTouchTarget),
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_back),
+                    painter = painterResource(R.drawable.ic_month_back),
                     contentDescription = stringResource(R.string.cd_previous_year),
                     modifier = Modifier.size(AppIconSize.button),
                     tint = MaterialTheme.colorScheme.onSurface,
@@ -97,14 +122,25 @@ fun MonthPickerDialog(
             )
 
             IconButton(
-                onClick = { selectedYear += 1 },
+                onClick = {
+                    selectedYear += 1
+                    if (selectedYear == latestYear) selectedMonth = minOf(selectedMonth, latestMonth.coerceIn(1, 12))
+                },
+                enabled = latestYear == null || selectedYear < latestYear,
                 modifier = Modifier.size(AppComponentSize.minTouchTarget),
             ) {
                 Icon(
-                    painter = painterResource(R.drawable.ic_chevron_right_20),
+                    painter = painterResource(R.drawable.ic_month_forward),
                     contentDescription = stringResource(R.string.cd_next_year),
                     modifier = Modifier.size(AppIconSize.button),
-                    tint = MaterialTheme.colorScheme.onSurface,
+                    tint =
+                        if (latestYear != null &&
+                            selectedYear >= latestYear
+                        ) {
+                            MaterialTheme.extraColors.disabledContentColor
+                        } else {
+                            MaterialTheme.colorScheme.onSurface
+                        },
                 )
             }
         }
@@ -116,6 +152,8 @@ fun MonthPickerDialog(
                         MonthItem(
                             month = month,
                             isSelected = month == selectedMonth,
+                            enabled =
+                                latestYear == null || selectedYear < latestYear || month <= latestMonth.coerceIn(1, 12),
                             onClick = { selectedMonth = month },
                             modifier = Modifier.weight(1f),
                         )
@@ -137,8 +175,17 @@ fun MonthPickerDialog(
             secondButton = { itemModifier ->
                 EcoDialogButton(
                     text = stringResource(R.string.action_apply),
-                    onClick = { onApply(selectedYear, selectedMonth) },
-                    containerColor = MaterialTheme.colorScheme.primary,
+                    onClick = {
+                        if (latestYear == null || selectedYear < latestYear ||
+                            (selectedYear == latestYear && selectedMonth <= latestMonth.coerceIn(1, 12))
+                        ) {
+                            onApply(selectedYear, selectedMonth)
+                        }
+                    },
+                    enabled =
+                        latestYear == null || selectedYear < latestYear ||
+                            (selectedYear == latestYear && selectedMonth <= latestMonth.coerceIn(1, 12)),
+                    containerColor = MaterialTheme.colorScheme.secondary,
                     contentColor = MaterialTheme.colorScheme.onPrimary,
                     modifier = itemModifier,
                 )
@@ -151,6 +198,7 @@ fun MonthPickerDialog(
 private fun MonthItem(
     month: Int,
     isSelected: Boolean,
+    enabled: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -161,13 +209,14 @@ private fun MonthItem(
                 .clip(RoundedCornerShape(AppRadius.button))
                 .background(
                     if (isSelected) {
-                        MaterialTheme.colorScheme.primary
+                        MaterialTheme.colorScheme.secondary
                     } else {
                         MaterialTheme.colorScheme.surfaceVariant
                     },
                 ).selectable(
                     selected = isSelected,
                     onClick = onClick,
+                    enabled = enabled,
                     role = Role.RadioButton,
                 ),
         contentAlignment = Alignment.Center,
@@ -178,6 +227,8 @@ private fun MonthItem(
             color =
                 if (isSelected) {
                     MaterialTheme.colorScheme.onPrimary
+                } else if (!enabled) {
+                    MaterialTheme.extraColors.disabledContentColor
                 } else {
                     MaterialTheme.colorScheme.onSurface
                 },
@@ -189,9 +240,12 @@ private fun MonthItem(
 @Composable
 private fun MonthPickerDialogPreview() {
     EcoGuardTheme {
+        ActivityScreen(uiState = ActivityPreviewFixtures.activityContent, onEvent = {})
         MonthPickerDialog(
             initialYear = 2026,
             initialMonth = 9,
+            latestYear = 2026,
+            latestMonth = 9,
             onDismissRequest = {},
             onApply = { _, _ -> },
         )

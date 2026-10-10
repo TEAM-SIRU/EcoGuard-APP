@@ -37,12 +37,7 @@ fun ActivitySummaryContent(
     onMonthSelectorClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val monthlyMinutesColor =
-        if (activityContent.monthlyMinutes > 0) {
-            MaterialTheme.colorScheme.primary
-        } else {
-            MaterialTheme.colorScheme.onSurface
-        }
+    val monthlyMinutesColor = MaterialTheme.colorScheme.onPrimaryContainer
 
     Column(modifier = modifier.fillMaxWidth()) {
         Row(

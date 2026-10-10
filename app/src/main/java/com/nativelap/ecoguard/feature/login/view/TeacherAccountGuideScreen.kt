@@ -23,6 +23,7 @@ import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.login.viewmodel.TeacherAccountGuideScreenEvent
 import com.nativelap.ecoguard.ui.component.BottomCtaBar
 import com.nativelap.ecoguard.ui.component.CenteredIconMessage
+import com.nativelap.ecoguard.ui.component.CenteredIconStyle
 import com.nativelap.ecoguard.ui.component.EcoSecondaryButton
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
@@ -37,17 +38,17 @@ fun TeacherAccountGuideScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             BottomCtaBar(itemSpacing = teacherGuideButtonSpacing) {
                 EcoSecondaryButton(
-                    text = stringResource(R.string.web_address_copy),
-                    onClick = { onEvent(TeacherAccountGuideScreenEvent.CopyWebAddressClick) },
+                    text = stringResource(R.string.web_address_share),
+                    onClick = { onEvent(TeacherAccountGuideScreenEvent.ShareWebAddressClick) },
                 )
 
                 EcoSecondaryButton(
-                    text = stringResource(R.string.web_address_share),
-                    onClick = { onEvent(TeacherAccountGuideScreenEvent.ShareWebAddressClick) },
+                    text = stringResource(R.string.web_address_copy),
+                    onClick = { onEvent(TeacherAccountGuideScreenEvent.CopyWebAddressClick) },
                 )
 
                 EcoSecondaryButton(
@@ -79,7 +80,8 @@ fun TeacherAccountGuideScreen(
                 verticalArrangement = Arrangement.Center,
             ) {
                 CenteredIconMessage(
-                    iconRes = R.drawable.ic_list_30,
+                    iconRes = R.drawable.ic_teacher_48,
+                    iconStyle = CenteredIconStyle.GUIDE,
                     title = stringResource(R.string.teacher_web_only_title),
                     description = stringResource(R.string.teacher_web_only_description),
                 )

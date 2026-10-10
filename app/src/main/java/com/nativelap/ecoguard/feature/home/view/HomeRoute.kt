@@ -12,7 +12,7 @@ fun HomeRoute(
 ) {
     when (uiState) {
         HomeUiState.Loading -> {
-            HomeLoadingScreen()
+            HomeLoadingScreen(onEvent = onEvent)
         }
 
         HomeUiState.LoadFailed -> {

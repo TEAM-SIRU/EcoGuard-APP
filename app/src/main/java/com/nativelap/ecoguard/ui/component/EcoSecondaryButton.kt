@@ -1,6 +1,7 @@
 package com.nativelap.ecoguard.ui.component
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -22,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppIconSize
@@ -30,7 +32,7 @@ import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 
-/** 회색 보조 버튼. enabled=false이면 Figma의 Button/disabled 모양이 된다. */
+/** 흰 바탕과 테두리의 보조 버튼. 비활성 상태는 회색 바탕으로 구분한다. */
 @Composable
 fun EcoSecondaryButton(
     text: String,
@@ -48,10 +50,11 @@ fun EcoSecondaryButton(
                 .heightIn(min = minHeight),
         enabled = enabled,
         shape = RoundedCornerShape(AppRadius.button),
+        border = if (enabled) BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant) else null,
         colors =
             ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.onSurface,
                 disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                 disabledContentColor = MaterialTheme.extraColors.disabledContentColor,
             ),
@@ -71,7 +74,7 @@ fun EcoSecondaryButton(
 
             Text(
                 text = text,
-                style = MaterialTheme.typography.labelMedium,
+                style = MaterialTheme.typography.labelLarge,
                 textAlign = TextAlign.Center,
             )
         }

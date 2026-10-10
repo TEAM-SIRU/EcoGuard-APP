@@ -19,6 +19,6 @@ fun SectionDivider(modifier: Modifier = Modifier) {
             modifier
                 .fillMaxWidth()
                 .height(sectionDividerHeight)
-                .background(MaterialTheme.colorScheme.surfaceVariant),
+                .background(MaterialTheme.colorScheme.background),
     )
 }

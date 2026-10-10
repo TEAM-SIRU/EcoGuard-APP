@@ -46,7 +46,7 @@ fun EcoTopBar(
         Row(
             modifier =
                 Modifier
-                    .contentColumnWidth()
+                    .contentColumnWidth(twoPaneContentMaxWidth())
                     .heightIn(min = AppComponentSize.topBarHeight)
                     .padding(
                         start = AppSpacing.screenHorizontal,

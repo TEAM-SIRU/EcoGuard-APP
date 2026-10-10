@@ -50,7 +50,7 @@ import com.nativelap.ecoguard.ui.theme.extraTypography
 private val tabBarShadowRadius = 8.dp
 private val tabBarShadowOffsetY = (-4).dp
 private const val TAB_BAR_SHADOW_ALPHA = 0.06f
-private val cameraFabOffsetY = (-18).dp
+private val cameraFabOffsetY = (-19).dp
 private val cameraFabShadowRadius = 14.dp
 private val cameraFabShadowOffsetY = 6.dp
 private const val CAMERA_FAB_SHADOW_ALPHA = 0.32f
@@ -90,7 +90,7 @@ fun EcoBottomTabBar(
             Row(
                 modifier =
                     Modifier
-                        .contentColumnWidth()
+                        .contentColumnWidth(twoPaneContentMaxWidth())
                         .heightIn(min = AppComponentSize.tabBarHeight)
                         .padding(horizontal = AppSpacing.xs)
                         .selectableGroup(),
@@ -144,7 +144,7 @@ private fun EcoBottomTabItem(
 ) {
     val contentColor =
         if (isSelected) {
-            MaterialTheme.colorScheme.primary
+            MaterialTheme.colorScheme.secondary
         } else {
             MaterialTheme.extraColors.captionTextColor
         }
@@ -208,7 +208,7 @@ private fun CameraFab(
     // 인증할 수 없는 상태(미가입·구역 배정 대기)에서는 회색으로 표시하고 그림자를 없앤다.
     val fabContainerColor =
         if (isEnabled) {
-            MaterialTheme.colorScheme.primary
+            MaterialTheme.colorScheme.secondary
         } else {
             MaterialTheme.extraColors.disabledContentColor
         }
@@ -229,7 +229,7 @@ private fun CameraFab(
                     shadow =
                         Shadow(
                             radius = cameraFabShadowRadius,
-                            color = MaterialTheme.colorScheme.primary,
+                            color = MaterialTheme.colorScheme.secondary,
                             offset = DpOffset(x = 0.dp, y = cameraFabShadowOffsetY),
                             alpha = fabShadowAlpha,
                         ),
@@ -237,7 +237,7 @@ private fun CameraFab(
         enabled = isEnabled,
         shape = CircleShape,
         color = fabContainerColor,
-        contentColor = MaterialTheme.colorScheme.onPrimary,
+        contentColor = MaterialTheme.colorScheme.onSecondary,
         border =
             BorderStroke(
                 width = AppComponentSize.cameraFabBorder,

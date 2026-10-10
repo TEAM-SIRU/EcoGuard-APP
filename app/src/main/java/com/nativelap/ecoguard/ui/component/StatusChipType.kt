@@ -36,7 +36,7 @@ enum class StatusChipType(
 @ReadOnlyComposable
 fun StatusChipType.contentColor(): Color =
     when (this) {
-        StatusChipType.APPROVED -> MaterialTheme.colorScheme.primary
+        StatusChipType.APPROVED -> MaterialTheme.colorScheme.onPrimaryContainer
         StatusChipType.REVIEWING -> MaterialTheme.extraColors.warningTextColor
         StatusChipType.REJECTED -> MaterialTheme.colorScheme.error
         StatusChipType.NOT_SUBMITTED -> MaterialTheme.colorScheme.onSurfaceVariant

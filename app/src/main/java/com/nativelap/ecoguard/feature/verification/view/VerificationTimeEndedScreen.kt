@@ -15,6 +15,7 @@ import com.nativelap.ecoguard.ui.component.EcoBackTopBar
 import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
 import com.nativelap.ecoguard.ui.component.EcoSecondaryButton
 import com.nativelap.ecoguard.ui.component.StatusMessage
+import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 /** 06-6 인증 시간 종료. 업로드 상태를 확인하거나 홈으로 돌아간다. */
@@ -26,12 +27,12 @@ fun VerificationTimeEndedScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             EcoBackTopBar(onBackClick = { onEvent(VerificationScreenEvent.BackClick) })
         },
         bottomBar = {
-            BottomCtaBar {
+            BottomCtaBar(minHeight = AppComponentSize.stateBottomCtaMinHeight) {
                 EcoPrimaryButton(
                     text = stringResource(R.string.upload_status_check),
                     onClick = { onEvent(VerificationScreenEvent.CheckUploadStatusClick) },
@@ -46,6 +47,7 @@ fun VerificationTimeEndedScreen(
     ) { innerPadding ->
         CenteredScrollContent(innerPadding = innerPadding) {
             StatusMessage(
+                iconRes = R.drawable.ic_clock_64,
                 title = stringResource(R.string.verification_time_ended),
                 description = stringResource(R.string.verification_time_ended_description, deadlineTime),
             )

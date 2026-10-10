@@ -32,9 +32,9 @@ fun RecruitmentProgressContent(
     val isClosed = applicationStatus is RecruitmentApplicationStatus.Closed
     val progressColor =
         if (isClosed) {
-            MaterialTheme.extraColors.captionTextColor
+            MaterialTheme.colorScheme.outline
         } else {
-            MaterialTheme.colorScheme.primary
+            MaterialTheme.colorScheme.secondary
         }
     val statusMessage =
         when (applicationStatus) {

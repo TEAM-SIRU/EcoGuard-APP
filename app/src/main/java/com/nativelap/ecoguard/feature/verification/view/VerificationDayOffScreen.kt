@@ -37,7 +37,7 @@ fun VerificationDayOffScreen(
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             BottomCtaBar {
                 EcoPrimaryButton(
@@ -49,7 +49,7 @@ fun VerificationDayOffScreen(
     ) { innerPadding ->
         CenteredScrollContent(innerPadding = innerPadding) {
             CenteredIconMessage(
-                iconRes = R.drawable.ic_clock_64,
+                iconRes = R.drawable.ic_sun_64,
                 title = stringResource(titleRes),
                 description = stringResource(descriptionRes),
                 iconStyle = CenteredIconStyle.HERO,

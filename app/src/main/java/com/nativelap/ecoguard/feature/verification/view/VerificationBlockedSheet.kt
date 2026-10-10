@@ -1,10 +1,12 @@
 package com.nativelap.ecoguard.feature.verification.view
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
+import com.nativelap.ecoguard.feature.home.view.HomePreviewFixtures
+import com.nativelap.ecoguard.feature.home.view.HomeScreen
+import com.nativelap.ecoguard.feature.home.viewmodel.TodayCleaningStatus
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationBlockReason
 import com.nativelap.ecoguard.ui.component.EcoInfoBottomSheet
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
@@ -20,7 +22,7 @@ fun VerificationBlockedSheet(
     when (blockReason) {
         is VerificationBlockReason.OutsideVerificationTime -> {
             EcoInfoBottomSheet(
-                iconRes = R.drawable.ic_clock_30,
+                iconRes = R.drawable.ic_clock_48,
                 title = stringResource(R.string.home_outside_verification_time),
                 description =
                     stringResource(
@@ -36,8 +38,7 @@ fun VerificationBlockedSheet(
 
         is VerificationBlockReason.AlreadySubmitted -> {
             EcoInfoBottomSheet(
-                iconRes = R.drawable.ic_check_30,
-                iconTint = MaterialTheme.colorScheme.primary,
+                iconRes = R.drawable.ic_check_48,
                 title = stringResource(R.string.verification_already_submitted_title),
                 description =
                     stringResource(
@@ -54,7 +55,7 @@ fun VerificationBlockedSheet(
 
         VerificationBlockReason.CameraPermissionRequired -> {
             EcoInfoBottomSheet(
-                iconRes = R.drawable.ic_cam_30,
+                iconRes = R.drawable.ic_cam_48,
                 title = stringResource(R.string.camera_permission_title),
                 description = stringResource(R.string.camera_permission_description),
                 primaryActionText = stringResource(R.string.camera_open_settings),
@@ -71,6 +72,14 @@ fun VerificationBlockedSheet(
 @Composable
 private fun VerificationBlockedOutsideTimePreview() {
     EcoGuardTheme {
+        HomeScreen(
+            uiState =
+                HomePreviewFixtures.cleaningHome(
+                    TodayCleaningStatus.OutsideVerificationTime("08:00"),
+                ),
+            onEvent = {
+            },
+        )
         VerificationBlockedSheet(
             blockReason =
                 VerificationBlockReason.OutsideVerificationTime(
@@ -88,6 +97,7 @@ private fun VerificationBlockedOutsideTimePreview() {
 @Composable
 private fun VerificationBlockedAlreadySubmittedPreview() {
     EcoGuardTheme {
+        HomeScreen(uiState = HomePreviewFixtures.cleaningHome(TodayCleaningStatus.AiReviewing("08:04")), onEvent = {})
         VerificationBlockedSheet(
             blockReason = VerificationBlockReason.AlreadySubmitted(submittedTime = "08:04"),
             onPrimaryActionClick = {},
@@ -101,6 +111,7 @@ private fun VerificationBlockedAlreadySubmittedPreview() {
 @Composable
 private fun VerificationBlockedCameraPermissionPreview() {
     EcoGuardTheme {
+        CameraGuideScreen(areaName = "본관 2층 복도 A", onEvent = {})
         VerificationBlockedSheet(
             blockReason = VerificationBlockReason.CameraPermissionRequired,
             onPrimaryActionClick = {},

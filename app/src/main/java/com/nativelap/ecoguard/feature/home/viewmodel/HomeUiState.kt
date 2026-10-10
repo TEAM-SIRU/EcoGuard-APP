@@ -29,6 +29,7 @@ data class HomeNoticeUiModel(
     val headline: String,
     val body: String,
     val isNew: Boolean,
+    val emphasizedPhrases: List<String> = emptyList(),
 )
 
 @Immutable

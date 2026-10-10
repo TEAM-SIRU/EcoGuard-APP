@@ -12,11 +12,11 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import com.nativelap.ecoguard.R
 
-private val PretendardFontFamily =
+private val NotoSansKrFontFamily =
     FontFamily(
-        Font(R.font.pretendard_regular, FontWeight.Normal),
-        Font(R.font.pretendard_medium, FontWeight.Medium),
-        Font(R.font.pretendard_bold, FontWeight.Bold),
+        Font(R.font.noto_sans_kr_regular, FontWeight.Normal),
+        Font(R.font.noto_sans_kr_medium, FontWeight.Medium),
+        Font(R.font.noto_sans_kr_bold, FontWeight.Bold),
     )
 
 private val CenteredLineHeightStyle =
@@ -26,13 +26,13 @@ private val CenteredLineHeightStyle =
     )
 
 // Figma 텍스트 스타일은 행간 안에서 글자를 세로 중앙에 둔다.
-private fun pretendardTextStyle(
+private fun notoSansKrTextStyle(
     fontWeight: FontWeight,
     fontSize: TextUnit,
     lineHeight: TextUnit,
     letterSpacing: TextUnit,
 ) = TextStyle(
-    fontFamily = PretendardFontFamily,
+    fontFamily = NotoSansKrFontFamily,
     fontWeight = fontWeight,
     fontSize = fontSize,
     lineHeight = lineHeight,
@@ -55,104 +55,95 @@ private fun TextStyle.withPhraseLineBreak() =
         localeList = KoreanLocaleList,
     )
 
-private fun TextStyle.withPretendard() = copy(fontFamily = PretendardFontFamily)
+private fun TextStyle.withNotoSansKr() = copy(fontFamily = NotoSansKrFontFamily)
 
 private val BaseTypography =
     defaultTypography.copy(
-        displayLarge = defaultTypography.displayLarge.withPretendard(),
-        displayMedium = defaultTypography.displayMedium.withPretendard(),
-        displaySmall = defaultTypography.displaySmall.withPretendard(),
-        // Title 1 · 26/36 Bold
+        displayLarge = defaultTypography.displayLarge.withNotoSansKr(),
+        displayMedium = defaultTypography.displayMedium.withNotoSansKr(),
+        displaySmall = defaultTypography.displaySmall.withNotoSansKr(),
         headlineLarge =
-            pretendardTextStyle(
-                fontWeight = FontWeight.Bold,
-                fontSize = 26.sp,
-                lineHeight = 36.sp,
-                letterSpacing = (-0.52f).sp,
-            ),
-        // Title 2 · 22/31 Bold
-        headlineMedium =
-            pretendardTextStyle(
+            notoSansKrTextStyle(
                 fontWeight = FontWeight.Bold,
                 fontSize = 22.sp,
-                lineHeight = 31.sp,
+                lineHeight = 30.sp,
                 letterSpacing = (-0.44f).sp,
             ),
-        // Title 3 · 20/29 Bold
-        headlineSmall =
-            pretendardTextStyle(
+        headlineMedium =
+            notoSansKrTextStyle(
                 fontWeight = FontWeight.Bold,
-                fontSize = 20.sp,
-                lineHeight = 29.sp,
-                letterSpacing = (-0.4f).sp,
+                fontSize = 19.sp,
+                lineHeight = 27.sp,
+                letterSpacing = (-0.38f).sp,
+            ),
+        headlineSmall =
+            notoSansKrTextStyle(
+                fontWeight = FontWeight.Bold,
+                fontSize = 17.sp,
+                lineHeight = 25.sp,
+                letterSpacing = (-0.34f).sp,
             ),
         titleLarge =
-            pretendardTextStyle(
+            notoSansKrTextStyle(
                 fontWeight = FontWeight.Bold,
-                fontSize = 18.sp,
-                lineHeight = 26.sp,
-                letterSpacing = (-0.18f).sp,
+                fontSize = 17.sp,
+                lineHeight = 25.sp,
+                letterSpacing = (-0.34f).sp,
             ),
         titleMedium =
-            pretendardTextStyle(
+            notoSansKrTextStyle(
                 fontWeight = FontWeight.Bold,
-                fontSize = 17.sp,
-                lineHeight = 25.sp,
-                letterSpacing = (-0.17f).sp,
-            ),
-        titleSmall =
-            pretendardTextStyle(
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                lineHeight = 23.sp,
-                letterSpacing = (-0.16f).sp,
-            ),
-        // Body 1 · 17/25 Medium
-        bodyLarge =
-            pretendardTextStyle(
-                fontWeight = FontWeight.Medium,
-                fontSize = 17.sp,
-                lineHeight = 25.sp,
-                letterSpacing = (-0.17f).sp,
-            ),
-        // Body 2 · 15/22 Regular
-        bodyMedium =
-            pretendardTextStyle(
-                fontWeight = FontWeight.Normal,
                 fontSize = 15.sp,
                 lineHeight = 22.sp,
                 letterSpacing = (-0.15f).sp,
             ),
-        // Sub · 14/20 Regular
-        bodySmall =
-            pretendardTextStyle(
-                fontWeight = FontWeight.Normal,
+        titleSmall =
+            notoSansKrTextStyle(
+                fontWeight = FontWeight.Bold,
                 fontSize = 14.sp,
                 lineHeight = 20.sp,
                 letterSpacing = (-0.14f).sp,
             ),
-        // Primary 버튼 · 19/26 Bold
+        bodyLarge =
+            notoSansKrTextStyle(
+                fontWeight = FontWeight.Medium,
+                fontSize = 15.sp,
+                lineHeight = 22.sp,
+                letterSpacing = (-0.15f).sp,
+            ),
+        bodyMedium =
+            notoSansKrTextStyle(
+                fontWeight = FontWeight.Normal,
+                fontSize = 14.sp,
+                lineHeight = 21.sp,
+                letterSpacing = (-0.14f).sp,
+            ),
+        bodySmall =
+            notoSansKrTextStyle(
+                fontWeight = FontWeight.Normal,
+                fontSize = 13.sp,
+                lineHeight = 19.sp,
+                letterSpacing = (-0.13f).sp,
+            ),
         labelLarge =
-            pretendardTextStyle(
+            notoSansKrTextStyle(
                 fontWeight = FontWeight.Bold,
-                fontSize = 19.sp,
-                lineHeight = 26.sp,
-                letterSpacing = (-0.19f).sp,
+                fontSize = 15.sp,
+                lineHeight = 22.sp,
+                letterSpacing = (-0.15f).sp,
             ),
-        // Secondary 버튼 · 17/24 Bold
         labelMedium =
-            pretendardTextStyle(
+            notoSansKrTextStyle(
                 fontWeight = FontWeight.Bold,
-                fontSize = 17.sp,
-                lineHeight = 24.sp,
-                letterSpacing = (-0.17f).sp,
+                fontSize = 14.sp,
+                lineHeight = 20.sp,
+                letterSpacing = (-0.14f).sp,
             ),
-        // Caption · 13/18 Bold
         labelSmall =
-            pretendardTextStyle(
+            notoSansKrTextStyle(
                 fontWeight = FontWeight.Bold,
                 fontSize = 13.sp,
-                lineHeight = 18.sp,
+                lineHeight = 19.sp,
                 letterSpacing = (-0.13f).sp,
             ),
     )
@@ -172,45 +163,45 @@ val EcoGuardTypography =
 val EcoGuardExtraTypography =
     AppExtraTypography(
         statusTitle =
-            pretendardTextStyle(
+            notoSansKrTextStyle(
                 fontWeight = FontWeight.Bold,
-                fontSize = 26.sp,
-                lineHeight = 34.sp,
-                letterSpacing = 0.sp,
+                fontSize = 19.sp,
+                lineHeight = 27.sp,
+                letterSpacing = (0f).sp,
             ).withPhraseLineBreak(),
         statusBody =
-            pretendardTextStyle(
+            notoSansKrTextStyle(
                 fontWeight = FontWeight.Normal,
-                fontSize = 15.sp,
-                lineHeight = 24.sp,
-                letterSpacing = 0.sp,
+                fontSize = 14.sp,
+                lineHeight = 21.sp,
+                letterSpacing = (0f).sp,
             ),
         captionRegular =
-            pretendardTextStyle(
+            notoSansKrTextStyle(
                 fontWeight = FontWeight.Normal,
-                fontSize = 13.sp,
-                lineHeight = 18.sp,
-                letterSpacing = (-0.13f).sp,
+                fontSize = 12.sp,
+                lineHeight = 17.sp,
+                letterSpacing = (-0.12f).sp,
             ),
         loadingStatus =
-            pretendardTextStyle(
+            notoSansKrTextStyle(
                 fontWeight = FontWeight.Normal,
-                fontSize = 13.sp,
-                lineHeight = 24.sp,
-                letterSpacing = 0.sp,
+                fontSize = 12.sp,
+                lineHeight = 20.sp,
+                letterSpacing = (0f).sp,
             ),
         tabLabel =
-            pretendardTextStyle(
+            notoSansKrTextStyle(
                 fontWeight = FontWeight.Medium,
                 fontSize = 12.sp,
                 lineHeight = 16.sp,
                 letterSpacing = 0.sp,
             ),
         highlightNumber =
-            pretendardTextStyle(
+            notoSansKrTextStyle(
                 fontWeight = FontWeight.Bold,
-                fontSize = 32.sp,
-                lineHeight = 34.sp,
-                letterSpacing = 0.sp,
+                fontSize = 24.sp,
+                lineHeight = 32.sp,
+                letterSpacing = (0f).sp,
             ),
     )

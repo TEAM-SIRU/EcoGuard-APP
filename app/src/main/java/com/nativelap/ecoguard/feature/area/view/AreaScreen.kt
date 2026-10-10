@@ -1,12 +1,13 @@
 package com.nativelap.ecoguard.feature.area.view
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
@@ -18,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.area.viewmodel.AreaScreenEvent
 import com.nativelap.ecoguard.feature.area.viewmodel.AreaUiState
@@ -28,13 +28,11 @@ import com.nativelap.ecoguard.ui.component.EcoSegmentedControl
 import com.nativelap.ecoguard.ui.component.InlineEmptyState
 import com.nativelap.ecoguard.ui.component.PageTitle
 import com.nativelap.ecoguard.ui.component.SectionDivider
-import com.nativelap.ecoguard.ui.component.TwoLineTextRow
+import com.nativelap.ecoguard.ui.component.isExpandedLayout
+import com.nativelap.ecoguard.ui.component.twoPaneContentMaxWidth
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
-
-// Figma의 도면 영역 높이(308)에서 상하 여백(4·24)을 뺀 값. 도면 이미지는 서버 연동 시 채운다.
-private val floorPlanHeight = 280.dp
 
 private val areaTitlePadding =
     PaddingValues(
@@ -52,7 +50,7 @@ fun AreaScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             EcoBottomTabBar(
                 selectedTab = EcoBottomTab.AREA,
@@ -74,14 +72,14 @@ fun AreaScreen(
                     Column(
                         modifier =
                             Modifier
-                                .widthIn(max = AppComponentSize.contentMaxWidth)
+                                .widthIn(max = twoPaneContentMaxWidth())
                                 .fillMaxWidth()
                                 .verticalScroll(rememberScrollState())
                                 .padding(bottom = AppComponentSize.cameraFabScrollClearance),
                     ) {
                         PageTitle(
                             title = stringResource(R.string.common_my_cleaning_area),
-                            subtitle = stringResource(R.string.area_selected_floor, uiState.selectedFloor),
+                            subtitle = stringResource(R.string.area_floor_plan_description),
                             modifier = Modifier.padding(areaTitlePadding),
                         )
 
@@ -127,7 +125,7 @@ private fun AreaEmptyLayout(emptyContent: @Composable () -> Unit) {
     Column(
         modifier =
             Modifier
-                .widthIn(max = AppComponentSize.contentMaxWidth)
+                .widthIn(max = twoPaneContentMaxWidth())
                 .fillMaxSize(),
     ) {
         PageTitle(
@@ -146,7 +144,7 @@ private fun AreaEmptyLayout(emptyContent: @Composable () -> Unit) {
                         end = AppSpacing.screenHorizontal,
                         top = AppSpacing.xl,
                         // 빈 상태 버튼이 탭 바 위로 튀어나온 카메라 버튼에 가리지 않게 한다.
-                        bottom = AppComponentSize.cameraFabScrollClearance,
+                        bottom = AppComponentSize.emptyStateBottomClearance,
                     ),
             contentAlignment = Alignment.Center,
         ) {
@@ -185,43 +183,29 @@ private fun AreaDetailContent(
                 ),
         )
 
-        Box(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        start = AppSpacing.screenHorizontal,
-                        end = AppSpacing.screenHorizontal,
-                        top = AppSpacing.xxs,
-                        bottom = AppSpacing.xl,
-                    ).height(floorPlanHeight),
-        )
-
-        SectionDivider()
-
-        TwoLineTextRow(
-            title = areaContent.areaName,
-            subtitle = stringResource(R.string.area_description_format, areaContent.areaDescription),
-        )
-
-        TwoLineTextRow(
-            title =
-                stringResource(
-                    R.string.recruitment_daily_time,
-                    areaContent.cleaningStartTime,
-                    areaContent.cleaningEndTime,
-                ),
-            subtitle = stringResource(R.string.home_cleaning_time),
-        )
-
-        TwoLineTextRow(
-            title = stringResource(R.string.area_member_count, areaContent.teammateNames.size + 1),
-            subtitle = memberNames,
-        )
+        if (isExpandedLayout()) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(AppSpacing.xl),
+                modifier = Modifier.padding(horizontal = AppSpacing.screenHorizontal),
+            ) {
+                AreaFloorPlan(modifier = Modifier.weight(1f))
+                AreaAssignmentCard(areaContent = areaContent, memberNames = memberNames, modifier = Modifier.weight(1f))
+            }
+        } else {
+            AreaFloorPlan(
+                modifier = Modifier.padding(horizontal = AppSpacing.screenHorizontal, vertical = AppSpacing.md),
+            )
+            SectionDivider()
+            AreaAssignmentCard(
+                areaContent = areaContent,
+                memberNames = memberNames,
+                modifier = Modifier.padding(horizontal = AppSpacing.md),
+            )
+        }
     }
 }
 
-@Preview(name = "Area · content", showBackground = true, widthDp = 390, heightDp = 895)
+@Preview(name = "Area · content", showBackground = true, widthDp = 390, heightDp = 844)
 @Composable
 private fun AreaScreenContentPreview() {
     EcoGuardTheme {

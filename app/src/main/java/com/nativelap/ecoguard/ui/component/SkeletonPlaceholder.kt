@@ -11,20 +11,26 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.clearAndSetSemantics
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 @Composable
-fun SkeletonPlaceholder(modifier: Modifier = Modifier) {
+fun SkeletonPlaceholder(
+    modifier: Modifier = Modifier,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    cornerRadius: Dp = AppRadius.tile,
+) {
     Box(
         modifier =
             modifier
                 .clearAndSetSemantics { }
-                .clip(RoundedCornerShape(AppRadius.tile))
-                .background(MaterialTheme.colorScheme.surfaceVariant),
+                .clip(RoundedCornerShape(cornerRadius))
+                .background(containerColor),
     )
 }
 

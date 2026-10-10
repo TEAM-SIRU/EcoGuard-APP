@@ -27,7 +27,7 @@ description: Android의 BuildConfig, product flavor, Retrofit, OkHttpClient, Int
 
 ## 가독성
 
-- 네트워크 설정, 인증 분기, 객체 생성을 한 줄로 압축하지 않는다. 보안 관련 조건과 설정값은 독립된 줄에 명시한다.
+- 네트워크 설정, 인증 분기, 객체 생성은 작성 중 한 줄로 써도 되지만, 파일 작성을 마치면 자동 줄바꿈(`./gradlew spotlessApply`)을 적용해 보안 관련 조건과 설정값이 독립된 줄에 있는 상태로 끝낸다.
 
 ## 환경 분리
 

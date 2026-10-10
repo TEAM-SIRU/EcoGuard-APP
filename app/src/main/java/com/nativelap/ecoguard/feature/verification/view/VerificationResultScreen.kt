@@ -18,6 +18,7 @@ import com.nativelap.ecoguard.ui.component.EcoSecondaryButton
 import com.nativelap.ecoguard.ui.component.InfoRow
 import com.nativelap.ecoguard.ui.component.RejectionResultContent
 import com.nativelap.ecoguard.ui.component.StatusMessage
+import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 
@@ -31,12 +32,12 @@ fun VerificationResultScreen(
         VerificationResultUiState.LoadFailed -> {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
-                containerColor = MaterialTheme.colorScheme.surface,
+                containerColor = MaterialTheme.colorScheme.background,
                 topBar = {
                     EcoBackTopBar(onBackClick = { onEvent(VerificationResultScreenEvent.BackClick) })
                 },
                 bottomBar = {
-                    BottomCtaBar {
+                    BottomCtaBar(minHeight = AppComponentSize.stateBottomCtaMinHeight) {
                         EcoPrimaryButton(
                             text = stringResource(R.string.result_check_again),
                             onClick = { onEvent(VerificationResultScreenEvent.RetryClick) },
@@ -61,7 +62,7 @@ fun VerificationResultScreen(
         is VerificationResultUiState.Approved -> {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
-                containerColor = MaterialTheme.colorScheme.surface,
+                containerColor = MaterialTheme.colorScheme.background,
                 bottomBar = {
                     BottomCtaBar {
                         EcoPrimaryButton(
@@ -104,7 +105,7 @@ fun VerificationResultScreen(
         is VerificationResultUiState.TeacherReviewing -> {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
-                containerColor = MaterialTheme.colorScheme.surface,
+                containerColor = MaterialTheme.colorScheme.background,
                 bottomBar = {
                     BottomCtaBar {
                         EcoPrimaryButton(
@@ -116,7 +117,7 @@ fun VerificationResultScreen(
             ) { innerPadding ->
                 CenteredScrollContent(innerPadding = innerPadding) {
                     VerificationSummaryContent(
-                        resultIconRes = R.drawable.ic_clock_64,
+                        resultIconRes = R.drawable.ic_review_64,
                         title = stringResource(R.string.verification_teacher_review_title),
                         description = stringResource(R.string.verification_teacher_review_description),
                     ) {
@@ -143,7 +144,7 @@ fun VerificationResultScreen(
         is VerificationResultUiState.Rejected -> {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
-                containerColor = MaterialTheme.colorScheme.surface,
+                containerColor = MaterialTheme.colorScheme.background,
                 topBar = {
                     EcoBackTopBar(onBackClick = { onEvent(VerificationResultScreenEvent.BackClick) })
                 },
@@ -216,4 +217,10 @@ private fun VerificationResultTeacherReviewingPreview() {
             onEvent = {},
         )
     }
+}
+
+@Preview(name = "Verification result · failed · 823:4317", showBackground = true, widthDp = 390, heightDp = 844)
+@Composable
+private fun VerificationResultFailedPreview() {
+    EcoGuardTheme { VerificationResultScreen(uiState = VerificationResultUiState.LoadFailed, onEvent = {}) }
 }

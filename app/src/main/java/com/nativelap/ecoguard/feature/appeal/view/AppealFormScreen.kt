@@ -54,7 +54,7 @@ fun AppealFormScreen(
             modifier
                 .fillMaxSize()
                 .imePadding(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             EcoBackTopBar(onBackClick = { onEvent(AppealScreenEvent.BackClick) })
         },
@@ -118,6 +118,7 @@ fun AppealFormScreen(
                         onValueChange = { changedContent -> onEvent(AppealScreenEvent.ContentChange(changedContent)) },
                         placeholder = stringResource(R.string.appeal_content_hint),
                         maxLength = uiState.maxContentLength,
+                        label = stringResource(R.string.appeal_content),
                     )
                 }
 

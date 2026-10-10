@@ -27,7 +27,7 @@ import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 
-private val menuRowVerticalPadding = 14.dp
+private val menuRowVerticalPadding = 12.dp
 private val menuRowSpacing = 14.dp
 
 // 오른쪽 화살표(20)와 간격(14)은 판정 폭 밖에 있으므로 기준에서 뺀다.
@@ -54,7 +54,7 @@ fun MenuRow(
                         Modifier
                     },
                 ).padding(
-                    horizontal = AppSpacing.screenHorizontal,
+                    horizontal = AppSpacing.md,
                     vertical = menuRowVerticalPadding,
                 ),
         horizontalArrangement = Arrangement.spacedBy(menuRowSpacing),

@@ -1,6 +1,7 @@
 package com.nativelap.ecoguard.ui.component
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,9 +20,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
@@ -42,6 +45,7 @@ fun InlineEmptyState(
     modifier: Modifier = Modifier,
     actionText: String? = null,
     onActionClick: () -> Unit = {},
+    actionMinWidth: Dp = compactActionMinWidth,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -56,7 +60,7 @@ fun InlineEmptyState(
                 painter = painterResource(iconRes),
                 contentDescription = null,
                 modifier = Modifier.size(AppIconSize.emptyState),
-                tint = MaterialTheme.colorScheme.outline,
+                tint = Color.Unspecified,
             )
         }
 
@@ -80,11 +84,12 @@ fun InlineEmptyState(
                 modifier =
                     Modifier
                         .heightIn(min = compactActionHeight)
-                        .widthIn(min = compactActionMinWidth),
+                        .widthIn(min = actionMinWidth),
                 shape = RoundedCornerShape(AppRadius.button),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
                 colors =
                     ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                        containerColor = MaterialTheme.colorScheme.surface,
                         contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     ),
                 contentPadding = PaddingValues(horizontal = AppSpacing.xl),

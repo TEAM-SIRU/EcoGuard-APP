@@ -1,37 +1,47 @@
 package com.nativelap.ecoguard.feature.activity.view
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.activity.viewmodel.ActivityScreenEvent
 import com.nativelap.ecoguard.feature.activity.viewmodel.ActivityUiState
 import com.nativelap.ecoguard.feature.activity.viewmodel.ActivityWeekGroupUiModel
 import com.nativelap.ecoguard.ui.component.EcoBottomTab
 import com.nativelap.ecoguard.ui.component.EcoBottomTabBar
+import com.nativelap.ecoguard.ui.component.EcoCard
 import com.nativelap.ecoguard.ui.component.InlineEmptyState
 import com.nativelap.ecoguard.ui.component.PageTitle
 import com.nativelap.ecoguard.ui.component.SectionDivider
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
+import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
@@ -54,7 +64,7 @@ fun ActivityScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             EcoBottomTabBar(
                 selectedTab = EcoBottomTab.ACTIVITY,
@@ -89,6 +99,7 @@ fun ActivityScreen(
                                     title = stringResource(R.string.activity_empty_title),
                                     description = stringResource(R.string.activity_empty_description),
                                     actionText = stringResource(R.string.activity_start_verification),
+                                    actionMinWidth = 200.dp,
                                     onActionClick = { onEvent(ActivityScreenEvent.StartVerificationClick) },
                                 )
                             },
@@ -161,14 +172,19 @@ private fun ActivityRecordList(
                 )
             }
 
-            items(
-                items = weekGroup.records,
-                key = { activityRecord -> activityRecord.recordId },
-            ) { activityRecord ->
-                ActivityRecordRow(
-                    activityRecord = activityRecord,
-                    onClick = { onEvent(ActivityScreenEvent.RecordClick(activityRecord.recordId)) },
-                )
+            item(key = "records-${weekGroup.weeksAgo}") {
+                EcoCard(
+                    modifier = Modifier.padding(horizontal = AppSpacing.md, vertical = AppSpacing.xxs),
+                    cornerRadius = AppRadius.listCard,
+                    contentPadding = PaddingValues(vertical = AppSpacing.xxs),
+                ) {
+                    weekGroup.records.forEach { activityRecord ->
+                        ActivityRecordRow(
+                            activityRecord = activityRecord,
+                            onClick = { onEvent(ActivityScreenEvent.RecordClick(activityRecord.recordId)) },
+                        )
+                    }
+                }
             }
         }
     }
@@ -225,35 +241,25 @@ private fun ActivityEmptyLayout(
     headerContent: @Composable ColumnScope.() -> Unit,
     emptyContent: @Composable () -> Unit,
 ) {
-    Column(
-        modifier =
-            Modifier
-                .widthIn(max = AppComponentSize.contentMaxWidth)
-                .fillMaxSize(),
-    ) {
-        PageTitle(
-            title = stringResource(R.string.activity_title),
-            modifier = activityTitleModifier,
-        )
-
-        headerContent()
-
-        Box(
-            modifier =
-                Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .padding(
+    BoxWithConstraints(modifier = Modifier.widthIn(max = AppComponentSize.contentMaxWidth).fillMaxSize()) {
+        var headerHeight by remember { mutableIntStateOf(0) }
+        val density = LocalDensity.current
+        val emptyMinHeight = (maxHeight - with(density) { headerHeight.toDp() }).coerceAtLeast(0.dp)
+        Column(modifier = Modifier.fillMaxWidth().verticalScroll(rememberScrollState())) {
+            Column(modifier = Modifier.onSizeChanged { headerHeight = it.height }) {
+                PageTitle(title = stringResource(R.string.activity_title), modifier = activityTitleModifier)
+                headerContent()
+            }
+            Box(
+                modifier =
+                    Modifier.fillMaxWidth().heightIn(min = emptyMinHeight).padding(
                         start = AppSpacing.screenHorizontal,
                         end = AppSpacing.screenHorizontal,
                         top = AppSpacing.xl,
-                        // 빈 상태 버튼이 탭 바 위로 튀어나온 카메라 버튼에 가리지 않게 한다.
-                        bottom = AppComponentSize.cameraFabScrollClearance,
+                        bottom = AppComponentSize.emptyStateBottomClearance,
                     ),
-            contentAlignment = Alignment.Center,
-        ) {
-            emptyContent()
+                contentAlignment = Alignment.Center,
+            ) { emptyContent() }
         }
     }
 }

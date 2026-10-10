@@ -26,7 +26,7 @@ fun SubmissionCompletedScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             BottomCtaBar {
                 EcoPrimaryButton(
@@ -38,7 +38,7 @@ fun SubmissionCompletedScreen(
     ) { innerPadding ->
         CenteredScrollContent(innerPadding = innerPadding) {
             VerificationSummaryContent(
-                resultIconRes = R.drawable.ic_clock_64,
+                resultIconRes = R.drawable.ic_review_64,
                 title = stringResource(R.string.photo_submitted),
                 description = stringResource(R.string.photo_review_pending_description),
             ) {

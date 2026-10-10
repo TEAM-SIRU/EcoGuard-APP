@@ -31,8 +31,8 @@ import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-private val todayCardTopPadding = 24.dp
-private val todayTitleTopPadding = 10.dp
+private val todayCardTopPadding = 18.dp
+private val todayTitleTopPadding = 8.dp
 private val reasonBoxHorizontalPadding = 14.dp
 private val reasonTextSpacing = 2.dp
 private val reasonBorderWidth = 1.dp
@@ -53,10 +53,10 @@ fun HomeTodayCleaningCard(
         modifier = modifier,
         contentPadding =
             PaddingValues(
-                start = AppSpacing.lg,
-                end = AppSpacing.lg,
+                start = AppSpacing.md,
+                end = AppSpacing.md,
                 top = todayCardTopPadding,
-                bottom = AppSpacing.lg,
+                bottom = AppSpacing.md,
             ),
     ) {
         Text(
@@ -71,7 +71,7 @@ fun HomeTodayCleaningCard(
                 Modifier
                     .padding(
                         top = todayTitleTopPadding,
-                        bottom = AppSpacing.lg,
+                        bottom = AppSpacing.md,
                     ).semantics { heading() },
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onSurface,
@@ -143,6 +143,14 @@ private fun todayCleaningTitle(cleaningStatus: TodayCleaningStatus): String =
 @Composable
 private fun TodayCleaningExtraInfoRow(cleaningStatus: TodayCleaningStatus) {
     when (cleaningStatus) {
+        is TodayCleaningStatus.NotSubmitted -> {
+            InfoRow(
+                label = stringResource(R.string.home_verification_deadline),
+                value = stringResource(R.string.home_deadline_remaining, cleaningStatus.timeUntilDeadline),
+                valueColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
+        }
+
         is TodayCleaningStatus.AiReviewing -> {
             InfoRow(
                 label = stringResource(R.string.home_submit),
@@ -165,7 +173,6 @@ private fun TodayCleaningExtraInfoRow(cleaningStatus: TodayCleaningStatus) {
             )
         }
 
-        is TodayCleaningStatus.NotSubmitted,
         is TodayCleaningStatus.OutsideVerificationTime,
         is TodayCleaningStatus.Rejected,
         -> {
@@ -178,15 +185,7 @@ private fun TodayCleaningExtraInfoRow(cleaningStatus: TodayCleaningStatus) {
 private fun TodayCleaningNotice(cleaningStatus: TodayCleaningStatus) {
     when (cleaningStatus) {
         is TodayCleaningStatus.NotSubmitted -> {
-            Text(
-                text =
-                    stringResource(
-                        R.string.home_time_until_deadline,
-                        cleaningStatus.timeUntilDeadline,
-                    ),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary,
-            )
+            Unit
         }
 
         is TodayCleaningStatus.TeacherReviewing -> {
@@ -320,7 +319,7 @@ private fun TodayCleaningAction(
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFF8FAF9, widthDp = 390)
+@Preview(showBackground = true, backgroundColor = 0xFFFAFBFA, widthDp = 390)
 @Composable
 private fun HomeTodayCleaningCardPreview() {
     EcoGuardTheme {

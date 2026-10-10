@@ -16,7 +16,7 @@ import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 fun RecruitmentLoadingScreen(modifier: Modifier = Modifier) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
     ) { innerPadding ->
         LoadingSkeletonScrollContent(
             innerPadding = innerPadding,

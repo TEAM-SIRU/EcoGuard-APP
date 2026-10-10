@@ -45,7 +45,7 @@ fun VerificationDetailScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             EcoBackTopBar(onBackClick = { onEvent(VerificationResultScreenEvent.BackClick) })
         },

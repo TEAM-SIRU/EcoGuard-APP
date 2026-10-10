@@ -17,6 +17,7 @@ import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
 import com.nativelap.ecoguard.ui.component.EcoSecondaryButton
 import com.nativelap.ecoguard.ui.component.RejectionResultContent
 import com.nativelap.ecoguard.ui.component.StatusMessage
+import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 /** 09-4 이의신청 결과(승인·반려)와 09 제출 실패. */
@@ -29,12 +30,12 @@ fun AppealResultScreen(
         is AppealResultUiState.Approved -> {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
-                containerColor = MaterialTheme.colorScheme.surface,
+                containerColor = MaterialTheme.colorScheme.background,
                 topBar = {
                     EcoBackTopBar(onBackClick = { onEvent(AppealScreenEvent.BackClick) })
                 },
                 bottomBar = {
-                    BottomCtaBar {
+                    BottomCtaBar(minHeight = AppComponentSize.stateBottomCtaMinHeight) {
                         EcoPrimaryButton(
                             text = stringResource(R.string.action_view_activity_record),
                             onClick = { onEvent(AppealScreenEvent.ActivityRecordClick) },
@@ -50,6 +51,7 @@ fun AppealResultScreen(
                 CenteredScrollContent(innerPadding = innerPadding) {
                     StatusMessage(
                         title = stringResource(R.string.appeal_approved),
+                        iconRes = R.drawable.ic_check_64,
                         highlightText = stringResource(R.string.format_bonus_minutes, uiState.earnedMinutes),
                         description =
                             stringResource(
@@ -66,7 +68,7 @@ fun AppealResultScreen(
         is AppealResultUiState.Rejected -> {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
-                containerColor = MaterialTheme.colorScheme.surface,
+                containerColor = MaterialTheme.colorScheme.background,
                 topBar = {
                     EcoBackTopBar(onBackClick = { onEvent(AppealScreenEvent.BackClick) })
                 },
@@ -94,12 +96,12 @@ fun AppealResultScreen(
         AppealResultUiState.SendFailed -> {
             Scaffold(
                 modifier = Modifier.fillMaxSize(),
-                containerColor = MaterialTheme.colorScheme.surface,
+                containerColor = MaterialTheme.colorScheme.background,
                 topBar = {
                     EcoBackTopBar(onBackClick = { onEvent(AppealScreenEvent.BackClick) })
                 },
                 bottomBar = {
-                    BottomCtaBar {
+                    BottomCtaBar(minHeight = AppComponentSize.stateBottomCtaMinHeight) {
                         EcoPrimaryButton(
                             text = stringResource(R.string.appeal_retry_send),
                             onClick = { onEvent(AppealScreenEvent.RetrySendClick) },
