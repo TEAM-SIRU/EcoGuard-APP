@@ -6,18 +6,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -31,14 +29,15 @@ import com.nativelap.ecoguard.feature.home.viewmodel.HomeNoticeUiModel
 import com.nativelap.ecoguard.ui.component.EcoCard
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppIconSize
-import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 import com.nativelap.ecoguard.ui.theme.extraTypography
 
 private val noticeTextSpacing = 2.dp
-private val noticeCardBottomPadding = 18.dp
+private val noticeCardTopPadding = 18.dp
+private val noticeCardBottomPadding = 16.dp
+private val noticeHeaderMinHeight = 46.dp
 private val noticeLinkSpacing = 2.dp
 
 @Composable
@@ -55,67 +54,63 @@ fun HomeNoticeCard(
             PaddingValues(
                 start = AppSpacing.md,
                 end = AppSpacing.md,
-                top = AppSpacing.md,
+                top = noticeCardTopPadding,
                 bottom = noticeCardBottomPadding,
             ),
     ) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(AppSpacing.sm),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Box(
+        Box(modifier = Modifier.fillMaxWidth().heightIn(min = noticeHeaderMinHeight)) {
+            Row(
+                modifier = Modifier.padding(end = AppSpacing.xl),
+                horizontalArrangement = Arrangement.spacedBy(AppSpacing.sm),
+                verticalAlignment = Alignment.Top,
+            ) {
+                Box(
+                    modifier = Modifier.size(AppComponentSize.noticeIconFrame),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_megaphone),
+                        contentDescription = null,
+                        modifier = Modifier.size(AppIconSize.standard),
+                        tint = MaterialTheme.colorScheme.primary,
+                    )
+                }
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(noticeTextSpacing),
+                ) {
+                    Text(
+                        text = stringResource(R.string.home_notice_title),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                    Text(
+                        text = notice.publishedDate,
+                        style = MaterialTheme.extraTypography.captionRegular,
+                        color = MaterialTheme.extraColors.captionTextColor,
+                    )
+                }
+            }
+            Icon(
+                painter = painterResource(R.drawable.ic_close),
+                contentDescription = stringResource(R.string.cd_close),
                 modifier =
                     Modifier
-                        .size(AppComponentSize.noticeIconFrame)
-                        .clip(RoundedCornerShape(AppRadius.iconFrame)),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_megaphone),
-                    contentDescription = null,
-                    modifier = Modifier.size(AppIconSize.standard),
-                    tint = MaterialTheme.colorScheme.primary,
-                )
-            }
-
-            Column(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(noticeTextSpacing),
-            ) {
-                Text(
-                    text = stringResource(R.string.home_notice_title),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-
-                Text(
-                    text = notice.publishedDate,
-                    style = MaterialTheme.extraTypography.captionRegular,
-                    color = MaterialTheme.extraColors.captionTextColor,
-                )
-            }
-
-            IconButton(
-                onClick = onCloseClick,
-                modifier = Modifier.size(AppComponentSize.minTouchTarget),
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_close),
-                    contentDescription = stringResource(R.string.cd_close),
-                    modifier = Modifier.size(AppIconSize.small),
-                    tint = MaterialTheme.extraColors.captionTextColor,
-                )
-            }
+                        .align(Alignment.TopEnd)
+                        .size(AppIconSize.small)
+                        .clickable(role = Role.Button, onClick = onCloseClick),
+                tint = MaterialTheme.extraColors.captionTextColor,
+            )
         }
 
         Text(
             text = notice.headline,
             modifier =
                 Modifier.padding(
-                    top = AppSpacing.sm,
+                    top = AppSpacing.md,
                     bottom = AppSpacing.xs,
                 ),
-            style = MaterialTheme.typography.titleMedium,
+            style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onSurface,
         )
 
@@ -138,8 +133,7 @@ fun HomeNoticeCard(
         Row(
             modifier =
                 Modifier
-                    .padding(top = AppSpacing.xs)
-                    .heightIn(min = AppComponentSize.minTouchTarget)
+                    .padding(top = AppSpacing.sm)
                     .clickable(
                         role = Role.Button,
                         onClick = onDetailClick,

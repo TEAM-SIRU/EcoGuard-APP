@@ -13,6 +13,7 @@
 - 글꼴: Noto Sans KR Regular·Medium·Bold를 `res/font`에서 사용합니다. [OFL 라이선스](licenses/NotoSansKR-OFL.txt)를 포함합니다.
 - 색상: Primary `#55B580`, 기본 CTA에 사용하는 Secondary `#30875B`, 배경 `#FAFBFA`, 흰색 보조 버튼과 테두리를 적용합니다. CTA 색상은 Figma 원본 PNG의 실제 색상을 기준으로 합니다.
 - 수치: 기본 CTA 높이 48dp, FAB 크기 60dp 등 Figma 원본 크기·간격을 디자인 토큰과 화면에 반영합니다.
+- 공통 UI 보정: [Issue #14](https://github.com/TEAM-SIRU/EcoGuard-APP/issues/14)에서 화면별 원본 노드의 크기·간격·문구를 재대조했습니다. 작은 액션은 시각 크기를 유지하면서 터치 영역을 최소 48dp로 확장하며, 다이얼로그·키보드·긴 콘텐츠의 스크롤 접근성을 보완합니다.
 - 에셋: 원본 SVG를 Android VectorDrawable로 변환하고 청소구역 도면을 로컬 이미지로 사용합니다. 원본·리소스 매핑은 [에셋 문서](docs/redesign-assets.md)를 참고하세요.
 - 신청 입력: 학번·이름은 읽기 전용입니다. 동기는 Unicode 코드 포인트 기준 최대 200자로 제한하고 카운터를 표시합니다. 빈 내용·공백만 있는 내용·제출 중에는 신청 버튼을 비활성화합니다. 입력은 저장 가능한 Compose 상태로 유지하며 외부 상태 변경을 반영합니다.
 - 반응형: 기본 콘텐츠 최대폭은 600dp입니다. 홈·청소구역은 840dp 이상에서 2열·최대폭 960dp를 사용하며, 나머지 화면은 최대폭 600dp를 유지합니다.
@@ -86,15 +87,25 @@ cd EcoGuard-APP
 ./gradlew spotlessCheck
 ```
 
-GitHub Actions 설정은 [Android CI](.github/workflows/android-ci.yml)와 [포맷 검사](.github/workflows/format-check.yml)에 있습니다. 저장소 규칙상 통합·기본 브랜치는 `dev`, 릴리스 대상은 `main`입니다. Android 기반 설정 PR #2, Issue #3·#5의 화면 UI PR #4·#6, Issue #9의 Spotless·ktlint PR #10은 `dev`에 병합되었습니다. 전체 UI 리디자인은 [Issue #12](https://github.com/TEAM-SIRU/EcoGuard-APP/issues/12), `feature/#12-figma-full-ui-redesign` 브랜치에서 진행합니다. 기존 규칙 변경은 UI 변경과 별도 커밋으로 보존했습니다.
+GitHub Actions 설정은 [Android CI](.github/workflows/android-ci.yml)와 [포맷 검사](.github/workflows/format-check.yml)에 있습니다. 저장소 규칙상 통합·기본 브랜치는 `dev`, 릴리스 대상은 `main`입니다. Android 기반 설정 PR #2, Issue #3·#5의 화면 UI PR #4·#6, Issue #9의 Spotless·ktlint PR #10은 `dev`에 병합되었습니다. 전체 UI 리디자인은 [Issue #12](https://github.com/TEAM-SIRU/EcoGuard-APP/issues/12)에서 관리했습니다. 후속 공통 UI 보정은 [Issue #14](https://github.com/TEAM-SIRU/EcoGuard-APP/issues/14), `fix/#14-redesign-ui-corrections` 브랜치에서 진행합니다. 기존 규칙 변경은 UI 변경과 별도 커밋으로 보존했습니다.
 
 ### 리디자인 검증 현황
 
-구현 작업자의 실행 결과 기준으로 `spotlessApply`, `spotlessCheck`, `:app:testDebugUnitTest`, `:app:lintDebug`, `:app:assembleDebug`, `:app:assembleDebugAndroidTest`가 통과했습니다. 단위 테스트 4개가 통과했으며 Android Lint 결과는 오류 0개·경고 35개입니다.
+Issue #12에서는 62개 상태의 최초 렌더링과 입력·월 선택·빈 상태 검증을 완료했습니다. 아래는 Issue #14 공통 UI 보정 후의 검증 결과이며, 상세 이력과 평가표는 [리디자인 검증 문서](docs/redesign-verification.md)를 참고하세요.
 
-62개 상태를 390×844dp(글자 배율 1.0), 320×596dp(글자 배율 1.5), 1280×900dp(글자 배율 1.0)에서 렌더링하고 원본 디자인과 시각 대조했습니다. 신청 입력의 Unicode 경계·외부 상태 동기화·접근성, 월 선택, 빈 상태 스크롤을 포함한 320dp 계측 테스트 6개 및 390dp·1280dp의 빈 상태·전체 렌더링 테스트 각 2개가 통과했습니다. 최종 변경 후 포맷·빌드·단위 테스트·Lint를 다시 실행해 통과했고 대표 캡처를 확인했습니다. 검증 후 기기 설정도 복원했습니다. 렌더링 테스트는 화면 생성·오류 여부를 검사하며 픽셀 차이를 자동 판정하지 않습니다. 상태별 대응과 검증 기준은 [리디자인 검증 문서](docs/redesign-verification.md)를 참고하세요.
+구현 작업자의 실행 결과 기준으로 Spotless, Debug 앱·계측 APK 빌드, 단위 테스트 4개, Android Lint가 통과했습니다. Lint 결과는 오류 0개·경고 35개입니다.
+
+- 390×844dp·글자 배율 1.0: 최종 전체 계측 테스트 18개 통과.
+- 320×596dp·글자 배율 1.5: 전체 17개 통과 후 활동 보정 영향 8개를 재검증했습니다. 다이얼로그 안전 영역 보정 후 3버튼 내비게이션·큰 컷아웃 조건의 다이얼로그 및 선택 렌더 4개와 월 적용 스크롤 1개가 통과했습니다.
+- 1280×900dp·글자 배율 1.0: 전체 17개 통과 후 안전 영역·뒤로가기·다이얼로그 선택 렌더 4개를 재검증했습니다.
+
+각 조건에서 62개 상태를 렌더링하고 수동 시각 대조했습니다. 작은 액션의 확장 터치, 다이얼로그 내부·외부 탭과 스크롤, 실제 키보드 위 신청·이의신청 버튼 접근, 홈 마지막 기록, 시스템바 아이콘과 복원을 검증했습니다. 시스템 영역 겹침을 수정한 뒤 비판적 검토에서 남은 확정 Critical/Warning은 없습니다. 다중 창 및 호스트와 다이얼로그 창 크기가 다른 환경은 검증하지 않았습니다.
+
+실제 `MainActivity` 시작 시 홈 Loading과 하단 탭을 확인했고 검증 기기 설정을 복원했습니다. 렌더링 테스트는 자동 픽셀 일치 판정이 아니며, 320dp·1280dp는 반응형 접근성 검증 조건입니다. 실제 서버·촬영·전 화면 탐색은 정적 UI 범위 밖입니다.
 
 대표 화면 캡처: [휴대폰 홈](docs/screenshots/phone-home.png), [신청](docs/screenshots/phone-application.png), [마이페이지](docs/screenshots/phone-menu.png), [태블릿 홈](docs/screenshots/tablet-home.png), [태블릿 청소구역](docs/screenshots/tablet-area.png).
+
+추가 보정 캡처: [홈 전후 비교와 검증](docs/redesign-verification.md#보정-전후와-실행-캡처), [활동 기록](docs/screenshots/phone-activity.png), [다이얼로그](docs/screenshots/phone-dialog.png), [홈 마지막 기록](docs/screenshots/phone-home-scrolled.png), [실제 앱 시작](docs/screenshots/app-start-loading.png).
 
 ## 프로젝트 구조
 

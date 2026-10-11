@@ -15,9 +15,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,7 +35,7 @@ import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-private val compactActionHeight = 48.dp
+private val compactActionHeight = 44.dp
 private val compactActionMinWidth = 140.dp
 
 /** 화면 일부 영역의 빈 상태·조회 실패 안내. 회색 아이콘, 제목, 설명, 선택적 작은 버튼. */
@@ -79,25 +81,27 @@ fun InlineEmptyState(
         )
 
         if (actionText != null) {
-            Button(
-                onClick = onActionClick,
-                modifier =
-                    Modifier
-                        .heightIn(min = compactActionHeight)
-                        .widthIn(min = actionMinWidth),
-                shape = RoundedCornerShape(AppRadius.button),
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
-                colors =
-                    ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                    ),
-                contentPadding = PaddingValues(horizontal = AppSpacing.xl),
-            ) {
-                Text(
-                    text = actionText,
-                    style = MaterialTheme.typography.labelMedium,
-                )
+            CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
+                Button(
+                    onClick = onActionClick,
+                    modifier =
+                        Modifier
+                            .heightIn(min = compactActionHeight)
+                            .widthIn(min = actionMinWidth),
+                    shape = RoundedCornerShape(AppRadius.input),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.surface,
+                            contentColor = MaterialTheme.colorScheme.onSurface,
+                        ),
+                    contentPadding = PaddingValues(horizontal = AppSpacing.xl),
+                ) {
+                    Text(
+                        text = actionText,
+                        style = MaterialTheme.typography.labelLarge,
+                    )
+                }
             }
         }
     }

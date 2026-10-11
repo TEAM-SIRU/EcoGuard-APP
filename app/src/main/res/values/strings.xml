@@ -44,7 +44,7 @@
     <string name="web_address_copy">웹 주소 복사</string>
     <string name="web_address_share">웹 주소 공유</string>
     <string name="logout_confirmation_title">로그아웃할까요?</string>
-    <string name="logout_confirmation_description">다시 들어오려면 DataGSM으로 로그인해야 해요</string>
+    <string name="logout_confirmation_description">다시 들어오려면\nDataGSM으로 로그인해야 해요</string>
     <string name="withdraw_confirmation_title">회원탈퇴</string>
     <string name="withdraw_confirmation_description">정말 탈퇴하시겠어요?</string>
 
@@ -65,7 +65,7 @@
     <string name="home_recruiting">모집 중</string>
     <string name="home_application_completed">신청 완료</string>
     <string name="home_became_guardian">환경지킴이가 됐어요</string>
-    <string name="home_assignment_notice">선생님이 청소 구역을 배정하면 여기서 바로 알려드려요</string>
+    <string name="home_assignment_notice">선생님이 청소 구역을 배정하면\n여기서 바로 알려드려요</string>
     <string name="home_cleaning_submit">청소 인증하기</string>
     <string name="home_submit">제출</string>
     <string name="home_view_submitted_photo">제출한 사진 보기</string>

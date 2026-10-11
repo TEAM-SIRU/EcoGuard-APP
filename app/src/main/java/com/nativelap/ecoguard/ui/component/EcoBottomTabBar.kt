@@ -177,7 +177,7 @@ private fun EcoBottomTabItem(
             painter = painterResource(iconRes),
             contentDescription = null,
             modifier = Modifier.size(AppIconSize.standard),
-            tint = contentColor,
+            tint = if (isSelected) MaterialTheme.colorScheme.primary else contentColor,
         )
 
         // 큰 글자에서도 라벨을 한 줄로 유지하도록 탭 폭에 맞춰 글자 크기를 줄인다.

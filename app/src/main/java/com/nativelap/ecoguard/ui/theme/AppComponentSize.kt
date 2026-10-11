@@ -21,7 +21,7 @@ object AppComponentSize {
     val stateBottomCtaMinHeight = 208.dp
     val emptyStateBottomClearance = 86.dp
     val logo = 80.dp
-    val emptyIconCircle = 56.dp
+    val emptyIconCircle = 64.dp
     val contentMaxWidth = 600.dp
     val expandedContentMaxWidth = 960.dp
     val expandedLayoutMinWidth = 840.dp

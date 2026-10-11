@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -47,7 +48,7 @@ fun HomeWeekCleaningCard(
     weekCleaning: WeekCleaningUiModel,
     modifier: Modifier = Modifier,
 ) {
-    EcoCard(modifier = modifier) {
+    EcoCard(modifier = modifier, contentPadding = PaddingValues(AppSpacing.md)) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -67,7 +68,7 @@ fun HomeWeekCleaningCard(
                         weekCleaning.totalDayCount,
                     ),
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
         }
 
@@ -75,7 +76,7 @@ fun HomeWeekCleaningCard(
             modifier =
                 Modifier
                     .fillMaxWidth()
-                    .padding(top = AppSpacing.md),
+                    .padding(top = AppSpacing.sm),
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             weekCleaning.days.forEach { weekDay ->
@@ -165,8 +166,8 @@ private fun WeekDayIndicator(weekDay: WeekDayUiModel) {
         if (weekDay.isToday) {
             Text(
                 text = dayLabel,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.extraTypography.captionRegular.copy(fontWeight = FontWeight.Bold),
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
         } else {
             Text(

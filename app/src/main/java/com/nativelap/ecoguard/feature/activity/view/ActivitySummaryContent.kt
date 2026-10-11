@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -23,7 +22,6 @@ import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.activity.viewmodel.ActivityUiState
 import com.nativelap.ecoguard.ui.component.StatSummaryItem
 import com.nativelap.ecoguard.ui.component.StatSummaryRow
-import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppIconSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
@@ -43,8 +41,7 @@ fun ActivitySummaryContent(
         Row(
             modifier =
                 Modifier
-                    .padding(horizontal = AppSpacing.xs)
-                    .heightIn(min = AppComponentSize.minTouchTarget)
+                    .padding(start = AppSpacing.xs, end = AppSpacing.xs, bottom = AppSpacing.xs)
                     .clickable(
                         role = Role.Button,
                         onClick = onMonthSelectorClick,
@@ -71,7 +68,7 @@ fun ActivitySummaryContent(
                 Modifier.padding(
                     start = AppSpacing.screenHorizontal,
                     end = AppSpacing.screenHorizontal,
-                    top = AppSpacing.xxs,
+                    top = AppSpacing.sm,
                     bottom = AppSpacing.md,
                 ),
             verticalArrangement = Arrangement.spacedBy(monthlyTimeSpacing),
