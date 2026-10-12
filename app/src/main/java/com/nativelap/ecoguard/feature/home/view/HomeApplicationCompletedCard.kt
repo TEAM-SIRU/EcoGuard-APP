@@ -20,7 +20,7 @@ import com.nativelap.ecoguard.ui.component.EcoTag
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-private val applicationCardTopPadding = 24.dp
+private val applicationCardTopPadding = 18.dp
 private val applicationTitleTopPadding = 10.dp
 private val applicationTextSpacing = 6.dp
 
