@@ -80,12 +80,20 @@ private val LightExtraColors =
     AppExtraColors(
         captionTextColor = Color(0xFF65706A),
         disabledContentColor = Color(0xFFAEB7B2),
+        disabledPrimaryButtonContainerColor = Color(0xFFECEFED),
+        skeletonPlaceholderColor = Color(0xFFECEFED),
+        homeNoticeBodyTextColor = Color(0xFF4E5968),
+        homeNoticeEmphasisTextColor = Color(0xFF191F28),
+        activeTabLabelColor = Color(0xFF246B48),
+        approvedRewardValueColor = Color(0xFF246B48),
+        recruitmentProgressTrackColor = Color(0xFFECEFED),
+        recruitmentProgressClosedColor = Color(0xFFC7D0CB),
         warningTextColor = Color(0xFF9A6430),
         warningAccentColor = Color(0xFFCF9859),
         cardShadowColor = Color(0xFF1A211D),
         cameraBackgroundColor = Color(0xFF111613),
         cameraSurfaceColor = Color(0xFF2A312D),
-        cameraSecondaryTextColor = Color(0xFFC4CAD1),
+        cameraSecondaryTextColor = Color(0xFFC5CEC9),
         cameraOverlayColor = Color.Black,
     )
 

@@ -16,18 +16,21 @@ import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.progressBarRangeInfo
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-/** 8dp 높이의 둥근 진행 막대(예: 반별 신청 현황). */
+/** 둥근 진행 막대. 기본 규격은 6dp이며 호출부에서 높이와 트랙 색을 지정할 수 있다. */
 @Composable
 fun EcoProgressBar(
     currentCount: Int,
     maxCount: Int,
     modifier: Modifier = Modifier,
     progressColor: Color = MaterialTheme.colorScheme.secondary,
+    height: Dp = AppComponentSize.progressBarHeight,
+    trackColor: Color = MaterialTheme.colorScheme.surfaceVariant,
 ) {
     val progressFraction =
         if (maxCount > 0) {
@@ -41,9 +44,9 @@ fun EcoProgressBar(
         modifier =
             modifier
                 .fillMaxWidth()
-                .height(AppComponentSize.progressBarHeight)
+                .height(height)
                 .clip(barShape)
-                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .background(trackColor)
                 .semantics {
                     progressBarRangeInfo =
                         ProgressBarRangeInfo(

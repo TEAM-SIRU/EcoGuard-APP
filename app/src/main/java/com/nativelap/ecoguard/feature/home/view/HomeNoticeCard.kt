@@ -47,6 +47,9 @@ fun HomeNoticeCard(
     onDetailClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val noticeBodyTextColor = MaterialTheme.extraColors.homeNoticeBodyTextColor
+    val noticeEmphasisTextColor = MaterialTheme.extraColors.homeNoticeEmphasisTextColor
+
     EcoCard(
         modifier = modifier,
         emphasized = true,
@@ -121,13 +124,20 @@ fun HomeNoticeCard(
                     notice.emphasizedPhrases.filter { it.isNotEmpty() }.forEach { phrase ->
                         var match = notice.body.indexOf(phrase)
                         while (match >= 0) {
-                            addStyle(SpanStyle(fontWeight = FontWeight.Bold), match, match + phrase.length)
+                            addStyle(
+                                SpanStyle(
+                                    fontWeight = FontWeight.Bold,
+                                    color = noticeEmphasisTextColor,
+                                ),
+                                match,
+                                match + phrase.length,
+                            )
                             match = notice.body.indexOf(phrase, match + phrase.length)
                         }
                     }
                 },
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = noticeBodyTextColor,
         )
 
         Row(

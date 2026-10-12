@@ -16,6 +16,7 @@ import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.recruitment.viewmodel.RecruitmentApplicationStatus
 import com.nativelap.ecoguard.feature.recruitment.viewmodel.RecruitmentUiState
 import com.nativelap.ecoguard.ui.component.EcoProgressBar
+import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
@@ -32,7 +33,7 @@ fun RecruitmentProgressContent(
     val isClosed = applicationStatus is RecruitmentApplicationStatus.Closed
     val progressColor =
         if (isClosed) {
-            MaterialTheme.colorScheme.outline
+            MaterialTheme.extraColors.recruitmentProgressClosedColor
         } else {
             MaterialTheme.colorScheme.secondary
         }
@@ -98,6 +99,8 @@ fun RecruitmentProgressContent(
             currentCount = recruitment.appliedCount,
             maxCount = recruitment.maxApplicantsPerClass,
             progressColor = progressColor,
+            height = AppComponentSize.recruitmentProgressBarHeight,
+            trackColor = MaterialTheme.extraColors.recruitmentProgressTrackColor,
         )
 
         Text(

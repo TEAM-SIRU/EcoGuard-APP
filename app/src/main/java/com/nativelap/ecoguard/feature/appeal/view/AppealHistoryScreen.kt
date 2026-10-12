@@ -34,6 +34,7 @@ import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
+import com.nativelap.ecoguard.ui.theme.extraTypography
 
 /** 09-3 이의신청 내역. 인증별 차수, 보낸 시각, 결과를 목록으로 보여준다. */
 @Composable
@@ -138,10 +139,12 @@ private fun AppealHistoryRow(
                 role = Role.Button,
                 onClick = onClick,
             ),
+        verticalPadding = AppSpacing.sm,
     ) {
         StatusChip(
             type = appealHistoryItem.status,
             label = chipLabel,
+            textStyle = MaterialTheme.extraTypography.captionRegular.copy(fontWeight = FontWeight.Bold),
         )
     }
 }

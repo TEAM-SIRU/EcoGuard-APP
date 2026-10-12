@@ -42,6 +42,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationScreenEvent
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationStep
@@ -62,7 +63,12 @@ private const val GUIDE_MESSAGE_OVERLAY_ALPHA = 0.8f
 private val guideMessageHorizontalPadding = 14.dp
 private val shutterSize = 80.dp
 private val shutterBorderWidth = 4.dp
-private val shutterInnerPadding = 6.dp
+private val shutterInnerPadding = 10.dp
+private val countdownHorizontalStartPadding = 12.dp
+private val countdownHorizontalEndPadding = 14.dp
+private val countdownVerticalPadding = 6.dp
+private val countdownIconSpacing = 6.dp
+private const val COUNTDOWN_OVERLAY_ALPHA = 0.55f
 private val sideControlSize = 48.dp
 private val controlsHorizontalPadding = 48.dp
 private val controlsTopPadding = 28.dp
@@ -156,10 +162,15 @@ fun CameraCaptureScreen(
                         .clip(
                             RoundedCornerShape(AppRadius.pill),
                         ).background(
-                            cameraColors.cameraOverlayColor,
-                        ).padding(horizontal = AppSpacing.md, vertical = AppSpacing.xs),
+                            cameraColors.cameraOverlayColor.copy(alpha = COUNTDOWN_OVERLAY_ALPHA),
+                        ).padding(
+                            start = countdownHorizontalStartPadding,
+                            end = countdownHorizontalEndPadding,
+                            top = countdownVerticalPadding,
+                            bottom = countdownVerticalPadding,
+                        ),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(AppSpacing.xs),
+                horizontalArrangement = Arrangement.spacedBy(countdownIconSpacing),
             ) {
                 Icon(
                     painterResource(R.drawable.ic_capture_clock),
@@ -169,7 +180,7 @@ fun CameraCaptureScreen(
                 )
                 Text(
                     text = stringResource(R.string.camera_time_remaining, timeRemaining, deadlineTime),
-                    style = MaterialTheme.typography.bodyMedium,
+                    style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 19.sp),
                     color = MaterialTheme.colorScheme.onPrimary,
                 )
             }

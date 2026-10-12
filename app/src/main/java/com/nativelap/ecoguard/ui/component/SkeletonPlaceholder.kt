@@ -18,11 +18,12 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
+import com.nativelap.ecoguard.ui.theme.extraColors
 
 @Composable
 fun SkeletonPlaceholder(
     modifier: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.surfaceVariant,
+    containerColor: Color = MaterialTheme.extraColors.skeletonPlaceholderColor,
     cornerRadius: Dp = AppRadius.tile,
 ) {
     Box(

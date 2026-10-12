@@ -205,7 +205,7 @@
     <string name="appeal_content_hint">예) 복도 끝도 청소했는데 사진에서 잘렸어요</string>
     <string name="appeal_retake_photo_optional">사진 다시 찍기 (선택)</string>
     <string name="appeal_submit">이의신청 보내기</string>
-    <string name="appeal_photo_after_deadline">%1$s 이후에도 이의신청용 사진은 찍을 수 있어요. 새 청소 인증으로 제출되지는 않아요. 갤러리 사진은 사용할 수 없어요.</string>
+    <string name="appeal_photo_after_deadline">%1$s 이후에도 이의신청용 사진은 찍을 수 있어요.\n새 청소 인증으로 제출되지는 않아요. 갤러리 사진은 쓸 수 없어요.</string>
     <string name="appeal_submitted">이의신청을 보냈어요</string>
     <string name="appeal_submitted_description">선생님이 사진과 내용을 보고 결과를 알려드려요</string>
     <string name="appeal_target_verification">대상 인증</string>

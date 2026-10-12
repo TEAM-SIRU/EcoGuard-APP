@@ -54,6 +54,12 @@ fun AreaScreen(
         bottomBar = {
             EcoBottomTabBar(
                 selectedTab = EcoBottomTab.AREA,
+                selectedIconResOverride =
+                    if (uiState is AreaUiState.Content) {
+                        null
+                    } else {
+                        R.drawable.ic_map_active_alt
+                    },
                 onTabSelected = { selectedTab -> onEvent(AreaScreenEvent.TabSelect(selectedTab)) },
                 onCameraClick = { onEvent(AreaScreenEvent.CameraClick) },
             )

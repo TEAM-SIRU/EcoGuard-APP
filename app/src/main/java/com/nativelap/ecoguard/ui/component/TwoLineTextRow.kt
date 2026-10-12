@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.ui.theme.AppIconSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
@@ -37,6 +38,7 @@ fun TwoLineTextRow(
     subtitle: String,
     modifier: Modifier = Modifier,
     @DrawableRes leadingIconRes: Int? = null,
+    verticalPadding: Dp = twoLineRowVerticalPadding,
     trailingContent: (@Composable RowScope.() -> Unit)? = null,
 ) {
     BoxWithConstraints(
@@ -45,7 +47,7 @@ fun TwoLineTextRow(
                 .fillMaxWidth()
                 .padding(
                     horizontal = AppSpacing.md,
-                    vertical = twoLineRowVerticalPadding,
+                    vertical = verticalPadding,
                 ),
     ) {
         val isCompact = trailingContent != null && isCompactForText(maxWidth, AdaptiveWidth.trailingRow)

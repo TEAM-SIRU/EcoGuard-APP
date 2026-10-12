@@ -24,9 +24,14 @@ fun AreaLoadingScreen(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
-            EcoBottomTabBar(selectedTab = EcoBottomTab.AREA, onTabSelected = {
-                onEvent(AreaScreenEvent.TabSelect(it))
-            }, onCameraClick = { onEvent(AreaScreenEvent.CameraClick) })
+            EcoBottomTabBar(
+                selectedTab = EcoBottomTab.AREA,
+                selectedIconResOverride = R.drawable.ic_map_active_alt,
+                onTabSelected = { selectedTab ->
+                    onEvent(AreaScreenEvent.TabSelect(selectedTab))
+                },
+                onCameraClick = { onEvent(AreaScreenEvent.CameraClick) },
+            )
         },
     ) { innerPadding ->
         LoadingSkeletonScrollContent(

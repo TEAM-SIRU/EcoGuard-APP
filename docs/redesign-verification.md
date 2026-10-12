@@ -139,3 +139,14 @@ Figma `App Screens · Redesign 2`의 58개 상태를 아래 Preview에 매핑한
 | ![홈 보정 전](screenshots/phone-home-before.png) | ![홈 보정 후](screenshots/phone-home.png) |
 
 [활동 기록](screenshots/phone-activity.png), [로그아웃 다이얼로그](screenshots/phone-dialog.png), [홈 마지막 기록](screenshots/phone-home-scrolled.png), [실제 앱 시작](screenshots/app-start-loading.png).
+
+## Figma UI 세부 불일치 보정 (Issue #14)
+
+2026-10-12 보정 보고서의 UI-01~UI-15를 반영했다. CTA radius·비활성 배경, 스켈레톤과 홈 공지 색상, 선택 탭·승인 적립 색상, 청소구역 상태별 아이콘, 촬영 타이머·보조 문구·셔터, 이미 제출한 상태의 시트 아이콘 슬롯, 이의신청 내역 간격·상태 글꼴·사진 안내 문구, 모집 화면 진행 막대 크기·색상을 Figma `App Screens · Redesign 2`에 맞췄다. 진행 막대의 8dp 높이와 트랙 색은 모집 화면 호출부에만 적용하고 홈 화면의 기본 규격은 유지했다. 동작·데이터 흐름은 바꾸지 않았다.
+
+### 보정 검증
+
+- `./gradlew --offline spotlessCheck :app:assembleDebug :app:assembleDebugAndroidTest :app:testDebugUnitTest :app:lintDebug` 성공. 단위 테스트 성공, Lint 오류 0개·경고 31개.
+- 390×844dp/font1.0, 320×596dp/font1.0, 320×596dp/font1.5, 430×932dp/font1.0, 430×932dp/font1.5의 세로 화면 조건에서 각 18개 계측 테스트와 62개 화면 Preview 캡처가 성공했다. 조건별 스크롤 캡처도 생성했다.
+- 기본 화면 크기의 변경 화면 캡처를 Figma와 수동 대조했고, 320×596dp/font1.5에서는 홈·구역·촬영·이의신청·모집 대표 상태를 확인했다. 픽셀 단위 자동 비교는 수행하지 않았다.
+- 계측을 위해 임시 설정한 화면 크기·density·fontScale·키보드·회전 설정은 실행 전 값으로 복원했다. 서버 연동·실제 촬영·가로 화면 동작은 이번 UI 보정의 검증 대상이 아니다.

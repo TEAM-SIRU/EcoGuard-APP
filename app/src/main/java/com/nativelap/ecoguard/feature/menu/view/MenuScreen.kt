@@ -136,9 +136,9 @@ fun MenuScreen(
                             onCheckedChange = null,
                             colors =
                                 SwitchDefaults.colors(
-                                    checkedTrackColor = MaterialTheme.colorScheme.primary,
+                                    checkedTrackColor = MaterialTheme.colorScheme.secondary,
                                     checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                                    checkedBorderColor = MaterialTheme.colorScheme.primary,
+                                    checkedBorderColor = MaterialTheme.colorScheme.secondary,
                                 ),
                         )
                     }

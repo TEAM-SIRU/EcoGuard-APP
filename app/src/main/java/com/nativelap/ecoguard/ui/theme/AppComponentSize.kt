@@ -18,6 +18,7 @@ object AppComponentSize {
     val cameraFabScrollClearance = 32.dp
     val weekDayIndicator = 36.dp
     val progressBarHeight = 6.dp
+    val recruitmentProgressBarHeight = 8.dp
     val stateBottomCtaMinHeight = 208.dp
     val emptyStateBottomClearance = 86.dp
     val logo = 80.dp

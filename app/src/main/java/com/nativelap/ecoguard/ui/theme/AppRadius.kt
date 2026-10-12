@@ -10,6 +10,7 @@ object AppRadius {
     val iconFrame = 14.dp
     val toast = 14.dp
     val button = 16.dp
+    val primaryButton = 14.dp
     val card = 20.dp
     val logo = 24.dp
     val listCard = 24.dp
