@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.area.viewmodel.AreaUiState
 import com.nativelap.ecoguard.ui.component.EcoCard
@@ -25,6 +26,7 @@ fun AreaAssignmentCard(
         TwoLineTextRow(
             title = areaContent.areaName,
             subtitle = stringResource(R.string.area_description_format, areaContent.areaDescription),
+            verticalPadding = 12.dp,
         )
 
         TwoLineTextRow(
@@ -35,11 +37,13 @@ fun AreaAssignmentCard(
                     areaContent.cleaningEndTime,
                 ),
             subtitle = stringResource(R.string.home_cleaning_time),
+            verticalPadding = 12.dp,
         )
 
         TwoLineTextRow(
             title = stringResource(R.string.area_member_count, areaContent.teammateNames.size + 1),
             subtitle = memberNames,
+            verticalPadding = 12.dp,
         )
     }
 }
