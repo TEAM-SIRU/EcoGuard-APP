@@ -52,7 +52,7 @@ fun EcoPrimaryButton(
                 .fillMaxWidth()
                 .heightIn(min = AppComponentSize.primaryButtonHeight),
         enabled = enabled && !isLoading,
-        shape = RoundedCornerShape(AppRadius.button),
+        shape = RoundedCornerShape(AppRadius.primaryButton),
         colors =
             ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.secondary,
@@ -61,7 +61,7 @@ fun EcoPrimaryButton(
                     if (isLoading) {
                         MaterialTheme.colorScheme.secondary
                     } else {
-                        MaterialTheme.colorScheme.surfaceVariant
+                        MaterialTheme.extraColors.disabledPrimaryButtonContainerColor
                     },
                 disabledContentColor =
                     if (isLoading) {

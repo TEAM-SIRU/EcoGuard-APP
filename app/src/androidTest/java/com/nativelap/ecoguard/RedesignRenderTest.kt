@@ -26,8 +26,8 @@ class RedesignRenderTest {
     @Test
     fun renderEveryScreenPreview() {
         val instrumentation = InstrumentationRegistry.getInstrumentation()
-        val only = InstrumentationRegistry.getArguments().getString("preview")
-        val previews = SCREEN_PREVIEWS.filter { only == null || it.second == only }
+        val only = InstrumentationRegistry.getArguments().getString("preview")?.split(",")
+        val previews = SCREEN_PREVIEWS.filter { only == null || it.second in only }
         composeRule.activityRule.scenario.onActivity { activity ->
             activity.enableEdgeToEdge(
                 statusBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
@@ -55,6 +55,13 @@ class RedesignRenderTest {
                             activity.window,
                             activity.window.decorView,
                         ).isAppearanceLightStatusBars,
+                )
+                assertEquals(
+                    "내비게이션 바 아이콘 복원: ${preview.second}",
+                    preview.second != "CameraCaptureScreenPreview",
+                    WindowCompat
+                        .getInsetsController(activity.window, activity.window.decorView)
+                        .isAppearanceLightNavigationBars,
                 )
             }
             val bitmap = checkNotNull(instrumentation.uiAutomation.takeScreenshot())

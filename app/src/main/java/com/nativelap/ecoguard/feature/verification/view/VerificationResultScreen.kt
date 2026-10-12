@@ -95,7 +95,7 @@ fun VerificationResultScreen(
                         InfoRow(
                             label = stringResource(R.string.verification_earned_time),
                             value = stringResource(R.string.format_bonus_minutes, uiState.earnedMinutes),
-                            valueColor = MaterialTheme.colorScheme.primary,
+                            valueColor = MaterialTheme.extraColors.approvedRewardValueColor,
                         )
                     }
                 }

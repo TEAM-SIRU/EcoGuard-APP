@@ -29,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppRadius
@@ -52,6 +53,7 @@ fun EcoInfoBottomSheet(
     modifier: Modifier = Modifier,
     secondaryActionText: String? = null,
     onSecondaryActionClick: () -> Unit = {},
+    iconSlotSize: Dp = 48.dp,
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
@@ -90,12 +92,17 @@ fun EcoInfoBottomSheet(
                     ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Icon(
-                painter = painterResource(iconRes),
-                contentDescription = null,
-                modifier = Modifier.size(48.dp),
-                tint = Color.Unspecified,
-            )
+            Box(
+                modifier = Modifier.size(iconSlotSize),
+                contentAlignment = Alignment.Center,
+            ) {
+                Icon(
+                    painter = painterResource(iconRes),
+                    contentDescription = null,
+                    modifier = Modifier.size(48.dp),
+                    tint = Color.Unspecified,
+                )
+            }
 
             Spacer(modifier = Modifier.height(AppSpacing.md))
 

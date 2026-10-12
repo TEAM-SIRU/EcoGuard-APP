@@ -17,6 +17,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.ui.theme.AppIconSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
@@ -38,15 +40,17 @@ private fun SplashBrand() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(AppSpacing.md),
     ) {
-        Icon(
-            painterResource(R.drawable.ic_sprout),
-            contentDescription = null,
-            modifier = Modifier.size(AppIconSize.hero),
-            tint = Color.Unspecified,
-        )
+        Box(modifier = Modifier.size(80.dp), contentAlignment = Alignment.Center) {
+            Icon(
+                painterResource(R.drawable.ic_sprout),
+                contentDescription = null,
+                modifier = Modifier.size(AppIconSize.hero),
+                tint = Color.Unspecified,
+            )
+        }
         Text(
             stringResource(R.string.brand_name),
-            style = MaterialTheme.extraTypography.highlightNumber,
+            style = MaterialTheme.extraTypography.highlightNumber.copy(fontSize = 28.sp, letterSpacing = (-0.56f).sp),
             color = MaterialTheme.colorScheme.onSurface,
         )
     }

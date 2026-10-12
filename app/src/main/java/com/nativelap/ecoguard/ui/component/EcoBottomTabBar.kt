@@ -65,6 +65,7 @@ fun EcoBottomTabBar(
     onCameraClick: () -> Unit,
     modifier: Modifier = Modifier,
     isCameraEnabled: Boolean = true,
+    selectedIconResOverride: Int? = null,
 ) {
     Box(
         modifier = modifier.fillMaxWidth(),
@@ -98,6 +99,7 @@ fun EcoBottomTabBar(
                 EcoBottomTabItem(
                     tab = EcoBottomTab.HOME,
                     isSelected = selectedTab == EcoBottomTab.HOME,
+                    selectedIconResOverride = selectedIconResOverride,
                     onClick = { onTabSelected(EcoBottomTab.HOME) },
                     modifier = Modifier.weight(1f),
                 )
@@ -105,6 +107,7 @@ fun EcoBottomTabBar(
                 EcoBottomTabItem(
                     tab = EcoBottomTab.AREA,
                     isSelected = selectedTab == EcoBottomTab.AREA,
+                    selectedIconResOverride = selectedIconResOverride,
                     onClick = { onTabSelected(EcoBottomTab.AREA) },
                     modifier = Modifier.weight(1f),
                 )
@@ -114,6 +117,7 @@ fun EcoBottomTabBar(
                 EcoBottomTabItem(
                     tab = EcoBottomTab.ACTIVITY,
                     isSelected = selectedTab == EcoBottomTab.ACTIVITY,
+                    selectedIconResOverride = selectedIconResOverride,
                     onClick = { onTabSelected(EcoBottomTab.ACTIVITY) },
                     modifier = Modifier.weight(1f),
                 )
@@ -121,6 +125,7 @@ fun EcoBottomTabBar(
                 EcoBottomTabItem(
                     tab = EcoBottomTab.MY_PAGE,
                     isSelected = selectedTab == EcoBottomTab.MY_PAGE,
+                    selectedIconResOverride = selectedIconResOverride,
                     onClick = { onTabSelected(EcoBottomTab.MY_PAGE) },
                     modifier = Modifier.weight(1f),
                 )
@@ -141,16 +146,17 @@ private fun EcoBottomTabItem(
     isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    selectedIconResOverride: Int? = null,
 ) {
     val contentColor =
         if (isSelected) {
-            MaterialTheme.colorScheme.secondary
+            MaterialTheme.extraColors.activeTabLabelColor
         } else {
             MaterialTheme.extraColors.captionTextColor
         }
     val iconRes =
         if (isSelected) {
-            tab.selectedIconRes
+            selectedIconResOverride ?: tab.selectedIconRes
         } else {
             tab.unselectedIconRes
         }
@@ -177,7 +183,7 @@ private fun EcoBottomTabItem(
             painter = painterResource(iconRes),
             contentDescription = null,
             modifier = Modifier.size(AppIconSize.standard),
-            tint = contentColor,
+            tint = if (isSelected) MaterialTheme.colorScheme.primary else contentColor,
         )
 
         // 큰 글자에서도 라벨을 한 줄로 유지하도록 탭 폭에 맞춰 글자 크기를 줄인다.

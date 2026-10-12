@@ -13,6 +13,7 @@
 - 글꼴: Noto Sans KR Regular·Medium·Bold를 `res/font`에서 사용합니다. [OFL 라이선스](licenses/NotoSansKR-OFL.txt)를 포함합니다.
 - 색상: Primary `#55B580`, 기본 CTA에 사용하는 Secondary `#30875B`, 배경 `#FAFBFA`, 흰색 보조 버튼과 테두리를 적용합니다. CTA 색상은 Figma 원본 PNG의 실제 색상을 기준으로 합니다.
 - 수치: 기본 CTA 높이 48dp, FAB 크기 60dp 등 Figma 원본 크기·간격을 디자인 토큰과 화면에 반영합니다.
+- 공통 UI 보정: [Issue #14](https://github.com/TEAM-SIRU/EcoGuard-APP/issues/14)에서 화면별 원본 노드의 크기·간격·문구를 재대조했습니다. 작은 액션은 시각 크기를 유지하면서 터치 영역을 최소 48dp로 확장하며, 다이얼로그·키보드·긴 콘텐츠의 스크롤 접근성을 보완합니다.
 - 에셋: 원본 SVG를 Android VectorDrawable로 변환하고 청소구역 도면을 로컬 이미지로 사용합니다. 원본·리소스 매핑은 [에셋 문서](docs/redesign-assets.md)를 참고하세요.
 - 신청 입력: 학번·이름은 읽기 전용입니다. 동기는 Unicode 코드 포인트 기준 최대 200자로 제한하고 카운터를 표시합니다. 빈 내용·공백만 있는 내용·제출 중에는 신청 버튼을 비활성화합니다. 입력은 저장 가능한 Compose 상태로 유지하며 외부 상태 변경을 반영합니다.
 - 반응형: 기본 콘텐츠 최대폭은 600dp입니다. 홈·청소구역은 840dp 이상에서 2열·최대폭 960dp를 사용하며, 나머지 화면은 최대폭 600dp를 유지합니다.
@@ -86,15 +87,21 @@ cd EcoGuard-APP
 ./gradlew spotlessCheck
 ```
 
-GitHub Actions 설정은 [Android CI](.github/workflows/android-ci.yml)와 [포맷 검사](.github/workflows/format-check.yml)에 있습니다. 저장소 규칙상 통합·기본 브랜치는 `dev`, 릴리스 대상은 `main`입니다. Android 기반 설정 PR #2, Issue #3·#5의 화면 UI PR #4·#6, Issue #9의 Spotless·ktlint PR #10은 `dev`에 병합되었습니다. 전체 UI 리디자인은 [Issue #12](https://github.com/TEAM-SIRU/EcoGuard-APP/issues/12), `feature/#12-figma-full-ui-redesign` 브랜치에서 진행합니다. 기존 규칙 변경은 UI 변경과 별도 커밋으로 보존했습니다.
+GitHub Actions 설정은 [Android CI](.github/workflows/android-ci.yml)와 [포맷 검사](.github/workflows/format-check.yml)에 있습니다. 저장소 규칙상 통합·기본 브랜치는 `dev`, 릴리스 대상은 `main`입니다. Android 기반 설정 PR #2, Issue #3·#5의 화면 UI PR #4·#6, Issue #9의 Spotless·ktlint PR #10은 `dev`에 병합되었습니다. 전체 UI 리디자인은 [Issue #12](https://github.com/TEAM-SIRU/EcoGuard-APP/issues/12)에서 관리했습니다. 후속 공통 UI 보정은 [Issue #14](https://github.com/TEAM-SIRU/EcoGuard-APP/issues/14), `fix/#14-redesign-ui-corrections` 브랜치에서 진행합니다. 기존 규칙 변경은 UI 변경과 별도 커밋으로 보존했습니다.
 
 ### 리디자인 검증 현황
 
-구현 작업자의 실행 결과 기준으로 `spotlessApply`, `spotlessCheck`, `:app:testDebugUnitTest`, `:app:lintDebug`, `:app:assembleDebug`, `:app:assembleDebugAndroidTest`가 통과했습니다. 단위 테스트 4개가 통과했으며 Android Lint 결과는 오류 0개·경고 35개입니다.
+2026-10-12 Issue #14의 Figma UI 보정(UI-01~UI-15)을 완료했습니다. Spotless, Debug 앱·계측 APK 빌드, 단위 테스트와 Android Lint가 통과했습니다. Lint 오류는 0개, 경고는 31개였습니다.
 
-62개 상태를 390×844dp(글자 배율 1.0), 320×596dp(글자 배율 1.5), 1280×900dp(글자 배율 1.0)에서 렌더링하고 원본 디자인과 시각 대조했습니다. 신청 입력의 Unicode 경계·외부 상태 동기화·접근성, 월 선택, 빈 상태 스크롤을 포함한 320dp 계측 테스트 6개 및 390dp·1280dp의 빈 상태·전체 렌더링 테스트 각 2개가 통과했습니다. 최종 변경 후 포맷·빌드·단위 테스트·Lint를 다시 실행해 통과했고 대표 캡처를 확인했습니다. 검증 후 기기 설정도 복원했습니다. 렌더링 테스트는 화면 생성·오류 여부를 검사하며 픽셀 차이를 자동 판정하지 않습니다. 상태별 대응과 검증 기준은 [리디자인 검증 문서](docs/redesign-verification.md)를 참고하세요.
+- 세로 화면 390×844dp/font 1.0, 320×596dp/font 1.0·1.5, 430×932dp/font 1.0·1.5에서 각각 계측 테스트 18개와 62개 화면 상태 Preview 렌더가 통과했습니다. 조건별 홈 스크롤 캡처도 확인했습니다.
+- 기본 크기 변경 화면을 Figma 원본과 수동 대조했고, 320×596dp/font 1.5에서 작은 화면의 대표 상태를 확인했습니다. Preview 검증은 자동 픽셀 일치 판정이 아닙니다.
+- 계측에 사용한 화면 크기·density·글자 배율·키보드·회전 설정은 실행 전 상태로 복원했습니다. 서버 연동·실제 촬영·가로 화면 동작은 정적 UI 검증 범위에 포함하지 않았습니다.
+
+전체 상태 대응표와 이전 Issue #12·#14 검증 이력은 [리디자인 검증 문서](docs/redesign-verification.md)를 참고하세요.
 
 대표 화면 캡처: [휴대폰 홈](docs/screenshots/phone-home.png), [신청](docs/screenshots/phone-application.png), [마이페이지](docs/screenshots/phone-menu.png), [태블릿 홈](docs/screenshots/tablet-home.png), [태블릿 청소구역](docs/screenshots/tablet-area.png).
+
+추가 보정 캡처: [홈 전후 비교와 검증](docs/redesign-verification.md#보정-전후와-실행-캡처), [활동 기록](docs/screenshots/phone-activity.png), [다이얼로그](docs/screenshots/phone-dialog.png), [홈 마지막 기록](docs/screenshots/phone-home-scrolled.png), [실제 앱 시작](docs/screenshots/app-start-loading.png).
 
 ## 프로젝트 구조
 

@@ -3,6 +3,7 @@ package com.nativelap.ecoguard.feature.verification.view
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.home.view.HomePreviewFixtures
 import com.nativelap.ecoguard.feature.home.view.HomeScreen
@@ -39,6 +40,7 @@ fun VerificationBlockedSheet(
         is VerificationBlockReason.AlreadySubmitted -> {
             EcoInfoBottomSheet(
                 iconRes = R.drawable.ic_check_48,
+                iconSlotSize = 64.dp,
                 title = stringResource(R.string.verification_already_submitted_title),
                 description =
                     stringResource(

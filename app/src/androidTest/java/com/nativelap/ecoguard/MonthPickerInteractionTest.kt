@@ -1,11 +1,13 @@
 package com.nativelap.ecoguard
 
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import com.nativelap.ecoguard.feature.activity.view.MonthPickerDialog
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import org.junit.Assert.assertEquals
@@ -35,7 +37,11 @@ class MonthPickerInteractionTest {
         composeRule.onNodeWithContentDescription("다음 연도").performClick()
         composeRule.onNodeWithText("9월").assertIsSelected()
         composeRule.onNodeWithText("12월").assertIsNotEnabled()
-        composeRule.onNodeWithText("적용").performClick()
+        composeRule
+            .onNodeWithText("적용")
+            .performScrollTo()
+            .assertIsDisplayed()
+            .performClick()
         composeRule.runOnIdle { assertEquals(2026 to 9, applied) }
     }
 }

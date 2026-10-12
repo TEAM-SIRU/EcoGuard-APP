@@ -57,6 +57,6 @@ internal object AppealPreviewFixtures {
             verificationDate = "9월 22일(화)",
             attemptNumber = 1,
             teacherResponseTitle = "사진에 구역 표지판이 보이지 않아요",
-            teacherResponseDetail = "표지판이 보이게 다시 찍어 주세요. 08:10 이후에도 이의신청용 촬영은 가능해요.",
+            teacherResponseDetail = "표지판이 보이게 다시 찍어 주세요.\n08:10 이후에도 이의신청용 촬영은 가능해요.",
         )
 }

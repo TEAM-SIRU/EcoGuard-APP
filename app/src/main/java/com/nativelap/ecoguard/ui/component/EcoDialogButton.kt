@@ -40,7 +40,7 @@ fun EcoDialogButton(
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.labelMedium,
+            style = MaterialTheme.typography.labelLarge,
         )
     }
 }
