@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
@@ -15,13 +14,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
@@ -38,50 +35,52 @@ fun EcoSegmentedControl(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(RoundedCornerShape(AppRadius.tile))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .padding(AppSpacing.xxs)
-            .selectableGroup(),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(AppRadius.tile))
+                .padding(AppSpacing.xxs)
+                .selectableGroup(),
         horizontalArrangement = Arrangement.spacedBy(AppSpacing.xxs),
     ) {
         segmentLabels.forEachIndexed { segmentIndex, segmentLabel ->
             val isSelected = segmentIndex == selectedIndex
 
             Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .heightIn(min = AppComponentSize.minTouchTarget)
-                    .clip(RoundedCornerShape(segmentItemRadius))
-                    .background(
-                        if (isSelected) {
-                            MaterialTheme.colorScheme.surface
-                        } else {
-                            Color.Transparent
-                        },
-                    )
-                    .selectable(
-                        selected = isSelected,
-                        onClick = { onSegmentSelect(segmentIndex) },
-                        role = Role.Tab,
-                    ),
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .background(
+                            if (isSelected) {
+                                MaterialTheme.colorScheme.surface
+                            } else {
+                                Color.Transparent
+                            },
+                            RoundedCornerShape(segmentItemRadius),
+                        ).selectable(
+                            selected = isSelected,
+                            onClick = { onSegmentSelect(segmentIndex) },
+                            role = Role.Tab,
+                        ).padding(vertical = AppSpacing.xs),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
                     text = segmentLabel,
-                    style = MaterialTheme.typography.bodyMedium.copy(
-                        fontWeight = if (isSelected) {
-                            FontWeight.Bold
+                    style =
+                        MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight =
+                                if (isSelected) {
+                                    FontWeight.Bold
+                                } else {
+                                    FontWeight.Medium
+                                },
+                        ),
+                    color =
+                        if (isSelected) {
+                            MaterialTheme.colorScheme.onSurface
                         } else {
-                            FontWeight.Medium
+                            MaterialTheme.extraColors.captionTextColor
                         },
-                    ),
-                    color = if (isSelected) {
-                        MaterialTheme.colorScheme.onSurface
-                    } else {
-                        MaterialTheme.extraColors.captionTextColor
-                    },
                 )
             }
         }

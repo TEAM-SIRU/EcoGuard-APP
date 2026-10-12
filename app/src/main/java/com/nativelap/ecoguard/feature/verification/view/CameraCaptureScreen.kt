@@ -42,10 +42,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationScreenEvent
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationStep
-import com.nativelap.ecoguard.ui.component.LightSystemBarIconsEffect
+import com.nativelap.ecoguard.ui.component.EcoSystemBarIcons
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppIconSize
 import com.nativelap.ecoguard.ui.theme.AppRadius
@@ -54,18 +55,24 @@ import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 import com.nativelap.ecoguard.ui.theme.extraTypography
 
-private val countdownBarHeight = 36.dp
+private val countdownBarHeight = 40.dp
 private val guideFrameBorderWidth = 2.dp
 private val guideFrameDashLength = 8.dp
 private val guideFrameDashGap = 6.dp
 private const val GUIDE_MESSAGE_OVERLAY_ALPHA = 0.8f
 private val guideMessageHorizontalPadding = 14.dp
-private val shutterSize = 72.dp
+private val shutterSize = 80.dp
 private val shutterBorderWidth = 4.dp
-private val shutterInnerPadding = 6.dp
-private val controlsHorizontalPadding = 40.dp
-private val controlsTopPadding = 24.dp
-private val controlsBottomPadding = 32.dp
+private val shutterInnerPadding = 10.dp
+private val countdownHorizontalStartPadding = 12.dp
+private val countdownHorizontalEndPadding = 14.dp
+private val countdownVerticalPadding = 6.dp
+private val countdownIconSpacing = 6.dp
+private const val COUNTDOWN_OVERLAY_ALPHA = 0.55f
+private val sideControlSize = 48.dp
+private val controlsHorizontalPadding = 48.dp
+private val controlsTopPadding = 28.dp
+private val controlsBottomPadding = 44.dp
 
 /**
  * 06-2 촬영. 화면 전체가 어두운 카메라 배경이라 Scaffold 대신 Column이 inset을 직접 처리한다.
@@ -80,26 +87,27 @@ fun CameraCaptureScreen(
     onEvent: (VerificationScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    EcoSystemBarIcons(useDarkIcons = false)
     val cameraColors = MaterialTheme.extraColors
     val shutterDescription = stringResource(R.string.cd_shutter)
 
-    LightSystemBarIconsEffect()
-
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(cameraColors.cameraBackgroundColor)
-            .windowInsetsPadding(WindowInsets.statusBars),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .background(cameraColors.cameraBackgroundColor)
+                .windowInsetsPadding(WindowInsets.statusBars),
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    start = AppSpacing.sm,
-                    end = AppSpacing.lg,
-                    top = AppSpacing.xxs,
-                    bottom = AppSpacing.sm,
-                ),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        start = AppSpacing.sm,
+                        end = AppSpacing.lg,
+                        top = AppSpacing.xxs,
+                        bottom = AppSpacing.sm,
+                    ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton(
@@ -127,11 +135,12 @@ fun CameraCaptureScreen(
                 )
 
                 Text(
-                    text = stringResource(
-                        R.string.camera_step_capture,
-                        VerificationStep.CAPTURE.stepNumber,
-                        VerificationStep.totalStepCount,
-                    ),
+                    text =
+                        stringResource(
+                            R.string.camera_step_capture,
+                            VerificationStep.CAPTURE.stepNumber,
+                            VerificationStep.totalStepCount,
+                        ),
                     style = MaterialTheme.extraTypography.captionRegular,
                     color = cameraColors.cameraSecondaryTextColor,
                 )
@@ -141,45 +150,71 @@ fun CameraCaptureScreen(
         }
 
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = countdownBarHeight)
-                .background(MaterialTheme.colorScheme.primary),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = countdownBarHeight),
             contentAlignment = Alignment.Center,
         ) {
-            Text(
-                text = stringResource(R.string.camera_time_remaining, timeRemaining, deadlineTime),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onPrimary,
-            )
+            Row(
+                modifier =
+                    Modifier
+                        .clip(
+                            RoundedCornerShape(AppRadius.pill),
+                        ).background(
+                            cameraColors.cameraOverlayColor.copy(alpha = COUNTDOWN_OVERLAY_ALPHA),
+                        ).padding(
+                            start = countdownHorizontalStartPadding,
+                            end = countdownHorizontalEndPadding,
+                            top = countdownVerticalPadding,
+                            bottom = countdownVerticalPadding,
+                        ),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(countdownIconSpacing),
+            ) {
+                Icon(
+                    painterResource(R.drawable.ic_capture_clock),
+                    null,
+                    modifier = Modifier.size(AppIconSize.chip),
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                )
+                Text(
+                    text = stringResource(R.string.camera_time_remaining, timeRemaining, deadlineTime),
+                    style = MaterialTheme.typography.bodyMedium.copy(lineHeight = 19.sp),
+                    color = MaterialTheme.colorScheme.onPrimary,
+                )
+            }
         }
 
         Box(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .background(cameraColors.cameraSurfaceColor)
-                .padding(
-                    horizontal = AppSpacing.screenHorizontal,
-                    vertical = AppSpacing.lg,
-                ),
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .background(cameraColors.cameraSurfaceColor)
+                    .padding(
+                        horizontal = AppSpacing.screenHorizontal,
+                        vertical = AppSpacing.lg,
+                    ),
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .dashedGuideFrame()
-                    .padding(AppSpacing.lg),
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .dashedGuideFrame()
+                        .padding(AppSpacing.lg),
                 contentAlignment = Alignment.BottomCenter,
             ) {
                 Text(
                     text = stringResource(R.string.camera_frame_guide),
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(AppRadius.pill))
-                        .background(cameraColors.cameraOverlayColor.copy(alpha = GUIDE_MESSAGE_OVERLAY_ALPHA))
-                        .padding(
-                            horizontal = guideMessageHorizontalPadding,
-                            vertical = AppSpacing.xs,
-                        ),
+                    modifier =
+                        Modifier
+                            .clip(RoundedCornerShape(AppRadius.pill))
+                            .background(cameraColors.cameraOverlayColor.copy(alpha = GUIDE_MESSAGE_OVERLAY_ALPHA))
+                            .padding(
+                                horizontal = guideMessageHorizontalPadding,
+                                vertical = AppSpacing.xs,
+                            ),
                     style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
                     color = MaterialTheme.colorScheme.onPrimary,
                     textAlign = TextAlign.Center,
@@ -188,46 +223,51 @@ fun CameraCaptureScreen(
         }
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .windowInsetsPadding(WindowInsets.navigationBars)
-                .padding(
-                    start = controlsHorizontalPadding,
-                    end = controlsHorizontalPadding,
-                    top = controlsTopPadding,
-                    bottom = controlsBottomPadding,
-                ),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .windowInsetsPadding(WindowInsets.navigationBars)
+                    .padding(
+                        start = controlsHorizontalPadding,
+                        end = controlsHorizontalPadding,
+                        top = controlsTopPadding,
+                        bottom = controlsBottomPadding,
+                    ),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Spacer(modifier = Modifier.size(AppComponentSize.minTouchTarget))
+            Spacer(modifier = Modifier.size(sideControlSize))
 
             Surface(
                 onClick = { onEvent(VerificationScreenEvent.ShutterClick) },
-                modifier = Modifier
-                    .size(shutterSize)
-                    .semantics { contentDescription = shutterDescription },
+                modifier =
+                    Modifier
+                        .size(shutterSize)
+                        .semantics { contentDescription = shutterDescription },
                 shape = CircleShape,
                 color = cameraColors.cameraBackgroundColor,
-                border = BorderStroke(
-                    width = shutterBorderWidth,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                ),
+                border =
+                    BorderStroke(
+                        width = shutterBorderWidth,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                    ),
             ) {
                 Box(
-                    modifier = Modifier
-                        .padding(shutterInnerPadding)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.onPrimary),
+                    modifier =
+                        Modifier
+                            .padding(shutterInnerPadding)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.onPrimary),
                 )
             }
 
             IconButton(
                 onClick = { onEvent(VerificationScreenEvent.FlipCameraClick) },
-                modifier = Modifier
-                    .size(AppComponentSize.minTouchTarget)
-                    .clip(CircleShape)
-                    .background(cameraColors.cameraSurfaceColor),
+                modifier =
+                    Modifier
+                        .size(sideControlSize)
+                        .clip(CircleShape)
+                        .background(cameraColors.cameraSurfaceColor),
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_flip),
@@ -252,20 +292,24 @@ private fun Modifier.dashedGuideFrame(): Modifier {
         drawRoundRect(
             color = frameColor,
             topLeft = Offset(strokeWidthPx / 2, strokeWidthPx / 2),
-            size = Size(
-                width = size.width - strokeWidthPx,
-                height = size.height - strokeWidthPx,
-            ),
-            cornerRadius = CornerRadius(cornerRadiusPx, cornerRadiusPx),
-            style = Stroke(
-                width = strokeWidthPx,
-                pathEffect = PathEffect.dashPathEffect(
-                    intervals = floatArrayOf(
-                        guideFrameDashLength.toPx(),
-                        guideFrameDashGap.toPx(),
-                    ),
+            size =
+                Size(
+                    width = size.width - strokeWidthPx,
+                    height = size.height - strokeWidthPx,
                 ),
-            ),
+            cornerRadius = CornerRadius(cornerRadiusPx, cornerRadiusPx),
+            style =
+                Stroke(
+                    width = strokeWidthPx,
+                    pathEffect =
+                        PathEffect.dashPathEffect(
+                            intervals =
+                                floatArrayOf(
+                                    guideFrameDashLength.toPx(),
+                                    guideFrameDashGap.toPx(),
+                                ),
+                        ),
+                ),
         )
     }
 }

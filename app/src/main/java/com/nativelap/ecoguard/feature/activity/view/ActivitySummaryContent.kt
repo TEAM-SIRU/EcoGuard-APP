@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
@@ -23,7 +22,6 @@ import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.activity.viewmodel.ActivityUiState
 import com.nativelap.ecoguard.ui.component.StatSummaryItem
 import com.nativelap.ecoguard.ui.component.StatSummaryRow
-import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppIconSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
@@ -37,22 +35,17 @@ fun ActivitySummaryContent(
     onMonthSelectorClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val monthlyMinutesColor = if (activityContent.monthlyMinutes > 0) {
-        MaterialTheme.colorScheme.primary
-    } else {
-        MaterialTheme.colorScheme.onSurface
-    }
+    val monthlyMinutesColor = MaterialTheme.colorScheme.onPrimaryContainer
 
     Column(modifier = modifier.fillMaxWidth()) {
         Row(
-            modifier = Modifier
-                .padding(horizontal = AppSpacing.xs)
-                .heightIn(min = AppComponentSize.minTouchTarget)
-                .clickable(
-                    role = Role.Button,
-                    onClick = onMonthSelectorClick,
-                )
-                .padding(horizontal = AppSpacing.md),
+            modifier =
+                Modifier
+                    .padding(start = AppSpacing.xs, end = AppSpacing.xs, bottom = AppSpacing.xs)
+                    .clickable(
+                        role = Role.Button,
+                        onClick = onMonthSelectorClick,
+                    ).padding(horizontal = AppSpacing.md),
             horizontalArrangement = Arrangement.spacedBy(AppSpacing.xxs),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -71,12 +64,13 @@ fun ActivitySummaryContent(
         }
 
         Column(
-            modifier = Modifier.padding(
-                start = AppSpacing.screenHorizontal,
-                end = AppSpacing.screenHorizontal,
-                top = AppSpacing.xxs,
-                bottom = AppSpacing.md,
-            ),
+            modifier =
+                Modifier.padding(
+                    start = AppSpacing.screenHorizontal,
+                    end = AppSpacing.screenHorizontal,
+                    top = AppSpacing.sm,
+                    bottom = AppSpacing.md,
+                ),
             verticalArrangement = Arrangement.spacedBy(monthlyTimeSpacing),
         ) {
             Text(
@@ -93,25 +87,27 @@ fun ActivitySummaryContent(
         }
 
         StatSummaryRow(
-            statItems = listOf(
-                StatSummaryItem(
-                    label = stringResource(R.string.verification_status_approved),
-                    value = stringResource(R.string.format_times, activityContent.approvedCount),
+            statItems =
+                listOf(
+                    StatSummaryItem(
+                        label = stringResource(R.string.verification_status_approved),
+                        value = stringResource(R.string.format_times, activityContent.approvedCount),
+                    ),
+                    StatSummaryItem(
+                        label = stringResource(R.string.verification_status_rejected),
+                        value = stringResource(R.string.format_times, activityContent.rejectedCount),
+                    ),
+                    StatSummaryItem(
+                        label = stringResource(R.string.verification_status_not_submitted),
+                        value = stringResource(R.string.format_times, activityContent.notSubmittedCount),
+                    ),
                 ),
-                StatSummaryItem(
-                    label = stringResource(R.string.verification_status_rejected),
-                    value = stringResource(R.string.format_times, activityContent.rejectedCount),
+            modifier =
+                Modifier.padding(
+                    start = AppSpacing.screenHorizontal,
+                    end = AppSpacing.screenHorizontal,
+                    bottom = AppSpacing.xl,
                 ),
-                StatSummaryItem(
-                    label = stringResource(R.string.verification_status_not_submitted),
-                    value = stringResource(R.string.format_times, activityContent.notSubmittedCount),
-                ),
-            ),
-            modifier = Modifier.padding(
-                start = AppSpacing.screenHorizontal,
-                end = AppSpacing.screenHorizontal,
-                bottom = AppSpacing.xl,
-            ),
         )
     }
 }

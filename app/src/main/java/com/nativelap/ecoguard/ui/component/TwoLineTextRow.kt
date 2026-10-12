@@ -17,18 +17,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.ui.theme.AppIconSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 
-private val twoLineRowVerticalPadding = 12.dp
+private val twoLineRowVerticalPadding = 14.dp
 private val twoLineRowTextSpacing = 2.dp
-private val twoLineRowIconSpacing = 12.dp
+private val twoLineRowIconSpacing = 14.dp
 
 /**
- * 본문 16·보조 14 두 줄 리스트 행. 선택적으로 앞에 20dp 강조색 아이콘, 뒤에 칩·화살표 등을 둔다.
+ * 본문 17·보조 14 두 줄 리스트 행. 선택적으로 앞에 22dp 강조색 아이콘, 뒤에 칩·화살표 등을 둔다.
  * 폭이 좁거나 글자가 크면 뒤쪽 콘텐츠를 부제목 아래로 내린다.
  */
 @Composable
@@ -37,15 +38,17 @@ fun TwoLineTextRow(
     subtitle: String,
     modifier: Modifier = Modifier,
     @DrawableRes leadingIconRes: Int? = null,
+    verticalPadding: Dp = twoLineRowVerticalPadding,
     trailingContent: (@Composable RowScope.() -> Unit)? = null,
 ) {
     BoxWithConstraints(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = AppSpacing.screenHorizontal,
-                vertical = twoLineRowVerticalPadding,
-            ),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = AppSpacing.md,
+                    vertical = verticalPadding,
+                ),
     ) {
         val isCompact = trailingContent != null && isCompactForText(maxWidth, AdaptiveWidth.trailingRow)
 

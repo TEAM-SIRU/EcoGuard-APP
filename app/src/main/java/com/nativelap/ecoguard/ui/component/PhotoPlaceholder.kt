@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -25,7 +26,7 @@ import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 
-private val photoIconSize = 36.dp
+private val photoIconSize = 40.dp
 
 /** 사진 자리 표시. 실제 사진은 촬영·서버 연동 작업에서 이 영역에 표시한다. */
 @Composable
@@ -34,30 +35,30 @@ fun PhotoPlaceholder(
     height: Dp,
     modifier: Modifier = Modifier,
 ) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(height)
-            .clip(RoundedCornerShape(AppRadius.card))
-            .background(MaterialTheme.colorScheme.surfaceVariant),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(
-            space = AppSpacing.xs,
-            alignment = Alignment.CenterVertically,
-        ),
+    EcoCard(
+        modifier = modifier.height(height),
+        contentPadding =
+            androidx.compose.foundation.layout
+                .PaddingValues(0.dp),
     ) {
-        Icon(
-            painter = painterResource(R.drawable.ic_image),
-            contentDescription = null,
-            modifier = Modifier.size(photoIconSize),
-            tint = MaterialTheme.extraColors.captionTextColor,
-        )
+        Column(
+            modifier = Modifier.fillMaxWidth().height(height),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(AppSpacing.xs, Alignment.CenterVertically),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_image),
+                contentDescription = null,
+                modifier = Modifier.size(photoIconSize),
+                tint = Color.Unspecified,
+            )
 
-        Text(
-            text = label,
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.extraColors.captionTextColor,
-        )
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.extraColors.captionTextColor,
+            )
+        }
     }
 }
 

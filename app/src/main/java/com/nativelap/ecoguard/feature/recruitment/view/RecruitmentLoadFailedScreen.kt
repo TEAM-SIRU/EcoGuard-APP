@@ -15,6 +15,7 @@ import com.nativelap.ecoguard.ui.component.EcoBackTopBar
 import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
 import com.nativelap.ecoguard.ui.component.EcoSecondaryButton
 import com.nativelap.ecoguard.ui.component.StatusMessage
+import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 @Composable
@@ -24,12 +25,12 @@ fun RecruitmentLoadFailedScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             EcoBackTopBar(onBackClick = { onEvent(RecruitmentScreenEvent.BackClick) })
         },
         bottomBar = {
-            BottomCtaBar {
+            BottomCtaBar(minHeight = AppComponentSize.stateBottomCtaMinHeight) {
                 EcoPrimaryButton(
                     text = stringResource(R.string.action_retry),
                     onClick = { onEvent(RecruitmentScreenEvent.RetryClick) },

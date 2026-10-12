@@ -16,14 +16,16 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         lockPhoneToPortrait()
         enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.light(
-                scrim = Color.TRANSPARENT,
-                darkScrim = Color.TRANSPARENT,
-            ),
-            navigationBarStyle = SystemBarStyle.light(
-                scrim = Color.TRANSPARENT,
-                darkScrim = Color.TRANSPARENT,
-            ),
+            statusBarStyle =
+                SystemBarStyle.light(
+                    scrim = Color.TRANSPARENT,
+                    darkScrim = Color.TRANSPARENT,
+                ),
+            navigationBarStyle =
+                SystemBarStyle.light(
+                    scrim = Color.TRANSPARENT,
+                    darkScrim = Color.TRANSPARENT,
+                ),
         )
         setContent {
             EcoGuardTheme(themeMode = ThemeMode.LIGHT) {

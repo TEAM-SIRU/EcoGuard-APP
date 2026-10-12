@@ -13,14 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.ThemeMode
 
-private val skeletonBarHeight = 22.dp
+private val skeletonBarHeight = 24.dp
 private val skeletonTitleSkeletonWidth = 160.dp
-private val skeletonMainSkeletonHeight = 136.dp
-private val skeletonRowSkeletonHeight = 62.dp
+private val skeletonMainSkeletonHeight = 156.dp
+private val skeletonRowSkeletonHeight = 72.dp
 private val skeletonFooterSkeletonWidth = 220.dp
 
 /** 로딩 중 카드 자리를 보여주는 스켈레톤 5개와 로딩 안내 문구. */
@@ -34,35 +35,46 @@ fun LoadingSkeletonContent(
         verticalArrangement = Arrangement.spacedBy(itemSpacing),
     ) {
         SkeletonPlaceholder(
-            modifier = Modifier
-                .widthIn(max = skeletonTitleSkeletonWidth)
-                .fillMaxWidth()
-                .height(skeletonBarHeight),
+            modifier =
+                Modifier
+                    .widthIn(max = skeletonTitleSkeletonWidth)
+                    .fillMaxWidth()
+                    .height(skeletonBarHeight),
         )
 
         SkeletonPlaceholder(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(skeletonMainSkeletonHeight),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(skeletonMainSkeletonHeight),
+            containerColor = MaterialTheme.colorScheme.surface,
+            cornerRadius = AppRadius.card,
         )
 
         SkeletonPlaceholder(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(skeletonRowSkeletonHeight),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(skeletonRowSkeletonHeight),
+            containerColor = MaterialTheme.colorScheme.surface,
+            cornerRadius = AppRadius.card,
         )
 
         SkeletonPlaceholder(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(skeletonRowSkeletonHeight),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(skeletonRowSkeletonHeight),
+            containerColor = MaterialTheme.colorScheme.surface,
+            cornerRadius = AppRadius.card,
         )
 
         SkeletonPlaceholder(
-            modifier = Modifier
-                .widthIn(max = skeletonFooterSkeletonWidth)
-                .fillMaxWidth()
-                .height(skeletonBarHeight),
+            modifier =
+                Modifier
+                    .widthIn(max = skeletonFooterSkeletonWidth)
+                    .fillMaxWidth()
+                    .height(skeletonBarHeight),
         )
 
         LoadingStatusText()

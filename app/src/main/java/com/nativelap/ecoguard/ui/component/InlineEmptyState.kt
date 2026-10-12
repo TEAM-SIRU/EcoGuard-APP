@@ -1,6 +1,7 @@
 package com.nativelap.ecoguard.ui.component
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,14 +15,18 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalMinimumInteractiveComponentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
@@ -30,6 +35,7 @@ import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
+private val compactActionHeight = 44.dp
 private val compactActionMinWidth = 140.dp
 
 /** 화면 일부 영역의 빈 상태·조회 실패 안내. 회색 아이콘, 제목, 설명, 선택적 작은 버튼. */
@@ -41,6 +47,7 @@ fun InlineEmptyState(
     modifier: Modifier = Modifier,
     actionText: String? = null,
     onActionClick: () -> Unit = {},
+    actionMinWidth: Dp = compactActionMinWidth,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -55,7 +62,7 @@ fun InlineEmptyState(
                 painter = painterResource(iconRes),
                 contentDescription = null,
                 modifier = Modifier.size(AppIconSize.emptyState),
-                tint = MaterialTheme.colorScheme.outline,
+                tint = Color.Unspecified,
             )
         }
 
@@ -74,22 +81,27 @@ fun InlineEmptyState(
         )
 
         if (actionText != null) {
-            Button(
-                onClick = onActionClick,
-                modifier = Modifier
-                    .heightIn(min = AppComponentSize.minTouchTarget)
-                    .widthIn(min = compactActionMinWidth),
-                shape = RoundedCornerShape(AppRadius.button),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
-                ),
-                contentPadding = PaddingValues(horizontal = AppSpacing.xl),
-            ) {
-                Text(
-                    text = actionText,
-                    style = MaterialTheme.typography.labelMedium,
-                )
+            CompositionLocalProvider(LocalMinimumInteractiveComponentSize provides 0.dp) {
+                Button(
+                    onClick = onActionClick,
+                    modifier =
+                        Modifier
+                            .heightIn(min = compactActionHeight)
+                            .widthIn(min = actionMinWidth),
+                    shape = RoundedCornerShape(AppRadius.input),
+                    border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
+                    colors =
+                        ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.surface,
+                            contentColor = MaterialTheme.colorScheme.onSurface,
+                        ),
+                    contentPadding = PaddingValues(horizontal = AppSpacing.xl),
+                ) {
+                    Text(
+                        text = actionText,
+                        style = MaterialTheme.typography.labelLarge,
+                    )
+                }
             }
         }
     }

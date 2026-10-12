@@ -10,11 +10,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.nativelap.ecoguard.ui.theme.AppComponentSize
+import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 
-/** 다이얼로그 하단의 48dp 버튼. 배경·글자색으로 취소/적용/파괴적 동작을 구분한다. */
+private val dialogButtonHeight = 44.dp
+
+/** 다이얼로그 하단의 44dp 버튼. 배경·글자색으로 취소/적용/파괴적 동작을 구분한다. */
 @Composable
 fun EcoDialogButton(
     text: String,
@@ -22,20 +24,23 @@ fun EcoDialogButton(
     containerColor: Color,
     contentColor: Color,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier.heightIn(min = AppComponentSize.dialogButtonHeight),
-        shape = RoundedCornerShape(AppRadius.button),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = containerColor,
-            contentColor = contentColor,
-        ),
+        enabled = enabled,
+        modifier = modifier.heightIn(min = dialogButtonHeight),
+        shape = RoundedCornerShape(AppRadius.input),
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = containerColor,
+                contentColor = contentColor,
+            ),
         contentPadding = PaddingValues(horizontal = AppSpacing.md),
     ) {
         Text(
             text = text,
-            style = MaterialTheme.typography.titleSmall,
+            style = MaterialTheme.typography.labelLarge,
         )
     }
 }

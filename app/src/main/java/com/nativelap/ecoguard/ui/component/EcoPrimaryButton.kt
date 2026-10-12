@@ -18,7 +18,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,8 +29,6 @@ import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 
-private const val PRIMARY_BUTTON_LOADING_ALPHA = 0.72f
-
 @Composable
 fun EcoPrimaryButton(
     text: String,
@@ -41,40 +38,38 @@ fun EcoPrimaryButton(
     enabled: Boolean = true,
     isLoading: Boolean = false,
 ) {
-    val iconRes = if (isLoading) {
-        R.drawable.ic_loader
-    } else {
-        leadingIconRes
-    }
+    val iconRes =
+        if (isLoading) {
+            R.drawable.ic_loader
+        } else {
+            leadingIconRes
+        }
 
     Button(
         onClick = onClick,
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = AppComponentSize.primaryButtonHeight)
-            .alpha(
-                if (isLoading) {
-                    PRIMARY_BUTTON_LOADING_ALPHA
-                } else {
-                    1f
-                },
-            ),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .heightIn(min = AppComponentSize.primaryButtonHeight),
         enabled = enabled && !isLoading,
-        shape = RoundedCornerShape(AppRadius.button),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = if (isLoading) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.surfaceVariant
-            },
-            disabledContentColor = if (isLoading) {
-                MaterialTheme.colorScheme.onPrimary
-            } else {
-                MaterialTheme.extraColors.disabledContentColor
-            },
-        ),
+        shape = RoundedCornerShape(AppRadius.primaryButton),
+        colors =
+            ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.secondary,
+                contentColor = MaterialTheme.colorScheme.onSecondary,
+                disabledContainerColor =
+                    if (isLoading) {
+                        MaterialTheme.colorScheme.secondary
+                    } else {
+                        MaterialTheme.extraColors.disabledPrimaryButtonContainerColor
+                    },
+                disabledContentColor =
+                    if (isLoading) {
+                        MaterialTheme.colorScheme.onSecondary
+                    } else {
+                        MaterialTheme.extraColors.disabledContentColor
+                    },
+            ),
         contentPadding = PaddingValues(horizontal = AppSpacing.md),
     ) {
         Row(

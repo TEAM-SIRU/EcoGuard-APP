@@ -1,5 +1,6 @@
 package com.nativelap.ecoguard.feature.area.view
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -7,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.area.viewmodel.AreaScreenEvent
 import com.nativelap.ecoguard.feature.area.viewmodel.AreaUiState
@@ -29,23 +28,19 @@ import com.nativelap.ecoguard.ui.component.EcoSegmentedControl
 import com.nativelap.ecoguard.ui.component.InlineEmptyState
 import com.nativelap.ecoguard.ui.component.PageTitle
 import com.nativelap.ecoguard.ui.component.SectionDivider
-import com.nativelap.ecoguard.ui.component.TwoLineTextRow
-import com.nativelap.ecoguard.ui.component.contentColumnWidth
 import com.nativelap.ecoguard.ui.component.isExpandedLayout
 import com.nativelap.ecoguard.ui.component.twoPaneContentMaxWidth
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-// Figma 도면 영역(280)을 컴팩트 기준으로 줄인 높이. 도면 이미지는 서버 연동 시 채운다.
-private val floorPlanHeight = 240.dp
-
-private val areaTitlePadding = PaddingValues(
-    start = AppSpacing.screenHorizontal,
-    end = AppSpacing.screenHorizontal,
-    top = AppSpacing.xs,
-    bottom = AppSpacing.lg,
-)
+private val areaTitlePadding =
+    PaddingValues(
+        start = AppSpacing.screenHorizontal,
+        end = AppSpacing.screenHorizontal,
+        top = AppSpacing.xs,
+        bottom = AppSpacing.lg,
+    )
 
 @Composable
 fun AreaScreen(
@@ -53,76 +48,91 @@ fun AreaScreen(
     onEvent: (AreaScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val contentMaxWidth = twoPaneContentMaxWidth()
-    val isTwoPane = isExpandedLayout()
-
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             EcoBottomTabBar(
                 selectedTab = EcoBottomTab.AREA,
+                selectedIconResOverride =
+                    if (uiState is AreaUiState.Content) {
+                        null
+                    } else {
+                        R.drawable.ic_map_active_alt
+                    },
                 onTabSelected = { selectedTab -> onEvent(AreaScreenEvent.TabSelect(selectedTab)) },
                 onCameraClick = { onEvent(AreaScreenEvent.CameraClick) },
             )
         },
     ) { innerPadding ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .consumeWindowInsets(innerPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding),
             contentAlignment = Alignment.TopCenter,
         ) {
             when (uiState) {
-                is AreaUiState.Content -> Column(
-                    modifier = Modifier
-                        .contentColumnWidth(contentMaxWidth)
-                        .verticalScroll(rememberScrollState())
-                        .padding(bottom = AppComponentSize.cameraFabScrollClearance),
-                ) {
-                    PageTitle(
-                        title = stringResource(R.string.common_my_cleaning_area),
-                        subtitle = stringResource(R.string.area_selected_floor, uiState.selectedFloor),
-                        modifier = Modifier.padding(areaTitlePadding),
-                    )
+                is AreaUiState.Content -> {
+                    Column(
+                        modifier =
+                            Modifier
+                                .widthIn(max = twoPaneContentMaxWidth())
+                                .fillMaxWidth()
+                                .verticalScroll(rememberScrollState())
+                                .padding(bottom = AppComponentSize.cameraFabScrollClearance),
+                    ) {
+                        PageTitle(
+                            title = stringResource(R.string.common_my_cleaning_area),
+                            subtitle = stringResource(R.string.area_floor_plan_description),
+                            modifier = Modifier.padding(areaTitlePadding),
+                        )
 
-                    AreaDetailContent(
-                        areaContent = uiState,
-                        isTwoPane = isTwoPane,
-                        onFloorSelect = { selectedFloor -> onEvent(AreaScreenEvent.FloorSelect(selectedFloor)) },
-                    )
+                        AreaDetailContent(
+                            areaContent = uiState,
+                            onFloorSelect = { selectedFloor -> onEvent(AreaScreenEvent.FloorSelect(selectedFloor)) },
+                        )
+                    }
                 }
-                AreaUiState.NotAssigned -> AreaEmptyLayout {
-                    InlineEmptyState(
-                        iconRes = R.drawable.ic_map_30,
-                        title = stringResource(R.string.area_not_assigned_title),
-                        description = stringResource(R.string.area_not_assigned_description),
-                    )
+
+                AreaUiState.NotAssigned -> {
+                    AreaEmptyLayout {
+                        InlineEmptyState(
+                            iconRes = R.drawable.ic_map_30,
+                            title = stringResource(R.string.area_not_assigned_title),
+                            description = stringResource(R.string.area_not_assigned_description),
+                        )
+                    }
                 }
-                AreaUiState.LoadFailed -> AreaEmptyLayout {
-                    InlineEmptyState(
-                        iconRes = R.drawable.ic_map_30,
-                        title = stringResource(R.string.area_load_failed),
-                        description = stringResource(R.string.area_load_failed_description),
-                        actionText = stringResource(R.string.action_retry),
-                        onActionClick = { onEvent(AreaScreenEvent.RetryClick) },
-                    )
+
+                AreaUiState.LoadFailed -> {
+                    AreaEmptyLayout {
+                        InlineEmptyState(
+                            iconRes = R.drawable.ic_map_30,
+                            title = stringResource(R.string.area_load_failed),
+                            description = stringResource(R.string.area_load_failed_description),
+                            actionText = stringResource(R.string.action_retry),
+                            onActionClick = { onEvent(AreaScreenEvent.RetryClick) },
+                        )
+                    }
                 }
-                AreaUiState.Loading -> Unit
+
+                AreaUiState.Loading -> {
+                    Unit
+                }
             }
         }
     }
 }
 
 @Composable
-private fun AreaEmptyLayout(
-    emptyContent: @Composable () -> Unit,
-) {
+private fun AreaEmptyLayout(emptyContent: @Composable () -> Unit) {
     Column(
-        modifier = Modifier
-            .widthIn(max = AppComponentSize.contentMaxWidth)
-            .fillMaxSize(),
+        modifier =
+            Modifier
+                .widthIn(max = twoPaneContentMaxWidth())
+                .fillMaxSize(),
     ) {
         PageTitle(
             title = stringResource(R.string.common_my_cleaning_area),
@@ -130,17 +140,18 @@ private fun AreaEmptyLayout(
         )
 
         Box(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(
-                    start = AppSpacing.screenHorizontal,
-                    end = AppSpacing.screenHorizontal,
-                    top = AppSpacing.xl,
-                    // 빈 상태 버튼이 탭 바 위로 튀어나온 카메라 버튼에 가리지 않게 한다.
-                    bottom = AppComponentSize.cameraFabScrollClearance,
-                ),
+            modifier =
+                Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .padding(
+                        start = AppSpacing.screenHorizontal,
+                        end = AppSpacing.screenHorizontal,
+                        top = AppSpacing.xl,
+                        // 빈 상태 버튼이 탭 바 위로 튀어나온 카메라 버튼에 가리지 않게 한다.
+                        bottom = AppComponentSize.emptyStateBottomClearance,
+                    ),
             contentAlignment = Alignment.Center,
         ) {
             emptyContent()
@@ -148,111 +159,59 @@ private fun AreaEmptyLayout(
     }
 }
 
-// 넓은 화면에서는 층 선택·도면을 왼쪽, 구역 정보를 오른쪽 열에 둔다.
 @Composable
 private fun AreaDetailContent(
     areaContent: AreaUiState.Content,
-    isTwoPane: Boolean,
     onFloorSelect: (Int) -> Unit,
 ) {
-    if (isTwoPane) {
-        Row(verticalAlignment = Alignment.Top) {
-            AreaFloorPlan(
-                areaContent = areaContent,
-                onFloorSelect = onFloorSelect,
-                modifier = Modifier.weight(1f),
-            )
-
-            AreaInfoRows(
-                areaContent = areaContent,
-                modifier = Modifier.weight(1f),
-            )
+    val floorLabels =
+        areaContent.floors.map { floor ->
+            stringResource(R.string.format_floor, floor)
         }
-    } else {
-        Column {
-            AreaFloorPlan(
-                areaContent = areaContent,
-                onFloorSelect = onFloorSelect,
-            )
+    val memberSeparator = stringResource(R.string.format_list_separator)
+    val memberNames =
+        (areaContent.teammateNames + stringResource(R.string.area_member_me, areaContent.myName))
+            .joinToString(separator = memberSeparator)
 
-            SectionDivider()
-
-            AreaInfoRows(areaContent = areaContent)
-        }
-    }
-}
-
-@Composable
-private fun AreaFloorPlan(
-    areaContent: AreaUiState.Content,
-    onFloorSelect: (Int) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val floorLabels = areaContent.floors.map { floor ->
-        stringResource(R.string.format_floor, floor)
-    }
-
-    Column(modifier = modifier) {
+    Column {
         EcoSegmentedControl(
             segmentLabels = floorLabels,
-            selectedIndex = areaContent.floors
-                .indexOf(areaContent.selectedFloor)
-                .coerceAtLeast(0),
+            selectedIndex =
+                areaContent.floors
+                    .indexOf(areaContent.selectedFloor)
+                    .coerceAtLeast(0),
             onSegmentSelect = { selectedIndex -> onFloorSelect(areaContent.floors[selectedIndex]) },
-            modifier = Modifier.padding(
-                start = AppSpacing.screenHorizontal,
-                end = AppSpacing.screenHorizontal,
-                bottom = AppSpacing.md,
-            ),
-        )
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
+            modifier =
+                Modifier.padding(
                     start = AppSpacing.screenHorizontal,
                     end = AppSpacing.screenHorizontal,
-                    top = AppSpacing.xxs,
-                    bottom = AppSpacing.xl,
-                )
-                .height(floorPlanHeight),
+                    bottom = AppSpacing.md,
+                ),
         )
+
+        if (isExpandedLayout()) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(AppSpacing.xl),
+                modifier = Modifier.padding(horizontal = AppSpacing.screenHorizontal),
+            ) {
+                AreaFloorPlan(modifier = Modifier.weight(1f))
+                AreaAssignmentCard(areaContent = areaContent, memberNames = memberNames, modifier = Modifier.weight(1f))
+            }
+        } else {
+            AreaFloorPlan(
+                modifier = Modifier.padding(horizontal = AppSpacing.screenHorizontal, vertical = AppSpacing.md),
+            )
+            SectionDivider()
+            AreaAssignmentCard(
+                areaContent = areaContent,
+                memberNames = memberNames,
+                modifier = Modifier.padding(horizontal = AppSpacing.md),
+            )
+        }
     }
 }
 
-@Composable
-private fun AreaInfoRows(
-    areaContent: AreaUiState.Content,
-    modifier: Modifier = Modifier,
-) {
-    val memberSeparator = stringResource(R.string.format_list_separator)
-    val memberNames = (areaContent.teammateNames + stringResource(R.string.area_member_me, areaContent.myName))
-        .joinToString(separator = memberSeparator)
-
-    Column(modifier = modifier) {
-        TwoLineTextRow(
-            title = areaContent.areaName,
-            subtitle = stringResource(R.string.area_description_format, areaContent.areaDescription),
-        )
-
-        TwoLineTextRow(
-            title = stringResource(
-                R.string.recruitment_daily_time,
-                areaContent.cleaningStartTime,
-                areaContent.cleaningEndTime,
-            ),
-            subtitle = stringResource(R.string.home_cleaning_time),
-        )
-
-        TwoLineTextRow(
-            title = stringResource(R.string.area_member_count, areaContent.teammateNames.size + 1),
-            subtitle = memberNames,
-        )
-    }
-}
-
-@Preview(name = "Area · content", showBackground = true, widthDp = 390, heightDp = 895)
-@Preview(name = "Area · tablet two-pane", showBackground = true, widthDp = 1280, heightDp = 800)
+@Preview(name = "Area · content", showBackground = true, widthDp = 390, heightDp = 844)
 @Composable
 private fun AreaScreenContentPreview() {
     EcoGuardTheme {
@@ -275,7 +234,13 @@ private fun AreaScreenNotAssignedPreview() {
 }
 
 @Preview(name = "Area · load failed", showBackground = true, widthDp = 390, heightDp = 844)
-@Preview(name = "Area · load failed compact larger text", showBackground = true, widthDp = 320, heightDp = 596, fontScale = 1.5f)
+@Preview(
+    name = "Area · load failed compact larger text",
+    showBackground = true,
+    widthDp = 320,
+    heightDp = 596,
+    fontScale = 1.5f,
+)
 @Composable
 private fun AreaScreenLoadFailedPreview() {
     EcoGuardTheme {

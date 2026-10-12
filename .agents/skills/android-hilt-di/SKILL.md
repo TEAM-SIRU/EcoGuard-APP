@@ -7,7 +7,7 @@ description: Android 프로젝트에서 Hilt 주입 구조를 추가하거나 �
 
 ## 가독성
 
-- 생성자 주입, binding, provider 선언을 한 줄로 압축하지 않는다. 의존성이 둘 이상이면 매개변수마다 줄을 나눈다.
+- 생성자 주입, binding, provider 선언은 작성 중 한 줄로 써도 되지만, 파일 작성을 마치면 자동 줄바꿈(`./gradlew spotlessApply`)을 적용해 의존성이 둘 이상이면 매개변수마다 줄이 나뉜 상태로 끝낸다.
 
 ## 실행 Hook
 

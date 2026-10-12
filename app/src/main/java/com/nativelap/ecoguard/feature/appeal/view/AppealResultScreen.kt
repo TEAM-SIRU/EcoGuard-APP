@@ -17,6 +17,7 @@ import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
 import com.nativelap.ecoguard.ui.component.EcoSecondaryButton
 import com.nativelap.ecoguard.ui.component.RejectionResultContent
 import com.nativelap.ecoguard.ui.component.StatusMessage
+import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 /** 09-4 이의신청 결과(승인·반려)와 09 제출 실패. */
@@ -26,88 +27,99 @@ fun AppealResultScreen(
     onEvent: (AppealScreenEvent) -> Unit,
 ) {
     when (uiState) {
-        is AppealResultUiState.Approved -> Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            containerColor = MaterialTheme.colorScheme.surface,
-            topBar = {
-                EcoBackTopBar(onBackClick = { onEvent(AppealScreenEvent.BackClick) })
-            },
-            bottomBar = {
-                BottomCtaBar {
-                    EcoPrimaryButton(
-                        text = stringResource(R.string.action_view_activity_record),
-                        onClick = { onEvent(AppealScreenEvent.ActivityRecordClick) },
-                    )
+        is AppealResultUiState.Approved -> {
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                containerColor = MaterialTheme.colorScheme.background,
+                topBar = {
+                    EcoBackTopBar(onBackClick = { onEvent(AppealScreenEvent.BackClick) })
+                },
+                bottomBar = {
+                    BottomCtaBar(minHeight = AppComponentSize.stateBottomCtaMinHeight) {
+                        EcoPrimaryButton(
+                            text = stringResource(R.string.action_view_activity_record),
+                            onClick = { onEvent(AppealScreenEvent.ActivityRecordClick) },
+                        )
 
-                    EcoSecondaryButton(
-                        text = stringResource(R.string.action_home),
-                        onClick = { onEvent(AppealScreenEvent.HomeClick) },
+                        EcoSecondaryButton(
+                            text = stringResource(R.string.action_home),
+                            onClick = { onEvent(AppealScreenEvent.HomeClick) },
+                        )
+                    }
+                },
+            ) { innerPadding ->
+                CenteredScrollContent(innerPadding = innerPadding) {
+                    StatusMessage(
+                        title = stringResource(R.string.appeal_approved),
+                        iconRes = R.drawable.ic_check_64,
+                        highlightText = stringResource(R.string.format_bonus_minutes, uiState.earnedMinutes),
+                        description =
+                            stringResource(
+                                R.string.appeal_approval_summary,
+                                uiState.verificationDate,
+                                uiState.attemptNumber,
+                                uiState.earnedMinutes,
+                            ),
                     )
                 }
-            },
-        ) { innerPadding ->
-            CenteredScrollContent(innerPadding = innerPadding) {
-                StatusMessage(
-                    title = stringResource(R.string.appeal_approved),
-                    highlightText = stringResource(R.string.format_bonus_minutes, uiState.earnedMinutes),
-                    description = stringResource(
-                        R.string.appeal_approval_summary,
-                        uiState.verificationDate,
-                        uiState.attemptNumber,
-                        uiState.earnedMinutes,
-                    ),
+            }
+        }
+
+        is AppealResultUiState.Rejected -> {
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                containerColor = MaterialTheme.colorScheme.background,
+                topBar = {
+                    EcoBackTopBar(onBackClick = { onEvent(AppealScreenEvent.BackClick) })
+                },
+            ) { innerPadding ->
+                RejectionResultContent(
+                    innerPadding = innerPadding,
+                    title = stringResource(R.string.appeal_rejected),
+                    summary =
+                        stringResource(
+                            R.string.appeal_attempt_summary,
+                            uiState.verificationDate,
+                            uiState.attemptNumber,
+                        ),
+                    feedbackLabel = stringResource(R.string.appeal_teacher_response),
+                    feedbackHeadline = uiState.teacherResponseTitle,
+                    feedbackBody = uiState.teacherResponseDetail,
+                    primaryActionText = stringResource(R.string.appeal_resubmit),
+                    actionCaption = stringResource(R.string.appeal_unlimited_attempts),
+                    onPrimaryActionClick = { onEvent(AppealScreenEvent.ResubmitClick) },
+                    onHomeClick = { onEvent(AppealScreenEvent.HomeClick) },
                 )
             }
         }
-        is AppealResultUiState.Rejected -> Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            containerColor = MaterialTheme.colorScheme.surface,
-            topBar = {
-                EcoBackTopBar(onBackClick = { onEvent(AppealScreenEvent.BackClick) })
-            },
-        ) { innerPadding ->
-            RejectionResultContent(
-                innerPadding = innerPadding,
-                title = stringResource(R.string.appeal_rejected),
-                summary = stringResource(
-                    R.string.appeal_attempt_summary,
-                    uiState.verificationDate,
-                    uiState.attemptNumber,
-                ),
-                feedbackLabel = stringResource(R.string.appeal_teacher_response),
-                feedbackHeadline = uiState.teacherResponseTitle,
-                feedbackBody = uiState.teacherResponseDetail,
-                primaryActionText = stringResource(R.string.appeal_resubmit),
-                actionCaption = stringResource(R.string.appeal_unlimited_attempts),
-                onPrimaryActionClick = { onEvent(AppealScreenEvent.ResubmitClick) },
-                onHomeClick = { onEvent(AppealScreenEvent.HomeClick) },
-            )
-        }
-        AppealResultUiState.SendFailed -> Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            containerColor = MaterialTheme.colorScheme.surface,
-            topBar = {
-                EcoBackTopBar(onBackClick = { onEvent(AppealScreenEvent.BackClick) })
-            },
-            bottomBar = {
-                BottomCtaBar {
-                    EcoPrimaryButton(
-                        text = stringResource(R.string.appeal_retry_send),
-                        onClick = { onEvent(AppealScreenEvent.RetrySendClick) },
-                    )
 
-                    EcoSecondaryButton(
-                        text = stringResource(R.string.appeal_edit_content),
-                        onClick = { onEvent(AppealScreenEvent.EditContentClick) },
+        AppealResultUiState.SendFailed -> {
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                containerColor = MaterialTheme.colorScheme.background,
+                topBar = {
+                    EcoBackTopBar(onBackClick = { onEvent(AppealScreenEvent.BackClick) })
+                },
+                bottomBar = {
+                    BottomCtaBar(minHeight = AppComponentSize.stateBottomCtaMinHeight) {
+                        EcoPrimaryButton(
+                            text = stringResource(R.string.appeal_retry_send),
+                            onClick = { onEvent(AppealScreenEvent.RetrySendClick) },
+                        )
+
+                        EcoSecondaryButton(
+                            text = stringResource(R.string.appeal_edit_content),
+                            onClick = { onEvent(AppealScreenEvent.EditContentClick) },
+                        )
+                    }
+                },
+            ) { innerPadding ->
+                CenteredScrollContent(innerPadding = innerPadding) {
+                    StatusMessage(
+                        title = stringResource(R.string.appeal_send_failed),
+                        description = stringResource(R.string.appeal_send_failed_description),
                     )
                 }
-            },
-        ) { innerPadding ->
-            CenteredScrollContent(innerPadding = innerPadding) {
-                StatusMessage(
-                    title = stringResource(R.string.appeal_send_failed),
-                    description = stringResource(R.string.appeal_send_failed_description),
-                )
             }
         }
     }

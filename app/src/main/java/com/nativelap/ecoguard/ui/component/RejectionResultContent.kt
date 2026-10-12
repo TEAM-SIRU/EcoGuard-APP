@@ -28,9 +28,10 @@ import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 import com.nativelap.ecoguard.ui.theme.extraTypography
 
-private val rejectionHeroTopPadding = 32.dp
-private val rejectionHeroBottomPadding = 24.dp
-private val rejectionPhotoHeight = 112.dp
+private val rejectionHeroTopPadding = 40.dp
+private val rejectionHeroBottomPadding = 32.dp
+private val rejectionPhotoHeight = 128.dp
+private val rejectionCompactButtonHeight = 48.dp
 
 /**
  * 인증 반려·이의신청 반려 결과 화면의 공통 본문. Scaffold는 각 Screen이 직접 배치한다.
@@ -51,32 +52,35 @@ fun RejectionResultContent(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(innerPadding)
-            .consumeWindowInsets(innerPadding),
+        modifier =
+            modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding),
         contentAlignment = Alignment.TopCenter,
     ) {
         Column(
-            modifier = Modifier
-                .widthIn(max = AppComponentSize.contentMaxWidth)
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(
-                    start = AppSpacing.screenHorizontal,
-                    end = AppSpacing.screenHorizontal,
-                    bottom = AppSpacing.xl,
-                ),
+            modifier =
+                Modifier
+                    .widthIn(max = AppComponentSize.contentMaxWidth)
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .padding(
+                        start = AppSpacing.screenHorizontal,
+                        end = AppSpacing.screenHorizontal,
+                        bottom = AppSpacing.xl,
+                    ),
         ) {
             CenteredIconMessage(
                 iconRes = R.drawable.ic_alert_64,
                 title = title,
                 description = summary,
                 iconStyle = CenteredIconStyle.HERO,
-                modifier = Modifier.padding(
-                    top = rejectionHeroTopPadding,
-                    bottom = rejectionHeroBottomPadding,
-                ),
+                modifier =
+                    Modifier.padding(
+                        top = rejectionHeroTopPadding,
+                        bottom = rejectionHeroBottomPadding,
+                    ),
             )
 
             ReviewFeedbackCard(
@@ -111,7 +115,7 @@ fun RejectionResultContent(
                 EcoSecondaryButton(
                     text = stringResource(R.string.action_home),
                     onClick = onHomeClick,
-                    minHeight = AppComponentSize.minTouchTarget,
+                    minHeight = rejectionCompactButtonHeight,
                 )
             }
         }

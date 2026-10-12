@@ -33,42 +33,48 @@ fun NoticeLoadFailedScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             EcoBackTopBar(onBackClick = onBackClick)
         },
     ) { innerPadding ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .consumeWindowInsets(innerPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding),
             contentAlignment = Alignment.TopCenter,
         ) {
             Column(
-                modifier = Modifier
-                    .widthIn(max = AppComponentSize.contentMaxWidth)
-                    .fillMaxSize(),
+                modifier =
+                    Modifier
+                        .widthIn(max = AppComponentSize.contentMaxWidth)
+                        .fillMaxSize(),
             ) {
                 PageTitle(
                     title = stringResource(R.string.action_notice),
-                    modifier = Modifier.padding(
-                        start = AppSpacing.screenHorizontal,
-                        end = AppSpacing.screenHorizontal,
-                        top = AppSpacing.xs,
-                        bottom = AppSpacing.lg,
-                    ),
+                    modifier =
+                        Modifier.padding(
+                            start = AppSpacing.screenHorizontal,
+                            end = AppSpacing.screenHorizontal,
+                            top = AppSpacing.xs,
+                            bottom = AppSpacing.lg,
+                        ),
                 )
 
                 Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
-                        .padding(
-                            horizontal = AppSpacing.screenHorizontal,
-                            vertical = AppSpacing.xl,
-                        ),
+                    modifier =
+                        Modifier
+                            .weight(1f)
+                            .fillMaxWidth()
+                            .verticalScroll(rememberScrollState())
+                            .padding(
+                                start = AppSpacing.screenHorizontal,
+                                end = AppSpacing.screenHorizontal,
+                                top = AppSpacing.xl,
+                                bottom = AppComponentSize.emptyStateBottomClearance,
+                            ),
                     contentAlignment = Alignment.Center,
                 ) {
                     InlineEmptyState(

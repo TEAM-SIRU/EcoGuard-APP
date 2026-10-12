@@ -20,8 +20,8 @@ import com.nativelap.ecoguard.ui.component.EcoTag
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-private val applicationCardTopPadding = 20.dp
-private val applicationTitleTopPadding = 8.dp
+private val applicationCardTopPadding = 18.dp
+private val applicationTitleTopPadding = 10.dp
 private val applicationTextSpacing = 6.dp
 
 /** 신청 완료 후 청소 구역 배정을 기다리는 동안 보여주는 카드. */
@@ -32,20 +32,22 @@ fun HomeApplicationCompletedCard(
 ) {
     EcoCard(
         modifier = modifier,
-        contentPadding = PaddingValues(
-            start = AppSpacing.lg,
-            end = AppSpacing.lg,
-            top = applicationCardTopPadding,
-            bottom = AppSpacing.lg,
-        ),
+        contentPadding =
+            PaddingValues(
+                start = AppSpacing.lg,
+                end = AppSpacing.lg,
+                top = applicationCardTopPadding,
+                bottom = AppSpacing.lg,
+            ),
     ) {
         EcoTag(text = stringResource(R.string.home_application_completed))
 
         Column(
-            modifier = Modifier.padding(
-                top = applicationTitleTopPadding,
-                bottom = AppSpacing.md,
-            ),
+            modifier =
+                Modifier.padding(
+                    top = applicationTitleTopPadding,
+                    bottom = AppSpacing.md,
+                ),
             verticalArrangement = Arrangement.spacedBy(applicationTextSpacing),
         ) {
             Text(
@@ -70,7 +72,7 @@ fun HomeApplicationCompletedCard(
     }
 }
 
-@Preview(showBackground = true, backgroundColor = 0xFFF8FAF9, widthDp = 390)
+@Preview(showBackground = true, backgroundColor = 0xFFFAFBFA, widthDp = 390)
 @Composable
 private fun HomeApplicationCompletedCardPreview() {
     EcoGuardTheme {

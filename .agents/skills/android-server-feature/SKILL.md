@@ -7,7 +7,7 @@ description: Android에서 새로운 Retrofit 서버 연동 기능을 추가하�
 
 ## 가독성
 
-- API 결과 변환, `when` 성공·실패 분기, DTO·Domain 객체 생성을 한 줄로 압축하지 않는다. 각 계층의 데이터 흐름을 쉽게 검토할 수 있어야 한다.
+- API 결과 변환, `when` 성공·실패 분기, DTO·Domain 객체 생성은 작성 중 한 줄로 써도 되지만, 파일 작성을 마치면 자동 줄바꿈(`./gradlew spotlessApply`)을 적용해 각 계층의 데이터 흐름을 쉽게 검토할 수 있는 상태로 끝낸다.
 
 ## 목표
 

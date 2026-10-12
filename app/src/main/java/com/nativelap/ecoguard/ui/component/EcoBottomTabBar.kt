@@ -36,7 +36,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -51,13 +50,11 @@ import com.nativelap.ecoguard.ui.theme.extraTypography
 private val tabBarShadowRadius = 8.dp
 private val tabBarShadowOffsetY = (-4).dp
 private const val TAB_BAR_SHADOW_ALPHA = 0.06f
+private val cameraFabOffsetY = (-19).dp
 private val cameraFabShadowRadius = 14.dp
 private val cameraFabShadowOffsetY = 6.dp
 private const val CAMERA_FAB_SHADOW_ALPHA = 0.32f
-private val tabItemTopPadding = 8.dp
-
-// 라벨이 시스템 내비게이션 바(제스처 바·3버튼)에 붙어 보이지 않도록 inset 위에 두는 여백
-private val tabBarSystemBarSpacing = 6.dp
+private val tabItemTopPadding = 10.dp
 private val tabLabelMinFontSize = 9.sp
 
 /** 홈·구역·카메라 FAB·기록·마이페이지로 구성된 하단 탭 바. */
@@ -68,43 +65,41 @@ fun EcoBottomTabBar(
     onCameraClick: () -> Unit,
     modifier: Modifier = Modifier,
     isCameraEnabled: Boolean = true,
-    // 탭을 옮겨도 아이콘 위치가 바뀌지 않도록 모든 탭 화면이 같은 폭을 쓴다.
-    contentMaxWidth: Dp = twoPaneContentMaxWidth(),
+    selectedIconResOverride: Int? = null,
 ) {
     Box(
         modifier = modifier.fillMaxWidth(),
         contentAlignment = Alignment.TopCenter,
     ) {
         Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .dropShadow(
-                    shape = RectangleShape,
-                    shadow = Shadow(
-                        radius = tabBarShadowRadius,
-                        color = MaterialTheme.extraColors.cardShadowColor,
-                        offset = DpOffset(x = 0.dp, y = tabBarShadowOffsetY),
-                        alpha = TAB_BAR_SHADOW_ALPHA,
-                    ),
-                )
-                .background(MaterialTheme.colorScheme.surface)
-                .windowInsetsPadding(WindowInsets.navigationBars),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .dropShadow(
+                        shape = RectangleShape,
+                        shadow =
+                            Shadow(
+                                radius = tabBarShadowRadius,
+                                color = MaterialTheme.extraColors.cardShadowColor,
+                                offset = DpOffset(x = 0.dp, y = tabBarShadowOffsetY),
+                                alpha = TAB_BAR_SHADOW_ALPHA,
+                            ),
+                    ).background(MaterialTheme.colorScheme.surface)
+                    .windowInsetsPadding(WindowInsets.navigationBars),
             contentAlignment = Alignment.TopCenter,
         ) {
             Row(
-                modifier = Modifier
-                    .contentColumnWidth(contentMaxWidth)
-                    .heightIn(min = AppComponentSize.tabBarHeight)
-                    .padding(
-                        start = AppSpacing.xs,
-                        end = AppSpacing.xs,
-                        bottom = tabBarSystemBarSpacing,
-                    )
-                    .selectableGroup(),
+                modifier =
+                    Modifier
+                        .contentColumnWidth(twoPaneContentMaxWidth())
+                        .heightIn(min = AppComponentSize.tabBarHeight)
+                        .padding(horizontal = AppSpacing.xs)
+                        .selectableGroup(),
             ) {
                 EcoBottomTabItem(
                     tab = EcoBottomTab.HOME,
                     isSelected = selectedTab == EcoBottomTab.HOME,
+                    selectedIconResOverride = selectedIconResOverride,
                     onClick = { onTabSelected(EcoBottomTab.HOME) },
                     modifier = Modifier.weight(1f),
                 )
@@ -112,6 +107,7 @@ fun EcoBottomTabBar(
                 EcoBottomTabItem(
                     tab = EcoBottomTab.AREA,
                     isSelected = selectedTab == EcoBottomTab.AREA,
+                    selectedIconResOverride = selectedIconResOverride,
                     onClick = { onTabSelected(EcoBottomTab.AREA) },
                     modifier = Modifier.weight(1f),
                 )
@@ -121,6 +117,7 @@ fun EcoBottomTabBar(
                 EcoBottomTabItem(
                     tab = EcoBottomTab.ACTIVITY,
                     isSelected = selectedTab == EcoBottomTab.ACTIVITY,
+                    selectedIconResOverride = selectedIconResOverride,
                     onClick = { onTabSelected(EcoBottomTab.ACTIVITY) },
                     modifier = Modifier.weight(1f),
                 )
@@ -128,6 +125,7 @@ fun EcoBottomTabBar(
                 EcoBottomTabItem(
                     tab = EcoBottomTab.MY_PAGE,
                     isSelected = selectedTab == EcoBottomTab.MY_PAGE,
+                    selectedIconResOverride = selectedIconResOverride,
                     onClick = { onTabSelected(EcoBottomTab.MY_PAGE) },
                     modifier = Modifier.weight(1f),
                 )
@@ -137,7 +135,7 @@ fun EcoBottomTabBar(
         CameraFab(
             onClick = onCameraClick,
             isEnabled = isCameraEnabled,
-            modifier = Modifier.offset(y = -AppComponentSize.cameraFabProtrusion),
+            modifier = Modifier.offset(y = cameraFabOffsetY),
         )
     }
 }
@@ -148,32 +146,36 @@ private fun EcoBottomTabItem(
     isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    selectedIconResOverride: Int? = null,
 ) {
-    val contentColor = if (isSelected) {
-        MaterialTheme.colorScheme.primary
-    } else {
-        MaterialTheme.extraColors.captionTextColor
-    }
-    val iconRes = if (isSelected) {
-        tab.selectedIconRes
-    } else {
-        tab.unselectedIconRes
-    }
-    val labelWeight = if (isSelected) {
-        FontWeight.Bold
-    } else {
-        FontWeight.Medium
-    }
+    val contentColor =
+        if (isSelected) {
+            MaterialTheme.extraColors.activeTabLabelColor
+        } else {
+            MaterialTheme.extraColors.captionTextColor
+        }
+    val iconRes =
+        if (isSelected) {
+            selectedIconResOverride ?: tab.selectedIconRes
+        } else {
+            tab.unselectedIconRes
+        }
+    val labelWeight =
+        if (isSelected) {
+            FontWeight.Bold
+        } else {
+            FontWeight.Medium
+        }
 
     Column(
-        modifier = modifier
-            .heightIn(min = AppComponentSize.tabBarHeight)
-            .selectable(
-                selected = isSelected,
-                onClick = onClick,
-                role = Role.Tab,
-            )
-            .padding(top = tabItemTopPadding),
+        modifier =
+            modifier
+                .heightIn(min = AppComponentSize.tabBarHeight)
+                .selectable(
+                    selected = isSelected,
+                    onClick = onClick,
+                    role = Role.Tab,
+                ).padding(top = tabItemTopPadding),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(AppSpacing.xxs),
     ) {
@@ -181,22 +183,24 @@ private fun EcoBottomTabItem(
             painter = painterResource(iconRes),
             contentDescription = null,
             modifier = Modifier.size(AppIconSize.standard),
-            tint = contentColor,
+            tint = if (isSelected) MaterialTheme.colorScheme.primary else contentColor,
         )
 
         // 큰 글자에서도 라벨을 한 줄로 유지하도록 탭 폭에 맞춰 글자 크기를 줄인다.
         BasicText(
             text = stringResource(tab.labelRes),
-            style = MaterialTheme.extraTypography.tabLabel.copy(
-                fontWeight = labelWeight,
-                color = contentColor,
-            ),
+            style =
+                MaterialTheme.extraTypography.tabLabel.copy(
+                    fontWeight = labelWeight,
+                    color = contentColor,
+                ),
             maxLines = 1,
-            autoSize = TextAutoSize.StepBased(
-                // sp에는 글자 배율이 곱해지므로 최소 크기는 배율로 나눠 실제 화면 크기 기준으로 맞춘다.
-                minFontSize = tabLabelMinFontSize / LocalDensity.current.fontScale,
-                maxFontSize = MaterialTheme.extraTypography.tabLabel.fontSize,
-            ),
+            autoSize =
+                TextAutoSize.StepBased(
+                    // sp에는 글자 배율이 곱해지므로 최소 크기는 배율로 나눠 실제 화면 크기 기준으로 맞춘다.
+                    minFontSize = tabLabelMinFontSize / LocalDensity.current.fontScale,
+                    maxFontSize = MaterialTheme.extraTypography.tabLabel.fontSize,
+                ),
         )
     }
 }
@@ -208,38 +212,43 @@ private fun CameraFab(
     modifier: Modifier = Modifier,
 ) {
     // 인증할 수 없는 상태(미가입·구역 배정 대기)에서는 회색으로 표시하고 그림자를 없앤다.
-    val fabContainerColor = if (isEnabled) {
-        MaterialTheme.colorScheme.primary
-    } else {
-        MaterialTheme.extraColors.disabledContentColor
-    }
-    val fabShadowAlpha = if (isEnabled) {
-        CAMERA_FAB_SHADOW_ALPHA
-    } else {
-        0f
-    }
+    val fabContainerColor =
+        if (isEnabled) {
+            MaterialTheme.colorScheme.secondary
+        } else {
+            MaterialTheme.extraColors.disabledContentColor
+        }
+    val fabShadowAlpha =
+        if (isEnabled) {
+            CAMERA_FAB_SHADOW_ALPHA
+        } else {
+            0f
+        }
 
     Surface(
         onClick = onClick,
-        modifier = modifier
-            .size(AppComponentSize.cameraFab)
-            .dropShadow(
-                shape = CircleShape,
-                shadow = Shadow(
-                    radius = cameraFabShadowRadius,
-                    color = MaterialTheme.colorScheme.primary,
-                    offset = DpOffset(x = 0.dp, y = cameraFabShadowOffsetY),
-                    alpha = fabShadowAlpha,
+        modifier =
+            modifier
+                .size(AppComponentSize.cameraFab)
+                .dropShadow(
+                    shape = CircleShape,
+                    shadow =
+                        Shadow(
+                            radius = cameraFabShadowRadius,
+                            color = MaterialTheme.colorScheme.secondary,
+                            offset = DpOffset(x = 0.dp, y = cameraFabShadowOffsetY),
+                            alpha = fabShadowAlpha,
+                        ),
                 ),
-            ),
         enabled = isEnabled,
         shape = CircleShape,
         color = fabContainerColor,
-        contentColor = MaterialTheme.colorScheme.onPrimary,
-        border = BorderStroke(
-            width = AppComponentSize.cameraFabBorder,
-            color = MaterialTheme.colorScheme.surface,
-        ),
+        contentColor = MaterialTheme.colorScheme.onSecondary,
+        border =
+            BorderStroke(
+                width = AppComponentSize.cameraFabBorder,
+                color = MaterialTheme.colorScheme.surface,
+            ),
     ) {
         Box(contentAlignment = Alignment.Center) {
             Icon(

@@ -58,11 +58,12 @@ fun StatSummaryRow(
 private fun StatSummaryRowPreview() {
     EcoGuardTheme {
         StatSummaryRow(
-            statItems = listOf(
-                StatSummaryItem(label = "승인", value = "7회"),
-                StatSummaryItem(label = "반려", value = "1회"),
-                StatSummaryItem(label = "미제출", value = "1회"),
-            ),
+            statItems =
+                listOf(
+                    StatSummaryItem(label = "승인", value = "7회"),
+                    StatSummaryItem(label = "반려", value = "1회"),
+                    StatSummaryItem(label = "미제출", value = "1회"),
+                ),
             modifier = Modifier.padding(AppSpacing.xl),
         )
     }

@@ -21,7 +21,7 @@ description: Compose의 색상, MaterialTheme, Light·Dark·System 테마 모드
 
 ## 가독성
 
-- 토큰과 UI 리소스 선언의 객체 생성·조건 분기를 한 줄로 압축하지 않는다.
+- 토큰과 UI 리소스 선언의 객체 생성·조건 분기는 작성 중 한 줄로 써도 되지만, 파일 작성을 마치면 자동 줄바꿈(`./gradlew spotlessApply`)을 적용해 줄바꿈된 상태로 끝낸다.
 
 ## 실행 Hook
 

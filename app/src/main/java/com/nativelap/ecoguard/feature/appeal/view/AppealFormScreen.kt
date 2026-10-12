@@ -40,7 +40,7 @@ import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 import com.nativelap.ecoguard.ui.theme.extraTypography
 
-private val reasonBoxVerticalPadding = 12.dp
+private val reasonBoxVerticalPadding = 14.dp
 
 /** 09 이의신청 작성. 반려 사유 확인, 내용 입력, 선택적 사진 촬영 후 보낸다. */
 @Composable
@@ -50,10 +50,11 @@ fun AppealFormScreen(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        modifier = modifier
-            .fillMaxSize()
-            .imePadding(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        modifier =
+            modifier
+                .fillMaxSize()
+                .imePadding(),
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             EcoBackTopBar(onBackClick = { onEvent(AppealScreenEvent.BackClick) })
         },
@@ -68,22 +69,24 @@ fun AppealFormScreen(
         },
     ) { innerPadding ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .consumeWindowInsets(innerPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding),
             contentAlignment = Alignment.TopCenter,
         ) {
             Column(
-                modifier = Modifier
-                    .widthIn(max = AppComponentSize.contentMaxWidth)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .padding(
-                        start = AppSpacing.screenHorizontal,
-                        end = AppSpacing.screenHorizontal,
-                        bottom = AppSpacing.xl,
-                    ),
+                modifier =
+                    Modifier
+                        .widthIn(max = AppComponentSize.contentMaxWidth)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                        .padding(
+                            start = AppSpacing.screenHorizontal,
+                            end = AppSpacing.screenHorizontal,
+                            bottom = AppSpacing.xl,
+                        ),
                 verticalArrangement = Arrangement.spacedBy(AppSpacing.xl),
             ) {
                 PageTitle(
@@ -95,14 +98,15 @@ fun AppealFormScreen(
                 AppealFormField(label = stringResource(R.string.appeal_rejection_reason)) {
                     Text(
                         text = uiState.rejectionReason,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(AppRadius.tile))
-                            .background(MaterialTheme.colorScheme.surfaceVariant)
-                            .padding(
-                                horizontal = AppSpacing.md,
-                                vertical = reasonBoxVerticalPadding,
-                            ),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(AppRadius.tile))
+                                .background(MaterialTheme.colorScheme.surfaceVariant)
+                                .padding(
+                                    horizontal = AppSpacing.md,
+                                    vertical = reasonBoxVerticalPadding,
+                                ),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -114,6 +118,7 @@ fun AppealFormScreen(
                         onValueChange = { changedContent -> onEvent(AppealScreenEvent.ContentChange(changedContent)) },
                         placeholder = stringResource(R.string.appeal_content_hint),
                         maxLength = uiState.maxContentLength,
+                        label = stringResource(R.string.appeal_content),
                     )
                 }
 
@@ -125,10 +130,11 @@ fun AppealFormScreen(
                     )
 
                     Text(
-                        text = stringResource(
-                            R.string.appeal_photo_after_deadline,
-                            uiState.verificationDeadlineTime,
-                        ),
+                        text =
+                            stringResource(
+                                R.string.appeal_photo_after_deadline,
+                                uiState.verificationDeadlineTime,
+                            ),
                         style = MaterialTheme.extraTypography.captionRegular,
                         color = MaterialTheme.extraColors.captionTextColor,
                     )
@@ -155,7 +161,13 @@ private fun AppealFormField(
 }
 
 @Preview(name = "Appeal form · empty", showBackground = true, widthDp = 390, heightDp = 844)
-@Preview(name = "Appeal form · compact larger text", showBackground = true, widthDp = 320, heightDp = 596, fontScale = 1.5f)
+@Preview(
+    name = "Appeal form · compact larger text",
+    showBackground = true,
+    widthDp = 320,
+    heightDp = 596,
+    fontScale = 1.5f,
+)
 @Composable
 private fun AppealFormScreenPreview() {
     EcoGuardTheme {

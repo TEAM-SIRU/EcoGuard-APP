@@ -28,8 +28,8 @@ import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-// 하단 CTA 영역 아래 여백(28) + 토스트 상단 여백(8). Figma(34+8)를 컴팩트 기준으로 줄인 값
-private val loginToastTopSpacing = 36.dp
+// Figma 하단 CTA 영역 아래 여백(34) + 토스트 상단 여백(8)
+private val loginToastTopSpacing = 42.dp
 
 @Composable
 fun LoginScreen(
@@ -39,25 +39,27 @@ fun LoginScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
     ) { innerPadding ->
         BoxWithConstraints(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .consumeWindowInsets(innerPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding),
             contentAlignment = Alignment.TopCenter,
         ) {
             CenteredGroupWithFooter(
-                modifier = Modifier
-                    .widthIn(max = AppComponentSize.contentMaxWidth)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .heightIn(min = maxHeight)
-                    .padding(
-                        horizontal = AppSpacing.screenHorizontal,
-                        vertical = AppSpacing.xl,
-                    ),
+                modifier =
+                    Modifier
+                        .widthIn(max = AppComponentSize.contentMaxWidth)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                        .heightIn(min = maxHeight)
+                        .padding(
+                            horizontal = AppSpacing.screenHorizontal,
+                            vertical = AppSpacing.xl,
+                        ),
                 footerSpacing = loginToastTopSpacing,
                 groupContent = {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -97,32 +99,38 @@ private fun CenteredGroupWithFooter(
         contents = listOf(groupContent, footerContent),
         modifier = modifier,
     ) { (groupMeasurables, footerMeasurables), constraints ->
-        val childConstraints = constraints.copy(
-            minWidth = 0,
-            minHeight = 0,
-        )
-        val groupPlaceables = groupMeasurables.map { groupMeasurable ->
-            groupMeasurable.measure(childConstraints)
-        }
-        val footerPlaceables = footerMeasurables.map { footerMeasurable ->
-            footerMeasurable.measure(childConstraints)
-        }
+        val childConstraints =
+            constraints.copy(
+                minWidth = 0,
+                minHeight = 0,
+            )
+        val groupPlaceables =
+            groupMeasurables.map { groupMeasurable ->
+                groupMeasurable.measure(childConstraints)
+            }
+        val footerPlaceables =
+            footerMeasurables.map { footerMeasurable ->
+                footerMeasurable.measure(childConstraints)
+            }
         val groupHeight = groupPlaceables.sumOf { groupPlaceable -> groupPlaceable.height }
         val footerHeight = footerPlaceables.sumOf { footerPlaceable -> footerPlaceable.height }
-        val footerBlockHeight = if (footerPlaceables.isEmpty() || footerHeight == 0) {
-            0
-        } else {
-            footerSpacing.roundToPx() + footerHeight
-        }
-        val layoutHeight = maxOf(
-            constraints.minHeight,
-            groupHeight + footerBlockHeight,
-        )
+        val footerBlockHeight =
+            if (footerPlaceables.isEmpty() || footerHeight == 0) {
+                0
+            } else {
+                footerSpacing.roundToPx() + footerHeight
+            }
+        val layoutHeight =
+            maxOf(
+                constraints.minHeight,
+                groupHeight + footerBlockHeight,
+            )
         // 공간이 충분하면 묶음을 세로 가운데에 두고, 부족하면 토스트가 화면 안에 보이도록 위로 올린다.
-        val groupTop = ((layoutHeight - groupHeight) / 2).coerceIn(
-            minimumValue = 0,
-            maximumValue = layoutHeight - groupHeight - footerBlockHeight,
-        )
+        val groupTop =
+            ((layoutHeight - groupHeight) / 2).coerceIn(
+                minimumValue = 0,
+                maximumValue = layoutHeight - groupHeight - footerBlockHeight,
+            )
 
         layout(constraints.maxWidth, layoutHeight) {
             var placeY = groupTop
@@ -135,7 +143,7 @@ private fun CenteredGroupWithFooter(
                 placeY += groupPlaceable.height
             }
 
-            placeY += footerSpacing.roundToPx()
+            placeY = maxOf(placeY + footerSpacing.roundToPx(), layoutHeight - footerHeight)
 
             footerPlaceables.forEach { footerPlaceable ->
                 footerPlaceable.place(

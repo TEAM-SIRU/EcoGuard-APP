@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,9 +29,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
-import com.nativelap.ecoguard.ui.theme.AppIconSize
 import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 
@@ -52,56 +51,56 @@ fun EcoInfoBottomSheet(
     onPrimaryActionClick: () -> Unit,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
-    iconTint: Color = MaterialTheme.colorScheme.onSurfaceVariant,
     secondaryActionText: String? = null,
     onSecondaryActionClick: () -> Unit = {},
+    iconSlotSize: Dp = 48.dp,
 ) {
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         modifier = modifier,
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         sheetMaxWidth = AppComponentSize.contentMaxWidth,
-        shape = RoundedCornerShape(
-            topStart = AppRadius.sheet,
-            topEnd = AppRadius.sheet,
-        ),
+        shape =
+            RoundedCornerShape(
+                topStart = AppRadius.logo,
+                topEnd = AppRadius.logo,
+            ),
         containerColor = MaterialTheme.colorScheme.surface,
         scrimColor = MaterialTheme.colorScheme.scrim.copy(alpha = BOTTOM_SHEET_SCRIM_ALPHA),
         dragHandle = {
             Box(
-                modifier = Modifier
-                    .padding(top = bottomSheetHandleTopPadding)
-                    .width(bottomSheetHandleWidth)
-                    .height(bottomSheetHandleHeight)
-                    .clip(RoundedCornerShape(AppRadius.progressBar))
-                    .background(MaterialTheme.colorScheme.outlineVariant),
+                modifier =
+                    Modifier
+                        .padding(top = bottomSheetHandleTopPadding)
+                        .width(bottomSheetHandleWidth)
+                        .height(bottomSheetHandleHeight)
+                        .clip(RoundedCornerShape(AppRadius.progressBar))
+                        .background(MaterialTheme.colorScheme.outlineVariant),
             )
         },
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .verticalScroll(rememberScrollState())
-                .padding(
-                    start = AppSpacing.screenHorizontal,
-                    end = AppSpacing.screenHorizontal,
-                    top = AppSpacing.xl,
-                    bottom = AppSpacing.md,
-                ),
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(rememberScrollState())
+                    .padding(
+                        start = AppSpacing.screenHorizontal,
+                        end = AppSpacing.screenHorizontal,
+                        top = AppSpacing.xl,
+                        bottom = AppSpacing.md,
+                    ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Box(
-                modifier = Modifier
-                    .size(AppComponentSize.emptyIconCircle)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.surfaceVariant),
+                modifier = Modifier.size(iconSlotSize),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     painter = painterResource(iconRes),
                     contentDescription = null,
-                    modifier = Modifier.size(AppIconSize.emptyState),
-                    tint = iconTint,
+                    modifier = Modifier.size(48.dp),
+                    tint = Color.Unspecified,
                 )
             }
 

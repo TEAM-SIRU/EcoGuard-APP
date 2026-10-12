@@ -28,7 +28,7 @@ import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 
-private val photoAddTileSize = 76.dp
+private val photoAddTileSize = 88.dp
 
 /** 이의신청용 사진 촬영 타일. 현재 촬영 수/최대 수를 표시한다. */
 @Composable
@@ -39,23 +39,23 @@ fun AppealPhotoAddTile(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .defaultMinSize(
-                minWidth = photoAddTileSize,
-                minHeight = photoAddTileSize,
-            )
-            .clip(RoundedCornerShape(AppRadius.tile))
-            .background(MaterialTheme.colorScheme.surfaceVariant)
-            .clickable(
-                role = Role.Button,
-                onClick = onClick,
-            )
-            .padding(AppSpacing.xs),
+        modifier =
+            modifier
+                .defaultMinSize(
+                    minWidth = photoAddTileSize,
+                    minHeight = photoAddTileSize,
+                ).clip(RoundedCornerShape(AppRadius.tile))
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .clickable(
+                    role = Role.Button,
+                    onClick = onClick,
+                ).padding(AppSpacing.xs),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(
-            space = AppSpacing.xxs,
-            alignment = Alignment.CenterVertically,
-        ),
+        verticalArrangement =
+            Arrangement.spacedBy(
+                space = AppSpacing.xxs,
+                alignment = Alignment.CenterVertically,
+            ),
     ) {
         Icon(
             painter = painterResource(R.drawable.ic_cam_24),

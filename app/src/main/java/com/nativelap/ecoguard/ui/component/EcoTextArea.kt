@@ -15,6 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
@@ -24,10 +26,10 @@ import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 import com.nativelap.ecoguard.ui.theme.extraTypography
 
-private val textAreaMinHeight = 124.dp
+private val textAreaMinHeight = 140.dp
 
-// 전체 124 − 상하 여백 28 − 글자 수 줄 18 − 간격 8
-private val textAreaInputMinHeight = 70.dp
+// 전체 140 − 상하 여백 32 − 글자 수 줄 18 − 간격 8
+private val textAreaInputMinHeight = 82.dp
 private val textAreaBorderWidth = 1.dp
 
 /** 테두리 있는 여러 줄 입력칸. 아래쪽에 글자 수(입력/최대)를 표시하고 최대 길이를 넘기지 않는다. */
@@ -38,24 +40,38 @@ fun EcoTextArea(
     placeholder: String,
     maxLength: Int,
     modifier: Modifier = Modifier,
+    label: String = placeholder,
+    enabled: Boolean = true,
+    emphasizeFilled: Boolean = false,
 ) {
-    val textAreaShape = RoundedCornerShape(AppRadius.tile)
+    val textAreaShape = RoundedCornerShape(AppRadius.input)
 
     BasicTextField(
         value = value,
+        enabled = enabled,
         onValueChange = { changedText ->
-            onValueChange(changedText.take(maxLength))
+            onValueChange(TextInputLength.limit(changedText, maxLength))
         },
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = textAreaMinHeight)
-            .border(
-                border = BorderStroke(
-                    width = textAreaBorderWidth,
-                    color = MaterialTheme.colorScheme.outlineVariant,
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .semantics { contentDescription = label }
+                .heightIn(min = textAreaMinHeight)
+                .border(
+                    border =
+                        BorderStroke(
+                            width = if (emphasizeFilled && value.isNotBlank()) 1.5.dp else textAreaBorderWidth,
+                            color =
+                                if (emphasizeFilled &&
+                                    value.isNotBlank()
+                                ) {
+                                    MaterialTheme.colorScheme.primary
+                                } else {
+                                    MaterialTheme.colorScheme.outlineVariant
+                                },
+                        ),
+                    shape = textAreaShape,
                 ),
-                shape = textAreaShape,
-            ),
         textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onSurface),
         cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
         decorationBox = { innerTextField ->
@@ -74,7 +90,7 @@ fun EcoTextArea(
                 }
 
                 Text(
-                    text = stringResource(R.string.format_text_count, value.length, maxLength),
+                    text = stringResource(R.string.format_text_count, TextInputLength.count(value), maxLength),
                     modifier = Modifier.padding(top = AppSpacing.xs),
                     style = MaterialTheme.extraTypography.captionRegular,
                     color = MaterialTheme.extraColors.captionTextColor,

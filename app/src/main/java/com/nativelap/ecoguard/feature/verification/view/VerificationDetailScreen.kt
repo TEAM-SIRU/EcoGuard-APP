@@ -30,7 +30,7 @@ import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-private val detailPhotoHeight = 224.dp
+private val detailPhotoHeight = 256.dp
 
 /** 08 인증 상세(활동 기록에서 열기). 제출 사진과 상태·구역·제출 시각을 보여준다. */
 @Composable
@@ -45,36 +45,39 @@ fun VerificationDetailScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             EcoBackTopBar(onBackClick = { onEvent(VerificationResultScreenEvent.BackClick) })
         },
     ) { innerPadding ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .consumeWindowInsets(innerPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding),
             contentAlignment = Alignment.TopCenter,
         ) {
             Column(
-                modifier = Modifier
-                    .widthIn(max = AppComponentSize.contentMaxWidth)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .padding(
-                        start = AppSpacing.screenHorizontal,
-                        end = AppSpacing.screenHorizontal,
-                        bottom = AppSpacing.xl,
-                    ),
+                modifier =
+                    Modifier
+                        .widthIn(max = AppComponentSize.contentMaxWidth)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                        .padding(
+                            start = AppSpacing.screenHorizontal,
+                            end = AppSpacing.screenHorizontal,
+                            bottom = AppSpacing.xl,
+                        ),
             ) {
                 PageTitle(
                     title = stringResource(R.string.verification_detail_title, verificationDate),
                     subtitle = statusDescription,
-                    modifier = Modifier.padding(
-                        top = AppSpacing.xs,
-                        bottom = AppSpacing.lg,
-                    ),
+                    modifier =
+                        Modifier.padding(
+                            top = AppSpacing.xs,
+                            bottom = AppSpacing.lg,
+                        ),
                 )
 
                 PhotoPlaceholder(

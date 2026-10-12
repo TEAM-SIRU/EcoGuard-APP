@@ -31,7 +31,7 @@ import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
 private val toastIconSpacing = 10.dp
-private val toastVerticalPadding = 12.dp
+private val toastVerticalPadding = 14.dp
 
 /** 짙은 배경의 오류 안내 토스트. 아이콘은 Figma 원본 색(연한 빨강)을 유지한다. */
 @Composable
@@ -40,16 +40,16 @@ fun EcoToast(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .heightIn(min = AppComponentSize.toastMinHeight)
-            .clip(RoundedCornerShape(AppRadius.toast))
-            .background(MaterialTheme.colorScheme.inverseSurface)
-            .padding(
-                horizontal = AppSpacing.md,
-                vertical = toastVerticalPadding,
-            )
-            .semantics { liveRegion = LiveRegionMode.Polite },
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .heightIn(min = AppComponentSize.toastMinHeight)
+                .clip(RoundedCornerShape(AppRadius.toast))
+                .background(MaterialTheme.colorScheme.inverseSurface)
+                .padding(
+                    horizontal = AppSpacing.md,
+                    vertical = toastVerticalPadding,
+                ).semantics { liveRegion = LiveRegionMode.Polite },
         horizontalArrangement = Arrangement.spacedBy(toastIconSpacing),
         verticalAlignment = Alignment.CenterVertically,
     ) {

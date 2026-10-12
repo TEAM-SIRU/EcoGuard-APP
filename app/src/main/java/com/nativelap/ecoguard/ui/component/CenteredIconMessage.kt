@@ -22,6 +22,7 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppIconSize
@@ -48,26 +49,32 @@ fun CenteredIconMessage(
             contentAlignment = Alignment.Center,
         ) {
             when (iconStyle) {
-                CenteredIconStyle.CIRCLE -> Box(
-                    modifier = Modifier
-                        .size(AppComponentSize.emptyIconCircle)
-                        .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.surfaceVariant),
-                    contentAlignment = Alignment.Center,
-                ) {
+                CenteredIconStyle.CIRCLE -> {
+                    Box(
+                        modifier =
+                            Modifier
+                                .size(AppComponentSize.emptyIconCircle)
+                                .clip(CircleShape)
+                                .background(MaterialTheme.colorScheme.surfaceVariant),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        Icon(
+                            painter = painterResource(iconRes),
+                            contentDescription = null,
+                            modifier = Modifier.size(AppIconSize.emptyState),
+                            tint = iconTint,
+                        )
+                    }
+                }
+
+                CenteredIconStyle.HERO, CenteredIconStyle.GUIDE -> {
                     Icon(
                         painter = painterResource(iconRes),
                         contentDescription = null,
-                        modifier = Modifier.size(AppIconSize.emptyState),
-                        tint = iconTint,
+                        modifier = Modifier.size(if (iconStyle == CenteredIconStyle.GUIDE) 48.dp else AppIconSize.hero),
+                        tint = Color.Unspecified,
                     )
                 }
-                CenteredIconStyle.HERO -> Icon(
-                    painter = painterResource(iconRes),
-                    contentDescription = null,
-                    modifier = Modifier.size(AppIconSize.hero),
-                    tint = Color.Unspecified,
-                )
             }
         }
 

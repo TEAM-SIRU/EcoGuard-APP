@@ -6,16 +6,19 @@
 
 현재 프로젝트는 Kotlin과 Jetpack Compose를 사용하는 Android 앱입니다. 서버 연동·ViewModel·화면 전환 없이 화면별 정적 UI를 구현한 단계이며, 앱을 실행하면 홈 화면의 로딩 상태가 표시됩니다. 제품 기능, 대상 사용자, 전체 범위는 PRD가 없어 **확인 필요**입니다.
 
-### 디자인 기준
+### 디자인 및 구현 기준
 
-- 디자인 원본: [환경지킴이 디자인 시스템의 ‘App Screens · Redesign’ 페이지 (238:2)](https://www.figma.com/design/Ef8bcly7z4kzYE4D7W9uXU/?node-id=238-2)
-- 글꼴: Figma는 Noto Sans KR을 사용하지만, 팀 결정에 따라 앱은 Pretendard(`res/font`)를 유지합니다.
-- 색상: Primary는 Figma 변수 값 `#57C144`를 사용합니다.
-- 테마: 밝은 테마만 지원합니다. 다크 디자인이 확정되기 전까지 다크 색상 구성은 밝은 테마와 같습니다.
-- 아이콘: Figma 원본을 `drawable` 리소스로 사용합니다.
-- 크기: 앱은 Figma 390pt 수치보다 컴포넌트를 한 단계 작게 쓰는 컴팩트 기준을 따릅니다(예: 화면 좌우 여백 24→20dp, 카드 안쪽 여백 20→16dp, Primary 버튼 56→50dp, 제목 26/22/20→24/20/18sp). 기준 값은 `ui/theme`의 토큰에 있습니다. 제목·버튼·Body 1(17→16sp)은 한 단계 줄였고, 최소 터치 영역 48dp와 Body 2·Sub·Caption(15·14·13sp)은 유지합니다.
-- 배경: 카드형 홈 화면은 `background`(#F8FAF9), 그 밖의 화면은 `surface`(흰색)를 쓰며 상태 바·내비게이션 바 뒤까지 같은 색으로 그립니다. 카메라 촬영 화면은 어두운 배경에 맞춰 시스템 바 아이콘을 밝게 바꿉니다.
-- 반응형: 콘텐츠 최대 너비 600dp(`AppComponentSize.contentMaxWidth`)로 가운데 정렬합니다. 창 폭이 840dp 이상이면 홈(청소 배정 상태)·청소 구역 화면은 최대 960dp 안에서 2열로 배치하고(`isExpandedLayout()`), 하단 탭 바는 탭을 옮겨도 위치가 바뀌지 않도록 모든 탭에서 같은 폭을 씁니다. 320dp·390dp·1280dp·`fontScale` 1.5 Preview로 확인합니다.
+[Issue #12](https://github.com/TEAM-SIRU/EcoGuard-APP/issues/12)에서 Figma [‘App Screens · Redesign 2’ 페이지 (823:574)](https://www.figma.com/design/Ef8bcly7z4kzYE4D7W9uXU/?node-id=823-574)의 58개 화면·상태를 반영했습니다. 추가 Preview 상태 4개를 포함해 62개 상태를 렌더링 검증 대상으로 관리합니다.
+
+- 글꼴: Noto Sans KR Regular·Medium·Bold를 `res/font`에서 사용합니다. [OFL 라이선스](licenses/NotoSansKR-OFL.txt)를 포함합니다.
+- 색상: Primary `#55B580`, 기본 CTA에 사용하는 Secondary `#30875B`, 배경 `#FAFBFA`, 흰색 보조 버튼과 테두리를 적용합니다. CTA 색상은 Figma 원본 PNG의 실제 색상을 기준으로 합니다.
+- 수치: 기본 CTA 높이 48dp, FAB 크기 60dp 등 Figma 원본 크기·간격을 디자인 토큰과 화면에 반영합니다.
+- 공통 UI 보정: [Issue #14](https://github.com/TEAM-SIRU/EcoGuard-APP/issues/14)에서 화면별 원본 노드의 크기·간격·문구를 재대조했습니다. 작은 액션은 시각 크기를 유지하면서 터치 영역을 최소 48dp로 확장하며, 다이얼로그·키보드·긴 콘텐츠의 스크롤 접근성을 보완합니다.
+- 에셋: 원본 SVG를 Android VectorDrawable로 변환하고 청소구역 도면을 로컬 이미지로 사용합니다. 원본·리소스 매핑은 [에셋 문서](docs/redesign-assets.md)를 참고하세요.
+- 신청 입력: 학번·이름은 읽기 전용입니다. 동기는 Unicode 코드 포인트 기준 최대 200자로 제한하고 카운터를 표시합니다. 빈 내용·공백만 있는 내용·제출 중에는 신청 버튼을 비활성화합니다. 입력은 저장 가능한 Compose 상태로 유지하며 외부 상태 변경을 반영합니다.
+- 반응형: 기본 콘텐츠 최대폭은 600dp입니다. 홈·청소구역은 840dp 이상에서 2열·최대폭 960dp를 사용하며, 나머지 화면은 최대폭 600dp를 유지합니다.
+- 테마: 밝은 테마를 사용합니다. 다크 디자인 확정 전까지 다크 색상 구성도 밝은 테마와 같습니다.
+- 범위: 기존 Route·Screen·UiState·화면 이벤트 구조를 유지하는 정적 UI 작업입니다. 화면 이벤트를 제공하지만 실제 화면 전환·서버 요청·카메라 촬영은 연결하지 않았습니다.
 
 ### 구현 범위
 
@@ -33,7 +36,7 @@
 
 앱 시작 시 시스템 스플래시(흰 배경과 새싹 아이콘)를 표시합니다. 플랫폼 제약으로 Figma의 '환경지킴이' 글자는 스플래시에 표시하지 않습니다.
 
-후속 작업(현재 범위 제외): Navigation 3 기반 화면 전환, 서버 연동, ViewModel 연결, CameraX를 이용한 실제 촬영. 구체적인 일정과 순서는 **확인 필요**입니다.
+후속 작업(현재 범위 제외): 화면 전환, 서버 연동, ViewModel 연결, 실제 촬영. 구체적인 일정과 순서는 **확인 필요**입니다.
 
 ## 기술 스택
 
@@ -77,7 +80,28 @@ cd EcoGuard-APP
 ./gradlew --offline :app:assembleDebug :app:testDebugUnitTest :app:lintDebug
 ```
 
-GitHub Actions 설정은 [`.github/workflows/android-ci.yml`](.github/workflows/android-ci.yml)에 있습니다. 저장소 규칙상 통합·기본 브랜치는 `dev`, 릴리스 대상은 `main`입니다. Android 기반 작업은 [Issue #1](https://github.com/TEAM-SIRU/EcoGuard-APP/issues/1)에서 `🔧 chore` 라벨로 관리하며, 해당 PR #2는 아직 `dev`에 병합되지 않았습니다. 디자인 시스템 기반 화면 UI 작업은 [Issue #3](https://github.com/TEAM-SIRU/EcoGuard-APP/issues/3)에서 진행합니다.
+포맷 적용과 검사는 다음 명령을 사용합니다.
+
+```bash
+./gradlew spotlessApply
+./gradlew spotlessCheck
+```
+
+GitHub Actions 설정은 [Android CI](.github/workflows/android-ci.yml)와 [포맷 검사](.github/workflows/format-check.yml)에 있습니다. 저장소 규칙상 통합·기본 브랜치는 `dev`, 릴리스 대상은 `main`입니다. Android 기반 설정 PR #2, Issue #3·#5의 화면 UI PR #4·#6, Issue #9의 Spotless·ktlint PR #10은 `dev`에 병합되었습니다. 전체 UI 리디자인은 [Issue #12](https://github.com/TEAM-SIRU/EcoGuard-APP/issues/12)에서 관리했습니다. 후속 공통 UI 보정은 [Issue #14](https://github.com/TEAM-SIRU/EcoGuard-APP/issues/14), `fix/#14-redesign-ui-corrections` 브랜치에서 진행합니다. 기존 규칙 변경은 UI 변경과 별도 커밋으로 보존했습니다.
+
+### 리디자인 검증 현황
+
+2026-10-12 Issue #14의 Figma UI 보정(UI-01~UI-15)을 완료했습니다. Spotless, Debug 앱·계측 APK 빌드, 단위 테스트와 Android Lint가 통과했습니다. Lint 오류는 0개, 경고는 31개였습니다.
+
+- 세로 화면 390×844dp/font 1.0, 320×596dp/font 1.0·1.5, 430×932dp/font 1.0·1.5에서 각각 계측 테스트 18개와 62개 화면 상태 Preview 렌더가 통과했습니다. 조건별 홈 스크롤 캡처도 확인했습니다.
+- 기본 크기 변경 화면을 Figma 원본과 수동 대조했고, 320×596dp/font 1.5에서 작은 화면의 대표 상태를 확인했습니다. Preview 검증은 자동 픽셀 일치 판정이 아닙니다.
+- 계측에 사용한 화면 크기·density·글자 배율·키보드·회전 설정은 실행 전 상태로 복원했습니다. 서버 연동·실제 촬영·가로 화면 동작은 정적 UI 검증 범위에 포함하지 않았습니다.
+
+전체 상태 대응표와 이전 Issue #12·#14 검증 이력은 [리디자인 검증 문서](docs/redesign-verification.md)를 참고하세요.
+
+대표 화면 캡처: [휴대폰 홈](docs/screenshots/phone-home.png), [신청](docs/screenshots/phone-application.png), [마이페이지](docs/screenshots/phone-menu.png), [태블릿 홈](docs/screenshots/tablet-home.png), [태블릿 청소구역](docs/screenshots/tablet-area.png).
+
+추가 보정 캡처: [홈 전후 비교와 검증](docs/redesign-verification.md#보정-전후와-실행-캡처), [활동 기록](docs/screenshots/phone-activity.png), [다이얼로그](docs/screenshots/phone-dialog.png), [홈 마지막 기록](docs/screenshots/phone-home-scrolled.png), [실제 앱 시작](docs/screenshots/app-start-loading.png).
 
 ## 프로젝트 구조
 
@@ -94,7 +118,7 @@ EcoGuard-APP/
 └── settings.gradle.kts           # 프로젝트 및 모듈 설정
 ```
 
-앱 실행 흐름은 `MainActivity` → `HomeRoute`이며, `HomeRoute`는 기본값인 `HomeUiState.Loading` 상태로 `HomeLoadingScreen`을 표시합니다. 다른 화면은 아직 진입 경로가 없고 Preview로 확인합니다.
+앱 실행 흐름은 `MainActivity` → `HomeRoute`이며, `HomeRoute`는 기본값인 `HomeUiState.Loading` 상태로 `HomeLoadingScreen`과 하단 탭을 표시합니다. 다른 화면은 아직 진입 경로가 없고 Preview로 확인합니다.
 
 `app/src/main/java/com/nativelap/ecoguard/` 아래 구성은 다음과 같습니다.
 
@@ -107,4 +131,6 @@ Route는 전달받은 고정 상태(기본값 또는 Preview 주입 값)만 표�
 
 ## 문서와 확인 항목
 
+- 화면 상태 대응과 검증: [리디자인 상태 및 검증](docs/redesign-verification.md)
+- 디자인 에셋과 출처: [Redesign 2 원본 에셋](docs/redesign-assets.md)
 - PRD는 아직 없습니다. 앱의 목표, 대상 사용자, 기능 범위는 **확인 필요**입니다.

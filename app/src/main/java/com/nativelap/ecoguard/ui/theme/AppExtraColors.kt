@@ -11,6 +11,14 @@ import androidx.compose.ui.graphics.Color
 data class AppExtraColors(
     val captionTextColor: Color,
     val disabledContentColor: Color,
+    val disabledPrimaryButtonContainerColor: Color,
+    val skeletonPlaceholderColor: Color,
+    val homeNoticeBodyTextColor: Color,
+    val homeNoticeEmphasisTextColor: Color,
+    val activeTabLabelColor: Color,
+    val approvedRewardValueColor: Color,
+    val recruitmentProgressTrackColor: Color,
+    val recruitmentProgressClosedColor: Color,
     val warningTextColor: Color,
     val warningAccentColor: Color,
     val cardShadowColor: Color,
@@ -20,9 +28,10 @@ data class AppExtraColors(
     val cameraOverlayColor: Color,
 )
 
-val LocalAppExtraColors = staticCompositionLocalOf<AppExtraColors> {
-    error("AppExtraColors was not provided.")
-}
+val LocalAppExtraColors =
+    staticCompositionLocalOf<AppExtraColors> {
+        error("AppExtraColors was not provided.")
+    }
 
 val MaterialTheme.extraColors: AppExtraColors
     @Composable

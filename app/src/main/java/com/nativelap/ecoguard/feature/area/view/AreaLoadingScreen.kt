@@ -8,6 +8,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
+import com.nativelap.ecoguard.feature.area.viewmodel.AreaScreenEvent
+import com.nativelap.ecoguard.ui.component.EcoBottomTab
+import com.nativelap.ecoguard.ui.component.EcoBottomTabBar
 import com.nativelap.ecoguard.ui.component.LoadingSkeletonScrollContent
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
@@ -15,10 +18,21 @@ import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 @Composable
 fun AreaLoadingScreen(
     modifier: Modifier = Modifier,
+    onEvent: (AreaScreenEvent) -> Unit = {},
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
+        bottomBar = {
+            EcoBottomTabBar(
+                selectedTab = EcoBottomTab.AREA,
+                selectedIconResOverride = R.drawable.ic_map_active_alt,
+                onTabSelected = { selectedTab ->
+                    onEvent(AreaScreenEvent.TabSelect(selectedTab))
+                },
+                onCameraClick = { onEvent(AreaScreenEvent.CameraClick) },
+            )
+        },
     ) { innerPadding ->
         LoadingSkeletonScrollContent(
             innerPadding = innerPadding,

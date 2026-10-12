@@ -28,11 +28,12 @@ fun LoginActionContent(
     onLoginClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val buttonTextRes = when {
-        isLoggingIn -> R.string.login_in_progress
-        hasLoginFailed -> R.string.action_retry_login
-        else -> R.string.login_with_datagsm
-    }
+    val buttonTextRes =
+        when {
+            isLoggingIn -> R.string.login_in_progress
+            hasLoginFailed -> R.string.action_retry_login
+            else -> R.string.login_with_datagsm
+        }
 
     Column(
         modifier = modifier.fillMaxWidth(),

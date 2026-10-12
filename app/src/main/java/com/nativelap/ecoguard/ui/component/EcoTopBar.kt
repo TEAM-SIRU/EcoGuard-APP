@@ -21,7 +21,6 @@ import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppIconSize
@@ -36,29 +35,31 @@ fun EcoTopBar(
     @DrawableRes actionIconRes: Int? = R.drawable.ic_bell,
     actionContentDescription: String? = stringResource(R.string.cd_notice),
     onActionClick: () -> Unit = {},
-    contentMaxWidth: Dp = AppComponentSize.contentMaxWidth,
 ) {
     Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .windowInsetsPadding(topBarWindowInsets),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .windowInsetsPadding(topBarWindowInsets),
         contentAlignment = Alignment.TopCenter,
     ) {
         Row(
-            modifier = Modifier
-                .contentColumnWidth(contentMaxWidth)
-                .heightIn(min = AppComponentSize.topBarHeight)
-                .padding(
-                    start = AppSpacing.screenHorizontal,
-                    end = AppSpacing.screenHorizontal - AppSpacing.xxs,
-                ),
+            modifier =
+                Modifier
+                    .contentColumnWidth(twoPaneContentMaxWidth())
+                    .heightIn(min = AppComponentSize.topBarHeight)
+                    .padding(
+                        start = AppSpacing.screenHorizontal,
+                        end = AppSpacing.screenHorizontal - AppSpacing.xxs,
+                    ),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = title,
-                modifier = Modifier
-                    .weight(1f)
-                    .semantics { heading() },
+                modifier =
+                    Modifier
+                        .weight(1f)
+                        .semantics { heading() },
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 1,

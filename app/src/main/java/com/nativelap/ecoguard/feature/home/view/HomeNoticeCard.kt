@@ -1,48 +1,43 @@
 package com.nativelap.ecoguard.feature.home.view
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.home.viewmodel.HomeNoticeUiModel
-import com.nativelap.ecoguard.ui.component.AdaptiveWidth
 import com.nativelap.ecoguard.ui.component.EcoCard
-import com.nativelap.ecoguard.ui.component.isCompactForText
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppIconSize
-import com.nativelap.ecoguard.ui.theme.AppRadius
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 import com.nativelap.ecoguard.ui.theme.extraTypography
 
 private val noticeTextSpacing = 2.dp
-private val noticeBadgeHorizontalPadding = 10.dp
-private val noticeBadgeVerticalPadding = 3.dp
-private val noticeCardBottomPadding = 12.dp
+private val noticeCardTopPadding = 18.dp
+private val noticeCardBottomPadding = 16.dp
+private val noticeHeaderMinHeight = 46.dp
 private val noticeLinkSpacing = 2.dp
 
 @Composable
@@ -52,28 +47,28 @@ fun HomeNoticeCard(
     onDetailClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val noticeBodyTextColor = MaterialTheme.extraColors.homeNoticeBodyTextColor
+    val noticeEmphasisTextColor = MaterialTheme.extraColors.homeNoticeEmphasisTextColor
+
     EcoCard(
         modifier = modifier,
         emphasized = true,
-        contentPadding = PaddingValues(
-            start = AppSpacing.lg,
-            end = AppSpacing.lg,
-            top = AppSpacing.lg,
-            bottom = noticeCardBottomPadding,
-        ),
+        contentPadding =
+            PaddingValues(
+                start = AppSpacing.md,
+                end = AppSpacing.md,
+                top = noticeCardTopPadding,
+                bottom = noticeCardBottomPadding,
+            ),
     ) {
-        BoxWithConstraints {
-            // 좁은 폭·큰 글자에서는 제목이 세로로 꺾이지 않도록 NEW 배지를 날짜 아래로 내린다.
-            val isCompactHeader = isCompactForText(maxWidth, AdaptiveWidth.noticeHeader)
-
+        Box(modifier = Modifier.fillMaxWidth().heightIn(min = noticeHeaderMinHeight)) {
             Row(
+                modifier = Modifier.padding(end = AppSpacing.xl),
                 horizontalArrangement = Arrangement.spacedBy(AppSpacing.sm),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.Top,
             ) {
                 Box(
-                    modifier = Modifier
-                        .size(AppComponentSize.noticeIconFrame)
-                        .clip(RoundedCornerShape(AppRadius.iconFrame)),
+                    modifier = Modifier.size(AppComponentSize.noticeIconFrame),
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(
@@ -83,7 +78,6 @@ fun HomeNoticeCard(
                         tint = MaterialTheme.colorScheme.primary,
                     )
                 }
-
                 Column(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(noticeTextSpacing),
@@ -93,97 +87,94 @@ fun HomeNoticeCard(
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onSurface,
                     )
-
                     Text(
                         text = notice.publishedDate,
                         style = MaterialTheme.extraTypography.captionRegular,
                         color = MaterialTheme.extraColors.captionTextColor,
                     )
-
-                    if (notice.isNew && isCompactHeader) {
-                        NoticeNewBadge()
-                    }
-                }
-
-                if (notice.isNew && !isCompactHeader) {
-                    NoticeNewBadge()
-                }
-
-                IconButton(
-                    onClick = onCloseClick,
-                    modifier = Modifier.size(AppComponentSize.minTouchTarget),
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_close),
-                        contentDescription = stringResource(R.string.cd_close),
-                        modifier = Modifier.size(AppIconSize.small),
-                        tint = MaterialTheme.extraColors.captionTextColor,
-                    )
                 }
             }
+            Icon(
+                painter = painterResource(R.drawable.ic_close),
+                contentDescription = stringResource(R.string.cd_close),
+                modifier =
+                    Modifier
+                        .align(Alignment.TopEnd)
+                        .size(AppIconSize.small)
+                        .clickable(role = Role.Button, onClick = onCloseClick),
+                tint = MaterialTheme.extraColors.captionTextColor,
+            )
         }
 
         Text(
             text = notice.headline,
-            modifier = Modifier.padding(
-                top = AppSpacing.md,
-                bottom = AppSpacing.xs,
-            ),
-            style = MaterialTheme.typography.headlineSmall,
+            modifier =
+                Modifier.padding(
+                    top = AppSpacing.md,
+                    bottom = AppSpacing.xs,
+                ),
+            style = MaterialTheme.typography.titleLarge,
             color = MaterialTheme.colorScheme.onSurface,
         )
 
         Text(
-            text = notice.body,
+            text =
+                buildAnnotatedString {
+                    append(notice.body)
+                    notice.emphasizedPhrases.filter { it.isNotEmpty() }.forEach { phrase ->
+                        var match = notice.body.indexOf(phrase)
+                        while (match >= 0) {
+                            addStyle(
+                                SpanStyle(
+                                    fontWeight = FontWeight.Bold,
+                                    color = noticeEmphasisTextColor,
+                                ),
+                                match,
+                                match + phrase.length,
+                            )
+                            match = notice.body.indexOf(phrase, match + phrase.length)
+                        }
+                    }
+                },
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = noticeBodyTextColor,
         )
 
         Row(
-            modifier = Modifier
-                .padding(top = AppSpacing.xs)
-                .heightIn(min = AppComponentSize.minTouchTarget)
-                .clickable(
-                    role = Role.Button,
-                    onClick = onDetailClick,
-                ),
+            modifier =
+                Modifier
+                    .padding(top = AppSpacing.sm)
+                    .clickable(
+                        role = Role.Button,
+                        onClick = onDetailClick,
+                    ),
             horizontalArrangement = Arrangement.spacedBy(noticeLinkSpacing),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = stringResource(R.string.action_view_details),
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.primary,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
             )
 
             Icon(
                 painter = painterResource(R.drawable.ic_chevron_right),
                 contentDescription = null,
                 modifier = Modifier.size(AppIconSize.link),
-                tint = MaterialTheme.colorScheme.primary,
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
             )
         }
     }
 }
 
-@Composable
-private fun NoticeNewBadge() {
-    Text(
-        text = stringResource(R.string.badge_new),
-        modifier = Modifier
-            .clip(RoundedCornerShape(AppRadius.badge))
-            .background(MaterialTheme.colorScheme.primary)
-            .padding(
-                horizontal = noticeBadgeHorizontalPadding,
-                vertical = noticeBadgeVerticalPadding,
-            ),
-        style = MaterialTheme.typography.labelSmall,
-        color = MaterialTheme.colorScheme.onPrimary,
-    )
-}
-
-@Preview(showBackground = true, backgroundColor = 0xFFF8FAF9, widthDp = 390)
-@Preview(name = "Compact larger text", showBackground = true, backgroundColor = 0xFFF8FAF9, widthDp = 320, fontScale = 1.5f)
+@Preview(showBackground = true, backgroundColor = 0xFFFAFBFA, widthDp = 390)
+@Preview(
+    name = "Compact larger text",
+    showBackground = true,
+    backgroundColor = 0xFFFAFBFA,
+    widthDp = 320,
+    fontScale = 1.5f,
+)
 @Composable
 private fun HomeNoticeCardPreview() {
     EcoGuardTheme {

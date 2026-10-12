@@ -18,7 +18,7 @@ fun ActivityRoute(
     var isMonthPickerVisible by rememberSaveable { mutableStateOf(initialMonthPickerVisible) }
 
     if (uiState == ActivityUiState.Loading) {
-        ActivityLoadingScreen()
+        ActivityLoadingScreen(onEvent = onEvent)
         return
     }
 

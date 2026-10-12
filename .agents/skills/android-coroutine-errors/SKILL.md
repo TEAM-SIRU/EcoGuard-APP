@@ -7,7 +7,7 @@ description: Android에서 Coroutine, Flow, StateFlow, SharedFlow, Channel, 네�
 
 ## 가독성
 
-- `launch`, `when`, 오류 분기, 상태 갱신을 한 줄로 압축하지 않는다. 취소와 성공·실패 흐름이 드러나도록 각 분기를 줄바꿈한다.
+- `launch`, `when`, 오류 분기, 상태 갱신은 작성 중 한 줄로 써도 되지만, 파일 작성을 마치면 자동 줄바꿈(`./gradlew spotlessApply`)을 적용해 취소와 성공·실패 흐름이 각 분기별로 줄바꿈된 상태로 끝낸다.
 
 ## 실행 Hook
 

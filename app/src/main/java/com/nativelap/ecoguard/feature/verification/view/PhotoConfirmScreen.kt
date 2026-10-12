@@ -34,7 +34,7 @@ import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-private val capturedPhotoHeight = 224.dp
+private val capturedPhotoHeight = 256.dp
 
 /** 06-3 촬영한 사진 확인. 다시 찍거나 보낼 수 있다. */
 @Composable
@@ -48,15 +48,16 @@ fun PhotoConfirmScreen(
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.surface,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             EcoBackTopBar(
                 onBackClick = { onEvent(VerificationScreenEvent.BackClick) },
-                trailingText = stringResource(
-                    R.string.format_step,
-                    VerificationStep.CONFIRM.stepNumber,
-                    VerificationStep.totalStepCount,
-                ),
+                trailingText =
+                    stringResource(
+                        R.string.format_step,
+                        VerificationStep.CONFIRM.stepNumber,
+                        VerificationStep.totalStepCount,
+                    ),
             )
         },
         bottomBar = {
@@ -81,26 +82,29 @@ fun PhotoConfirmScreen(
         },
     ) { innerPadding ->
         Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .consumeWindowInsets(innerPadding),
+            modifier =
+                Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .consumeWindowInsets(innerPadding),
             contentAlignment = Alignment.TopCenter,
         ) {
             Column(
-                modifier = Modifier
-                    .widthIn(max = AppComponentSize.contentMaxWidth)
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = AppSpacing.screenHorizontal),
+                modifier =
+                    Modifier
+                        .widthIn(max = AppComponentSize.contentMaxWidth)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = AppSpacing.screenHorizontal),
             ) {
                 PageTitle(
                     title = stringResource(R.string.photo_submit_confirmation_title),
                     subtitle = stringResource(R.string.photo_submit_confirmation_description),
-                    modifier = Modifier.padding(
-                        top = AppSpacing.xs,
-                        bottom = AppSpacing.lg,
-                    ),
+                    modifier =
+                        Modifier.padding(
+                            top = AppSpacing.xs,
+                            bottom = AppSpacing.lg,
+                        ),
                 )
 
                 PhotoPlaceholder(
@@ -131,7 +135,13 @@ fun PhotoConfirmScreen(
 }
 
 @Preview(name = "Photo confirm", showBackground = true, widthDp = 390, heightDp = 844)
-@Preview(name = "Photo confirm · compact larger text", showBackground = true, widthDp = 320, heightDp = 596, fontScale = 1.5f)
+@Preview(
+    name = "Photo confirm · compact larger text",
+    showBackground = true,
+    widthDp = 320,
+    heightDp = 596,
+    fontScale = 1.5f,
+)
 @Composable
 private fun PhotoConfirmScreenPreview() {
     EcoGuardTheme {
