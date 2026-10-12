@@ -20,7 +20,9 @@ import com.nativelap.ecoguard.ui.component.EcoTag
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-private val applicationCardTopPadding = 18.dp
+private val applicationCardHorizontalPadding = 17.dp
+private val applicationCardTopPadding = 19.dp
+private val applicationCardBottomPadding = 17.dp
 private val applicationTitleTopPadding = 10.dp
 private val applicationTextSpacing = 6.dp
 
@@ -34,10 +36,10 @@ fun HomeApplicationCompletedCard(
         modifier = modifier,
         contentPadding =
             PaddingValues(
-                start = AppSpacing.lg,
-                end = AppSpacing.lg,
+                start = applicationCardHorizontalPadding,
+                end = applicationCardHorizontalPadding,
                 top = applicationCardTopPadding,
-                bottom = AppSpacing.lg,
+                bottom = applicationCardBottomPadding,
             ),
     ) {
         EcoTag(text = stringResource(R.string.home_application_completed))

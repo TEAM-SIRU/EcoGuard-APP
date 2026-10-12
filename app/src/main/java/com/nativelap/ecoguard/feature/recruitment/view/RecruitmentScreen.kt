@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.recruitment.viewmodel.RecruitmentApplicationStatus
 import com.nativelap.ecoguard.feature.recruitment.viewmodel.RecruitmentScreenEvent
@@ -104,11 +105,13 @@ fun RecruitmentScreen(
                                 uiState.volunteerMinutesPerVerification,
                             ),
                         subtitle = stringResource(R.string.recruitment_approved_activity_record),
+                        verticalPadding = 12.dp,
                     )
 
                     TwoLineTextRow(
                         title = stringResource(R.string.recruitment_simple_photo_verification),
                         subtitle = stringResource(R.string.recruitment_take_photo_to_submit),
+                        verticalPadding = 12.dp,
                     )
                 }
             }

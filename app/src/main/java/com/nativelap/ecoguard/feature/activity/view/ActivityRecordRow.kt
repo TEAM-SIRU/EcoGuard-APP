@@ -16,7 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.activity.viewmodel.ActivityRecordUiModel
 import com.nativelap.ecoguard.ui.component.StatusChip
@@ -48,6 +50,7 @@ fun ActivityRecordRow(
     TwoLineTextRow(
         title = activityRecord.dateLabel,
         subtitle = detailParts.joinToString(separator = separator),
+        verticalPadding = 12.dp,
         modifier =
             if (isNotSubmitted) {
                 modifier
@@ -60,7 +63,10 @@ fun ActivityRecordRow(
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(AppSpacing.xs)) {
             Column(horizontalAlignment = Alignment.End) {
-                StatusChip(type = activityRecord.status)
+                StatusChip(
+                    type = activityRecord.status,
+                    textStyle = MaterialTheme.extraTypography.captionRegular.copy(fontWeight = FontWeight.Bold),
+                )
                 if (activityRecord.status != StatusChipType.REVIEWING) {
                     Text(
                         text =
@@ -71,7 +77,7 @@ fun ActivityRecordRow(
                             } else {
                                 stringResource(R.string.format_minutes, activityRecord.earnedMinutes)
                             },
-                        style = MaterialTheme.extraTypography.captionRegular,
+                        style = MaterialTheme.extraTypography.captionRegular.copy(fontWeight = FontWeight.Medium),
                         color =
                             if (activityRecord.earnedMinutes >
                                 0

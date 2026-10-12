@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.login.viewmodel.TeacherAccountGuideScreenEvent
 import com.nativelap.ecoguard.ui.component.BottomCtaBar
@@ -54,6 +55,12 @@ fun TeacherAccountGuideScreen(
                 EcoSecondaryButton(
                     text = stringResource(R.string.action_logout),
                     onClick = { onEvent(TeacherAccountGuideScreenEvent.LogoutClick) },
+                    minHeight = 44.dp,
+                    cornerRadius = 16.dp,
+                    textStyle =
+                        MaterialTheme.typography.labelMedium.copy(
+                            lineHeight = 23.sp,
+                        ),
                 )
             }
         },

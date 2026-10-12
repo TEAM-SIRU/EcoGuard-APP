@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -41,6 +42,8 @@ fun EcoSecondaryButton(
     @DrawableRes leadingIconRes: Int? = null,
     enabled: Boolean = true,
     minHeight: Dp = AppComponentSize.primaryButtonHeight,
+    cornerRadius: Dp = AppRadius.primaryButton,
+    textStyle: TextStyle = MaterialTheme.typography.labelLarge,
 ) {
     Button(
         onClick = onClick,
@@ -49,7 +52,7 @@ fun EcoSecondaryButton(
                 .fillMaxWidth()
                 .heightIn(min = minHeight),
         enabled = enabled,
-        shape = RoundedCornerShape(AppRadius.button),
+        shape = RoundedCornerShape(cornerRadius),
         border = if (enabled) BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant) else null,
         colors =
             ButtonDefaults.buttonColors(
@@ -74,7 +77,7 @@ fun EcoSecondaryButton(
 
             Text(
                 text = text,
-                style = MaterialTheme.typography.labelLarge,
+                style = textStyle,
                 textAlign = TextAlign.Center,
             )
         }

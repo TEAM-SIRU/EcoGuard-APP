@@ -146,18 +146,21 @@ fun CameraGuideScreen(
                         title = stringResource(R.string.camera_show_entire_area),
                         subtitle = stringResource(R.string.camera_capture_end_of_corridor),
                         leadingIconRes = R.drawable.ic_frame_22,
+                        verticalPadding = 12.dp,
                     )
 
                     TwoLineTextRow(
                         title = stringResource(R.string.camera_take_clear_photo),
                         subtitle = stringResource(R.string.camera_dark_photo_may_be_rejected),
                         leadingIconRes = R.drawable.ic_sun,
+                        verticalPadding = 12.dp,
                     )
 
                     TwoLineTextRow(
                         title = stringResource(R.string.camera_gallery_not_available),
                         subtitle = stringResource(R.string.camera_one_submission_per_day),
                         leadingIconRes = R.drawable.ic_ban,
+                        verticalPadding = 12.dp,
                     )
                 }
             }
