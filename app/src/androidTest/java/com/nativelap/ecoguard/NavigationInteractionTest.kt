@@ -96,6 +96,39 @@ class NavigationInteractionTest {
     }
 
     @Test
+    fun missingNoticeReturnNavigatesToListWithoutRestoringMissingDetail() {
+        lateinit var navigator: com.nativelap.ecoguard.navigation.EcoGuardMainNavigator
+        val restoration = StateRestorationTester(composeRule)
+        restoration.setContent {
+            val navigationState =
+                com.nativelap.ecoguard.navigation
+                    .rememberEcoGuardMainNavigationState()
+            androidx.compose.runtime.SideEffect {
+                navigator =
+                    com.nativelap.ecoguard.navigation
+                        .EcoGuardMainNavigator(navigationState)
+            }
+            EcoGuardTheme {
+                com.nativelap.ecoguard.navigation
+                    .EcoGuardMainNavDisplay({}, navigationState)
+            }
+        }
+        composeRule.runOnIdle {
+            navigator.push(com.nativelap.ecoguard.navigation.EcoGuardDestination.Notifications)
+            navigator.push(
+                com.nativelap.ecoguard.navigation.EcoGuardDestination
+                    .NoticeDetail(999),
+            )
+        }
+
+        composeRule.onNodeWithText("공지사항을 찾을 수 없어요").assertIsDisplayed()
+        composeRule.onNodeWithText("목록으로 돌아가기").performClick()
+        composeRule.onNodeWithText("공지사항").assertIsDisplayed()
+        Espresso.pressBack()
+        composeRule.onNodeWithText("알림").assertIsDisplayed()
+    }
+
+    @Test
     fun applicationDraftRestoresAndCompletedFlowDoesNotReturnToInput() {
         val restoration = StateRestorationTester(composeRule)
         startApp(restoration)

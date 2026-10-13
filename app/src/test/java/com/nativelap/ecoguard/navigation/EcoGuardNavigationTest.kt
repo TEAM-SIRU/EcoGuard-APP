@@ -7,6 +7,7 @@ import androidx.navigation3.runtime.NavKey
 import com.nativelap.ecoguard.feature.appeal.viewmodel.AppealScreenEvent
 import com.nativelap.ecoguard.feature.demo.view.DemoFlowController
 import com.nativelap.ecoguard.feature.demo.viewmodel.DemoAppState
+import com.nativelap.ecoguard.feature.notice.viewmodel.NoticeScreenEvent
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationScreenEvent
 import com.nativelap.ecoguard.ui.component.EcoBottomTab
 import org.junit.Assert.assertEquals
@@ -103,6 +104,46 @@ class EcoGuardNavigationTest {
         assertTrue(controller.openNotification(1))
         assertTrue(1L in demo.readNotificationIds)
         assertEquals(EcoGuardDestination.Recruitment, state.currentBackStack.last())
+    }
+
+    @Test
+    fun missingNoticeReturnRemovesDetailAndPreservesPreviousRoute() {
+        val state = navigationState()
+        val navigator = EcoGuardMainNavigator(state)
+        val controller = DemoFlowController(DemoAppState(), navigator, {})
+        navigator.push(EcoGuardDestination.Notifications)
+        navigator.push(EcoGuardDestination.NoticeDetail(999))
+
+        controller.onNoticeEvent(NoticeScreenEvent.ReturnToListClick)
+
+        assertEquals(
+            listOf(
+                EcoGuardDestination.Home,
+                EcoGuardDestination.Notifications,
+                EcoGuardDestination.Notices,
+            ),
+            state.currentBackStack.toList(),
+        )
+        navigator.goBack()
+        assertEquals(EcoGuardDestination.Notifications, state.currentBackStack.last())
+    }
+
+    @Test
+    fun missingNoticeReturnReusesNoticeListAlreadyInStack() {
+        val state = navigationState()
+        val navigator = EcoGuardMainNavigator(state)
+        val controller = DemoFlowController(DemoAppState(), navigator, {})
+        navigator.push(EcoGuardDestination.Notices)
+        navigator.push(EcoGuardDestination.NoticeDetail(999))
+
+        controller.onNoticeEvent(NoticeScreenEvent.ReturnToListClick)
+
+        assertEquals(
+            listOf(EcoGuardDestination.Home, EcoGuardDestination.Notices),
+            state.currentBackStack.toList(),
+        )
+        navigator.goBack()
+        assertEquals(EcoGuardDestination.Home, state.currentBackStack.last())
     }
 
     @Test

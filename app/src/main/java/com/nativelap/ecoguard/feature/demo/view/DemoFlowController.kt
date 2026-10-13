@@ -359,10 +359,22 @@ class DemoFlowController(
 
     fun onNoticeEvent(event: NoticeScreenEvent) {
         when (event) {
-            NoticeScreenEvent.BackClick -> navigator.goBack()
-            NoticeScreenEvent.RetryClick -> Unit
-            NoticeScreenEvent.ReturnToListClick -> navigator.push(EcoGuardDestination.Notices)
-            is NoticeScreenEvent.NoticeClick -> navigator.push(EcoGuardDestination.NoticeDetail(event.noticeId))
+            NoticeScreenEvent.BackClick -> {
+                navigator.goBack()
+            }
+
+            NoticeScreenEvent.RetryClick -> {
+                Unit
+            }
+
+            NoticeScreenEvent.ReturnToListClick -> {
+                navigator.goBack()
+                navigator.push(EcoGuardDestination.Notices)
+            }
+
+            is NoticeScreenEvent.NoticeClick -> {
+                navigator.push(EcoGuardDestination.NoticeDetail(event.noticeId))
+            }
         }
     }
 
