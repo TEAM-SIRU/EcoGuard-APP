@@ -36,11 +36,31 @@ import java.io.File
 class NavigationInteractionTest {
     @get:Rule val composeRule = createAndroidComposeRule<ComponentActivity>()
 
-    private fun startApp(restoration: StateRestorationTester? = null) {
+    private fun startLoginScreen(restoration: StateRestorationTester? = null) {
         composeRule.activityRule.scenario.onActivity { it.enableEdgeToEdge() }
-        val content: @androidx.compose.runtime.Composable () -> Unit = { EcoGuardTheme { EcoGuardNavHost() } }
+        val content: @androidx.compose.runtime.Composable () -> Unit = {
+            EcoGuardTheme { EcoGuardNavHost() }
+        }
         if (restoration == null) composeRule.setContent(content) else restoration.setContent(content)
+    }
+
+    private fun startApp(restoration: StateRestorationTester? = null) {
+        startLoginScreen(restoration)
         composeRule.onNodeWithText("DataGSM으로 로그인").assertIsDisplayed().performClick()
+    }
+
+    @Test
+    fun teacherAccountGuideOpensAndReturnsToLogin() {
+        startLoginScreen()
+        capture("navigation-login-teacher-guide")
+        composeRule.onNodeWithText("선생님 계정 안내").assertIsDisplayed().performClick()
+        composeRule.onNodeWithText("선생님은 웹에서 이용해 주세요").assertIsDisplayed()
+        Espresso.pressBack()
+        composeRule.onNodeWithText("DataGSM으로 로그인").assertIsDisplayed()
+
+        composeRule.onNodeWithText("선생님 계정 안내").performClick()
+        composeRule.onNodeWithText("로그아웃").performClick()
+        composeRule.onNodeWithText("DataGSM으로 로그인").assertIsDisplayed()
     }
 
     @Test

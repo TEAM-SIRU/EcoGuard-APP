@@ -69,6 +69,9 @@ fun LoginScreen(
                             isLoggingIn = uiState.isLoggingIn,
                             hasLoginFailed = uiState.hasLoginFailed,
                             onLoginClick = { onEvent(LoginScreenEvent.LoginClick) },
+                            onTeacherAccountGuideClick = {
+                                onEvent(LoginScreenEvent.TeacherAccountGuideClick)
+                            },
                             modifier = Modifier.padding(top = AppSpacing.sm),
                         )
                     }

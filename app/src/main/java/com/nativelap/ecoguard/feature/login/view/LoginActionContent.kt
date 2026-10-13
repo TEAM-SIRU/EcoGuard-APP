@@ -1,10 +1,14 @@
 package com.nativelap.ecoguard.feature.login.view
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
+import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import com.nativelap.ecoguard.ui.theme.extraColors
 import com.nativelap.ecoguard.ui.theme.extraTypography
@@ -26,6 +31,7 @@ fun LoginActionContent(
     isLoggingIn: Boolean,
     hasLoginFailed: Boolean,
     onLoginClick: () -> Unit,
+    onTeacherAccountGuideClick: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val buttonTextRes =
@@ -38,7 +44,6 @@ fun LoginActionContent(
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(loginActionSpacing),
     ) {
         EcoPrimaryButton(
             text = stringResource(buttonTextRes),
@@ -48,10 +53,31 @@ fun LoginActionContent(
 
         Text(
             text = stringResource(R.string.login_school_account_only),
+            modifier = Modifier.padding(top = loginActionSpacing),
             style = MaterialTheme.extraTypography.captionRegular,
             color = MaterialTheme.extraColors.captionTextColor,
             textAlign = TextAlign.Center,
         )
+
+        TextButton(
+            onClick = onTeacherAccountGuideClick,
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp)
+                    .heightIn(min = AppComponentSize.minTouchTarget),
+            contentPadding = PaddingValues(0.dp),
+            colors =
+                ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                ),
+        ) {
+            Text(
+                text = stringResource(R.string.teacher_account_guide),
+                style = MaterialTheme.typography.labelLarge,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 }
 
@@ -63,6 +89,7 @@ private fun LoginActionContentPreview() {
             isLoggingIn = false,
             hasLoginFailed = false,
             onLoginClick = {},
+            onTeacherAccountGuideClick = {},
         )
     }
 }

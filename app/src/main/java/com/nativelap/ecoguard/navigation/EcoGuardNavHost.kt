@@ -41,9 +41,20 @@ private fun EcoGuardAuthNavDisplay(onDemoLogin: () -> Unit) {
         onBack = { if (backStack.size > 1) backStack.removeLastOrNull() },
         entryProvider =
             androidx.navigation3.runtime.entryProvider {
-                entry<EcoGuardDestination.Login> { LoginRoute(onLoginClick = onDemoLogin) }
+                entry<EcoGuardDestination.Login> {
+                    LoginRoute(
+                        onLoginClick = onDemoLogin,
+                        onTeacherAccountGuideClick = {
+                            backStack.add(EcoGuardDestination.TeacherAccountGuide)
+                        },
+                    )
+                }
                 entry<EcoGuardDestination.TeacherAccountGuide> {
-                    TeacherAccountGuideRoute(onLogoutClick = { backStack.removeLastOrNull() })
+                    TeacherAccountGuideRoute(
+                        onLogoutClick = {
+                            if (backStack.size > 1) backStack.removeLastOrNull()
+                        },
+                    )
                 }
             },
     )
