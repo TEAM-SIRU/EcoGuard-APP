@@ -54,7 +54,21 @@ fun EcoInfoBottomSheet(
     secondaryActionText: String? = null,
     onSecondaryActionClick: () -> Unit = {},
     iconSlotSize: Dp = 48.dp,
+    showSheet: Boolean = true,
 ) {
+    if (!showSheet) {
+        EcoInfoBottomSheetContent(
+            iconRes,
+            title,
+            description,
+            primaryActionText,
+            onPrimaryActionClick,
+            secondaryActionText,
+            onSecondaryActionClick,
+            iconSlotSize,
+        )
+        return
+    }
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         modifier = modifier,
@@ -79,65 +93,15 @@ fun EcoInfoBottomSheet(
             )
         },
     ) {
-        Column(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .verticalScroll(rememberScrollState())
-                    .padding(
-                        start = AppSpacing.screenHorizontal,
-                        end = AppSpacing.screenHorizontal,
-                        top = AppSpacing.xl,
-                        bottom = AppSpacing.md,
-                    ),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Box(
-                modifier = Modifier.size(iconSlotSize),
-                contentAlignment = Alignment.Center,
-            ) {
-                Icon(
-                    painter = painterResource(iconRes),
-                    contentDescription = null,
-                    modifier = Modifier.size(48.dp),
-                    tint = Color.Unspecified,
-                )
-            }
-
-            Spacer(modifier = Modifier.height(AppSpacing.md))
-
-            Text(
-                text = title,
-                modifier = Modifier.semantics { heading() },
-                style = MaterialTheme.typography.headlineSmall,
-                color = MaterialTheme.colorScheme.onSurface,
-                textAlign = TextAlign.Center,
-            )
-
-            Spacer(modifier = Modifier.height(AppSpacing.xs))
-
-            Text(
-                text = description,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                textAlign = TextAlign.Center,
-            )
-
-            Spacer(modifier = Modifier.height(AppSpacing.xl))
-
-            Column(verticalArrangement = Arrangement.spacedBy(AppSpacing.xs)) {
-                EcoPrimaryButton(
-                    text = primaryActionText,
-                    onClick = onPrimaryActionClick,
-                )
-
-                if (secondaryActionText != null) {
-                    EcoSecondaryButton(
-                        text = secondaryActionText,
-                        onClick = onSecondaryActionClick,
-                    )
-                }
-            }
-        }
+        EcoInfoBottomSheetContent(
+            iconRes,
+            title,
+            description,
+            primaryActionText,
+            onPrimaryActionClick,
+            secondaryActionText,
+            onSecondaryActionClick,
+            iconSlotSize,
+        )
     }
 }

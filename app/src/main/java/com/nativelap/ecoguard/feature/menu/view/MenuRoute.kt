@@ -20,6 +20,7 @@ fun MenuRoute(
     uiState: MenuUiState,
     onEvent: (MenuScreenEvent) -> Unit = {},
     initialDialogType: MenuDialogType? = null,
+    useNavigationOverlays: Boolean = false,
 ) {
     var visibleDialogType by rememberSaveable { mutableStateOf(initialDialogType) }
 
@@ -27,9 +28,27 @@ fun MenuRoute(
         uiState = uiState,
         onEvent = { screenEvent ->
             when (screenEvent) {
-                MenuScreenEvent.LogoutClick -> visibleDialogType = MenuDialogType.LOGOUT
-                MenuScreenEvent.WithdrawClick -> visibleDialogType = MenuDialogType.WITHDRAW
-                else -> onEvent(screenEvent)
+                MenuScreenEvent.LogoutClick -> {
+                    if (useNavigationOverlays) {
+                        onEvent(screenEvent)
+                    } else {
+                        visibleDialogType =
+                            MenuDialogType.LOGOUT
+                    }
+                }
+
+                MenuScreenEvent.WithdrawClick -> {
+                    if (useNavigationOverlays) {
+                        onEvent(screenEvent)
+                    } else {
+                        visibleDialogType =
+                            MenuDialogType.WITHDRAW
+                    }
+                }
+
+                else -> {
+                    onEvent(screenEvent)
+                }
             }
         },
     )

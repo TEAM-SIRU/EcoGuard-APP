@@ -20,8 +20,9 @@ fun EcoConfirmDialog(
     onDismissRequest: () -> Unit,
     onConfirmClick: () -> Unit,
     isDestructive: Boolean = false,
+    showDialog: Boolean = true,
 ) {
-    EcoDialogSurface(onDismissRequest = onDismissRequest) {
+    EcoDialogSurface(onDismissRequest = onDismissRequest, showDialog = showDialog) {
         Column(verticalArrangement = Arrangement.spacedBy(AppSpacing.xs)) {
             Text(
                 text = title,

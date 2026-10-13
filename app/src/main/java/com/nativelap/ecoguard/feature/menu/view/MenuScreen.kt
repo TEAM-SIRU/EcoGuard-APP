@@ -163,6 +163,8 @@ fun MenuScreen(
 
                     MenuRow(
                         title = stringResource(R.string.action_help),
+                        valueText = stringResource(R.string.help_later),
+                        enabled = false,
                         onClick = { onEvent(MenuScreenEvent.HelpClick) },
                     )
                 }
