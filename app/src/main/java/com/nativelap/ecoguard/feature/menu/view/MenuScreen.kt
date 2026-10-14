@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.menu.viewmodel.MenuScreenEvent
 import com.nativelap.ecoguard.feature.menu.viewmodel.MenuUiState
+import com.nativelap.ecoguard.ui.component.EcoAdaptiveNavigationLayout
 import com.nativelap.ecoguard.ui.component.EcoBottomTab
 import com.nativelap.ecoguard.ui.component.EcoBottomTabBar
 import com.nativelap.ecoguard.ui.component.EcoCard
@@ -43,148 +44,159 @@ fun MenuScreen(
     onEvent: (MenuScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background,
-        bottomBar = {
-            EcoBottomTabBar(
-                selectedTab = EcoBottomTab.MY_PAGE,
-                onTabSelected = { selectedTab -> onEvent(MenuScreenEvent.TabSelect(selectedTab)) },
-                onCameraClick = { onEvent(MenuScreenEvent.CameraClick) },
-            )
-        },
-    ) { innerPadding ->
-        Box(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .consumeWindowInsets(innerPadding),
-            contentAlignment = Alignment.TopCenter,
-        ) {
-            Column(
+    EcoAdaptiveNavigationLayout(
+        selectedTab = EcoBottomTab.MY_PAGE,
+        onTabSelected = { selectedTab -> onEvent(MenuScreenEvent.TabSelect(selectedTab)) },
+        onCameraClick = { onEvent(MenuScreenEvent.CameraClick) },
+        modifier = modifier,
+    ) { usesNavigationRail ->
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            containerColor = MaterialTheme.colorScheme.background,
+            bottomBar = {
+                if (!usesNavigationRail) {
+                    EcoBottomTabBar(
+                        selectedTab = EcoBottomTab.MY_PAGE,
+                        onTabSelected = { selectedTab -> onEvent(MenuScreenEvent.TabSelect(selectedTab)) },
+                        onCameraClick = { onEvent(MenuScreenEvent.CameraClick) },
+                    )
+                }
+            },
+        ) { innerPadding ->
+            Box(
                 modifier =
                     Modifier
-                        .widthIn(max = AppComponentSize.contentMaxWidth)
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
-                        .padding(bottom = AppComponentSize.cameraFabScrollClearance),
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .consumeWindowInsets(innerPadding),
+                contentAlignment = Alignment.TopCenter,
             ) {
-                MenuProfileHeader(
-                    menuState = uiState,
+                Column(
                     modifier =
-                        Modifier.padding(
-                            start = AppSpacing.screenHorizontal,
-                            end = AppSpacing.screenHorizontal,
-                            top = AppSpacing.md,
-                            bottom = AppSpacing.lg,
-                        ),
-                )
-
-                StatSummaryRow(
-                    statItems =
-                        listOf(
-                            StatSummaryItem(
-                                label = stringResource(R.string.profile_monthly_approvals),
-                                value = stringResource(R.string.format_times, uiState.monthlyApprovalCount),
-                            ),
-                            StatSummaryItem(
-                                label = stringResource(R.string.profile_activity_time),
-                                value = stringResource(R.string.format_minutes, uiState.monthlyMinutes),
-                            ),
-                        ),
-                    modifier =
-                        Modifier.padding(
-                            start = AppSpacing.screenHorizontal,
-                            end = AppSpacing.screenHorizontal,
-                            bottom = AppSpacing.lg,
-                        ),
-                )
-
-                SectionDivider()
-
-                EcoCard(
-                    modifier = Modifier.padding(horizontal = AppSpacing.md),
-                    cornerRadius = AppRadius.listCard,
-                    contentPadding = PaddingValues(vertical = AppSpacing.xxs),
+                        Modifier
+                            .widthIn(max = AppComponentSize.contentMaxWidth)
+                            .fillMaxWidth()
+                            .verticalScroll(rememberScrollState())
+                            .padding(bottom = AppComponentSize.cameraFabScrollClearance),
                 ) {
-                    MenuRow(
-                        title = stringResource(R.string.common_my_cleaning_area),
-                        valueText = uiState.assignedAreaName,
-                        onClick = { onEvent(MenuScreenEvent.AreaClick) },
+                    MenuProfileHeader(
+                        menuState = uiState,
+                        modifier =
+                            Modifier.padding(
+                                start = AppSpacing.screenHorizontal,
+                                end = AppSpacing.screenHorizontal,
+                                top = AppSpacing.md,
+                                bottom = AppSpacing.lg,
+                            ),
                     )
 
-                    MenuRow(
-                        title = stringResource(R.string.profile_application_result),
-                        valueText =
-                            if (uiState.isApplicationCompleted) {
-                                stringResource(R.string.home_application_completed)
-                            } else {
-                                null
-                            },
-                        onClick = { onEvent(MenuScreenEvent.ApplicationResultClick) },
-                    )
-
-                    MenuRow(
-                        title = stringResource(R.string.profile_cleaning_notification),
-                        onClick = {
-                            onEvent(MenuScreenEvent.CleaningNotificationToggle(!uiState.isCleaningNotificationEnabled))
-                        },
-                    ) {
-                        Switch(
-                            checked = uiState.isCleaningNotificationEnabled,
-                            onCheckedChange = null,
-                            colors =
-                                SwitchDefaults.colors(
-                                    checkedTrackColor = MaterialTheme.colorScheme.secondary,
-                                    checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
-                                    checkedBorderColor = MaterialTheme.colorScheme.secondary,
+                    StatSummaryRow(
+                        statItems =
+                            listOf(
+                                StatSummaryItem(
+                                    label = stringResource(R.string.profile_monthly_approvals),
+                                    value = stringResource(R.string.format_times, uiState.monthlyApprovalCount),
                                 ),
+                                StatSummaryItem(
+                                    label = stringResource(R.string.profile_activity_time),
+                                    value = stringResource(R.string.format_minutes, uiState.monthlyMinutes),
+                                ),
+                            ),
+                        modifier =
+                            Modifier.padding(
+                                start = AppSpacing.screenHorizontal,
+                                end = AppSpacing.screenHorizontal,
+                                bottom = AppSpacing.lg,
+                            ),
+                    )
+
+                    SectionDivider()
+
+                    EcoCard(
+                        modifier = Modifier.padding(horizontal = AppSpacing.md),
+                        cornerRadius = AppRadius.listCard,
+                        contentPadding = PaddingValues(vertical = AppSpacing.xxs),
+                    ) {
+                        MenuRow(
+                            title = stringResource(R.string.common_my_cleaning_area),
+                            valueText = uiState.assignedAreaName,
+                            onClick = { onEvent(MenuScreenEvent.AreaClick) },
+                        )
+
+                        MenuRow(
+                            title = stringResource(R.string.profile_application_result),
+                            valueText =
+                                if (uiState.isApplicationCompleted) {
+                                    stringResource(R.string.home_application_completed)
+                                } else {
+                                    null
+                                },
+                            onClick = { onEvent(MenuScreenEvent.ApplicationResultClick) },
+                        )
+
+                        MenuRow(
+                            title = stringResource(R.string.profile_cleaning_notification),
+                            onClick = {
+                                onEvent(
+                                    MenuScreenEvent.CleaningNotificationToggle(!uiState.isCleaningNotificationEnabled),
+                                )
+                            },
+                        ) {
+                            Switch(
+                                checked = uiState.isCleaningNotificationEnabled,
+                                onCheckedChange = null,
+                                colors =
+                                    SwitchDefaults.colors(
+                                        checkedTrackColor = MaterialTheme.colorScheme.secondary,
+                                        checkedThumbColor = MaterialTheme.colorScheme.onPrimary,
+                                        checkedBorderColor = MaterialTheme.colorScheme.secondary,
+                                    ),
+                            )
+                        }
+
+                        MenuRow(
+                            title = stringResource(R.string.profile_appeal_history),
+                            onClick = { onEvent(MenuScreenEvent.AppealHistoryClick) },
                         )
                     }
 
-                    MenuRow(
-                        title = stringResource(R.string.profile_appeal_history),
-                        onClick = { onEvent(MenuScreenEvent.AppealHistoryClick) },
-                    )
-                }
+                    SectionDivider()
 
-                SectionDivider()
+                    EcoCard(
+                        modifier = Modifier.padding(horizontal = AppSpacing.md),
+                        cornerRadius = AppRadius.listCard,
+                        contentPadding = PaddingValues(vertical = AppSpacing.xxs),
+                    ) {
+                        MenuRow(
+                            title = stringResource(R.string.action_notice),
+                            onClick = { onEvent(MenuScreenEvent.NoticeClick) },
+                        )
 
-                EcoCard(
-                    modifier = Modifier.padding(horizontal = AppSpacing.md),
-                    cornerRadius = AppRadius.listCard,
-                    contentPadding = PaddingValues(vertical = AppSpacing.xxs),
-                ) {
-                    MenuRow(
-                        title = stringResource(R.string.action_notice),
-                        onClick = { onEvent(MenuScreenEvent.NoticeClick) },
-                    )
+                        MenuRow(
+                            title = stringResource(R.string.action_help),
+                            valueText = stringResource(R.string.help_later),
+                            enabled = false,
+                            onClick = { onEvent(MenuScreenEvent.HelpClick) },
+                        )
+                    }
 
-                    MenuRow(
-                        title = stringResource(R.string.action_help),
-                        valueText = stringResource(R.string.help_later),
-                        enabled = false,
-                        onClick = { onEvent(MenuScreenEvent.HelpClick) },
-                    )
-                }
+                    SectionDivider()
 
-                SectionDivider()
+                    Row(
+                        modifier = Modifier.padding(horizontal = AppSpacing.screenHorizontal),
+                        horizontalArrangement = Arrangement.spacedBy(AppSpacing.lg),
+                    ) {
+                        MenuTextAction(
+                            text = stringResource(R.string.action_logout),
+                            onClick = { onEvent(MenuScreenEvent.LogoutClick) },
+                        )
 
-                Row(
-                    modifier = Modifier.padding(horizontal = AppSpacing.screenHorizontal),
-                    horizontalArrangement = Arrangement.spacedBy(AppSpacing.lg),
-                ) {
-                    MenuTextAction(
-                        text = stringResource(R.string.action_logout),
-                        onClick = { onEvent(MenuScreenEvent.LogoutClick) },
-                    )
-
-                    MenuTextAction(
-                        text = stringResource(R.string.action_withdraw),
-                        isDestructive = true,
-                        onClick = { onEvent(MenuScreenEvent.WithdrawClick) },
-                    )
+                        MenuTextAction(
+                            text = stringResource(R.string.action_withdraw),
+                            isDestructive = true,
+                            onClick = { onEvent(MenuScreenEvent.WithdrawClick) },
+                        )
+                    }
                 }
             }
         }

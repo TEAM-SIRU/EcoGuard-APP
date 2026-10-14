@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.area.viewmodel.AreaScreenEvent
 import com.nativelap.ecoguard.feature.area.viewmodel.AreaUiState
+import com.nativelap.ecoguard.ui.component.EcoAdaptiveNavigationLayout
 import com.nativelap.ecoguard.ui.component.EcoBottomTab
 import com.nativelap.ecoguard.ui.component.EcoBottomTabBar
 import com.nativelap.ecoguard.ui.component.EcoSegmentedControl
@@ -48,78 +49,93 @@ fun AreaScreen(
     onEvent: (AreaScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background,
-        bottomBar = {
-            EcoBottomTabBar(
-                selectedTab = EcoBottomTab.AREA,
-                selectedIconResOverride =
-                    if (uiState is AreaUiState.Content) {
-                        null
-                    } else {
-                        R.drawable.ic_map_active_alt
-                    },
-                onTabSelected = { selectedTab -> onEvent(AreaScreenEvent.TabSelect(selectedTab)) },
-                onCameraClick = { onEvent(AreaScreenEvent.CameraClick) },
-            )
+    val selectedIconResOverride =
+        if (uiState is AreaUiState.Content) {
+            null
+        } else {
+            R.drawable.ic_map_active_alt
+        }
+    EcoAdaptiveNavigationLayout(
+        selectedTab = EcoBottomTab.AREA,
+        onTabSelected = { selectedTab ->
+            onEvent(AreaScreenEvent.TabSelect(selectedTab))
         },
-    ) { innerPadding ->
-        Box(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .consumeWindowInsets(innerPadding),
-            contentAlignment = Alignment.TopCenter,
-        ) {
-            when (uiState) {
-                is AreaUiState.Content -> {
-                    Column(
-                        modifier =
-                            Modifier
-                                .widthIn(max = twoPaneContentMaxWidth())
-                                .fillMaxWidth()
-                                .verticalScroll(rememberScrollState())
-                                .padding(bottom = AppComponentSize.cameraFabScrollClearance),
-                    ) {
-                        PageTitle(
-                            title = stringResource(R.string.common_my_cleaning_area),
-                            subtitle = stringResource(R.string.area_floor_plan_description),
-                            modifier = Modifier.padding(areaTitlePadding),
-                        )
-
-                        AreaDetailContent(
-                            areaContent = uiState,
-                            onFloorSelect = { selectedFloor -> onEvent(AreaScreenEvent.FloorSelect(selectedFloor)) },
-                        )
-                    }
+        onCameraClick = { onEvent(AreaScreenEvent.CameraClick) },
+        selectedIconResOverride = selectedIconResOverride,
+        modifier = modifier,
+    ) { usesNavigationRail ->
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            containerColor = MaterialTheme.colorScheme.background,
+            bottomBar = {
+                if (!usesNavigationRail) {
+                    EcoBottomTabBar(
+                        selectedTab = EcoBottomTab.AREA,
+                        selectedIconResOverride = selectedIconResOverride,
+                        onTabSelected = { selectedTab -> onEvent(AreaScreenEvent.TabSelect(selectedTab)) },
+                        onCameraClick = { onEvent(AreaScreenEvent.CameraClick) },
+                    )
                 }
+            },
+        ) { innerPadding ->
+            Box(
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .consumeWindowInsets(innerPadding),
+                contentAlignment = Alignment.TopCenter,
+            ) {
+                when (uiState) {
+                    is AreaUiState.Content -> {
+                        Column(
+                            modifier =
+                                Modifier
+                                    .widthIn(max = twoPaneContentMaxWidth())
+                                    .fillMaxWidth()
+                                    .verticalScroll(rememberScrollState())
+                                    .padding(bottom = AppComponentSize.cameraFabScrollClearance),
+                        ) {
+                            PageTitle(
+                                title = stringResource(R.string.common_my_cleaning_area),
+                                subtitle = stringResource(R.string.area_floor_plan_description),
+                                modifier = Modifier.padding(areaTitlePadding),
+                            )
 
-                AreaUiState.NotAssigned -> {
-                    AreaEmptyLayout {
-                        InlineEmptyState(
-                            iconRes = R.drawable.ic_map_30,
-                            title = stringResource(R.string.area_not_assigned_title),
-                            description = stringResource(R.string.area_not_assigned_description),
-                        )
+                            AreaDetailContent(
+                                areaContent = uiState,
+                                onFloorSelect = { selectedFloor ->
+                                    onEvent(AreaScreenEvent.FloorSelect(selectedFloor))
+                                },
+                            )
+                        }
                     }
-                }
 
-                AreaUiState.LoadFailed -> {
-                    AreaEmptyLayout {
-                        InlineEmptyState(
-                            iconRes = R.drawable.ic_map_30,
-                            title = stringResource(R.string.area_load_failed),
-                            description = stringResource(R.string.area_load_failed_description),
-                            actionText = stringResource(R.string.action_retry),
-                            onActionClick = { onEvent(AreaScreenEvent.RetryClick) },
-                        )
+                    AreaUiState.NotAssigned -> {
+                        AreaEmptyLayout {
+                            InlineEmptyState(
+                                iconRes = R.drawable.ic_map_30,
+                                title = stringResource(R.string.area_not_assigned_title),
+                                description = stringResource(R.string.area_not_assigned_description),
+                            )
+                        }
                     }
-                }
 
-                AreaUiState.Loading -> {
-                    Unit
+                    AreaUiState.LoadFailed -> {
+                        AreaEmptyLayout {
+                            InlineEmptyState(
+                                iconRes = R.drawable.ic_map_30,
+                                title = stringResource(R.string.area_load_failed),
+                                description = stringResource(R.string.area_load_failed_description),
+                                actionText = stringResource(R.string.action_retry),
+                                onActionClick = { onEvent(AreaScreenEvent.RetryClick) },
+                            )
+                        }
+                    }
+
+                    AreaUiState.Loading -> {
+                        Unit
+                    }
                 }
             }
         }
@@ -149,7 +165,7 @@ private fun AreaEmptyLayout(emptyContent: @Composable () -> Unit) {
                         start = AppSpacing.screenHorizontal,
                         end = AppSpacing.screenHorizontal,
                         top = AppSpacing.xl,
-                        // 빈 상태 버튼이 탭 바 위로 튀어나온 카메라 버튼에 가리지 않게 한다.
+                        // 빈 상태 버튼이 탭 바의 카메라 버튼에 가리지 않게 한다.
                         bottom = AppComponentSize.emptyStateBottomClearance,
                     ),
             contentAlignment = Alignment.Center,
@@ -195,7 +211,11 @@ private fun AreaDetailContent(
                 modifier = Modifier.padding(horizontal = AppSpacing.screenHorizontal),
             ) {
                 AreaFloorPlan(modifier = Modifier.weight(1f))
-                AreaAssignmentCard(areaContent = areaContent, memberNames = memberNames, modifier = Modifier.weight(1f))
+                AreaAssignmentCard(
+                    areaContent = areaContent,
+                    memberNames = memberNames,
+                    modifier = Modifier.weight(1f),
+                )
             }
         } else {
             AreaFloorPlan(

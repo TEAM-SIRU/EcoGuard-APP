@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.notification.viewmodel.NotificationScreenEvent
 import com.nativelap.ecoguard.feature.notification.viewmodel.NotificationUiState
+import com.nativelap.ecoguard.ui.component.EcoAdaptiveNavigationLayout
 import com.nativelap.ecoguard.ui.component.EcoBackTopBar
 import com.nativelap.ecoguard.ui.component.EcoBottomTab
 import com.nativelap.ecoguard.ui.component.EcoBottomTabBar
@@ -41,79 +42,92 @@ fun NotificationScreen(
     onEvent: (NotificationScreenEvent) -> Unit,
     snackbarHost: @Composable () -> Unit = {},
 ) {
-    Scaffold(
-        containerColor = MaterialTheme.colorScheme.background,
-        snackbarHost = snackbarHost,
-        topBar = { EcoBackTopBar(onBackClick = { onEvent(NotificationScreenEvent.BackClick) }) },
-        bottomBar = {
-            EcoBottomTabBar(
-                selectedTab,
-                { onEvent(NotificationScreenEvent.TabSelect(it)) },
-                { onEvent(NotificationScreenEvent.CameraClick) },
-            )
-        },
-    ) { innerPadding ->
-        Box(
-            Modifier.fillMaxSize().padding(innerPadding).consumeWindowInsets(innerPadding),
-            contentAlignment = Alignment.TopCenter,
-        ) {
-            Column(Modifier.widthIn(max = AppComponentSize.contentMaxWidth).fillMaxSize()) {
-                PageTitle(
-                    stringResource(R.string.notification_title),
-                    Modifier.padding(
-                        start = AppSpacing.xl,
-                        end = AppSpacing.xl,
-                        top = AppSpacing.xs,
-                        bottom = AppSpacing.lg,
-                    ),
-                )
-                LazyColumn(
-                    Modifier.fillMaxWidth().weight(1f),
-                    contentPadding =
-                        PaddingValues(
-                            start = AppSpacing.md,
-                            end = AppSpacing.md,
-                            top = AppSpacing.md,
-                            bottom = AppComponentSize.cameraFabScrollClearance,
+    EcoAdaptiveNavigationLayout(
+        selectedTab = selectedTab,
+        onTabSelected = { onEvent(NotificationScreenEvent.TabSelect(it)) },
+        onCameraClick = { onEvent(NotificationScreenEvent.CameraClick) },
+    ) { usesNavigationRail ->
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            containerColor = MaterialTheme.colorScheme.background,
+            snackbarHost = snackbarHost,
+            topBar = { EcoBackTopBar(onBackClick = { onEvent(NotificationScreenEvent.BackClick) }) },
+            bottomBar = {
+                if (!usesNavigationRail) {
+                    EcoBottomTabBar(
+                        selectedTab,
+                        { onEvent(NotificationScreenEvent.TabSelect(it)) },
+                        { onEvent(NotificationScreenEvent.CameraClick) },
+                    )
+                }
+            },
+        ) { innerPadding ->
+            Box(
+                Modifier.fillMaxSize().padding(innerPadding).consumeWindowInsets(innerPadding),
+                contentAlignment = Alignment.TopCenter,
+            ) {
+                Column(Modifier.widthIn(max = AppComponentSize.contentMaxWidth).fillMaxSize()) {
+                    PageTitle(
+                        stringResource(R.string.notification_title),
+                        Modifier.padding(
+                            start = AppSpacing.xl,
+                            end = AppSpacing.xl,
+                            top = AppSpacing.xs,
+                            bottom = AppSpacing.lg,
                         ),
-                    verticalArrangement = Arrangement.spacedBy(AppSpacing.xs),
-                ) {
-                    when (uiState) {
-                        is NotificationUiState.Content -> {
-                            item { NotificationCount(uiState.notifications.size) }
-                            items(uiState.notifications, key = { it.notificationId }) { notification ->
-                                NotificationCard(
-                                    notification,
-                                    { onEvent(NotificationScreenEvent.NotificationClick(notification.notificationId)) },
-                                )
+                    )
+                    LazyColumn(
+                        Modifier.fillMaxWidth().weight(1f),
+                        contentPadding =
+                            PaddingValues(
+                                start = AppSpacing.md,
+                                end = AppSpacing.md,
+                                top = AppSpacing.md,
+                                bottom = AppComponentSize.cameraFabScrollClearance,
+                            ),
+                        verticalArrangement = Arrangement.spacedBy(AppSpacing.xs),
+                    ) {
+                        when (uiState) {
+                            is NotificationUiState.Content -> {
+                                item { NotificationCount(uiState.notifications.size) }
+                                items(uiState.notifications, key = { it.notificationId }) { notification ->
+                                    NotificationCard(
+                                        notification,
+                                        {
+                                            onEvent(
+                                                NotificationScreenEvent.NotificationClick(notification.notificationId),
+                                            )
+                                        },
+                                    )
+                                }
                             }
-                        }
 
-                        NotificationUiState.Loading -> {
-                            items(3) { SkeletonPlaceholder(Modifier.fillMaxWidth().height(AppComponentSize.logo)) }
-                        }
-
-                        NotificationUiState.Empty -> {
-                            item { NotificationCount(0) }
-                            item {
-                                InlineEmptyState(
-                                    R.drawable.ic_map_30,
-                                    stringResource(R.string.notification_empty),
-                                    stringResource(R.string.notification_empty_description),
-                                    Modifier.padding(vertical = AppSpacing.xl),
-                                )
+                            NotificationUiState.Loading -> {
+                                items(3) { SkeletonPlaceholder(Modifier.fillMaxWidth().height(AppComponentSize.logo)) }
                             }
-                        }
 
-                        NotificationUiState.Failed -> {
-                            item {
-                                InlineEmptyState(
-                                    R.drawable.ic_map_30,
-                                    stringResource(R.string.notification_failed),
-                                    stringResource(R.string.common_try_again_later),
-                                    actionText = stringResource(R.string.action_retry),
-                                    onActionClick = { onEvent(NotificationScreenEvent.RetryClick) },
-                                )
+                            NotificationUiState.Empty -> {
+                                item { NotificationCount(0) }
+                                item {
+                                    InlineEmptyState(
+                                        R.drawable.ic_map_30,
+                                        stringResource(R.string.notification_empty),
+                                        stringResource(R.string.notification_empty_description),
+                                        Modifier.padding(vertical = AppSpacing.xl),
+                                    )
+                                }
+                            }
+
+                            NotificationUiState.Failed -> {
+                                item {
+                                    InlineEmptyState(
+                                        R.drawable.ic_map_30,
+                                        stringResource(R.string.notification_failed),
+                                        stringResource(R.string.common_try_again_later),
+                                        actionText = stringResource(R.string.action_retry),
+                                        onActionClick = { onEvent(NotificationScreenEvent.RetryClick) },
+                                    )
+                                }
                             }
                         }
                     }
