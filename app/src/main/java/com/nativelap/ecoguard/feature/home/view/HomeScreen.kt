@@ -23,6 +23,7 @@ import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.home.viewmodel.HomeScreenEvent
 import com.nativelap.ecoguard.feature.home.viewmodel.HomeSectionUiModel
 import com.nativelap.ecoguard.feature.home.viewmodel.HomeUiState
+import com.nativelap.ecoguard.ui.component.EcoAdaptiveNavigationLayout
 import com.nativelap.ecoguard.ui.component.EcoBottomTab
 import com.nativelap.ecoguard.ui.component.EcoBottomTabBar
 import com.nativelap.ecoguard.ui.component.EcoTopBar
@@ -40,58 +41,68 @@ fun HomeScreen(
     onEvent: (HomeScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background,
-        topBar = {
-            EcoTopBar(
-                title = stringResource(R.string.brand_name),
-                onActionClick = { onEvent(HomeScreenEvent.NoticeIconClick) },
-            )
-        },
-        bottomBar = {
-            EcoBottomTabBar(
-                selectedTab = EcoBottomTab.HOME,
-                onTabSelected = { selectedTab -> onEvent(HomeScreenEvent.TabSelect(selectedTab)) },
-                onCameraClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
-                isCameraEnabled = uiState.isCameraVerificationAvailable,
-            )
-        },
-    ) { innerPadding ->
-        Box(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .consumeWindowInsets(innerPadding),
-            contentAlignment = Alignment.TopCenter,
-        ) {
-            Column(
-                modifier =
-                    Modifier
-                        .widthIn(max = twoPaneContentMaxWidth())
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState())
-                        .padding(
-                            start = AppSpacing.screenHorizontal,
-                            end = AppSpacing.screenHorizontal,
-                            top = AppSpacing.xs,
-                            bottom = homeContentBottomPadding,
-                        ),
-                verticalArrangement = Arrangement.spacedBy(AppSpacing.sm),
-            ) {
-                if (uiState.notice != null) {
-                    HomeNoticeCard(
-                        notice = uiState.notice,
-                        onCloseClick = { onEvent(HomeScreenEvent.NoticeCloseClick) },
-                        onDetailClick = { onEvent(HomeScreenEvent.NoticeDetailClick) },
+    EcoAdaptiveNavigationLayout(
+        selectedTab = EcoBottomTab.HOME,
+        onTabSelected = { selectedTab -> onEvent(HomeScreenEvent.TabSelect(selectedTab)) },
+        onCameraClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
+        isCameraEnabled = uiState.isCameraVerificationAvailable,
+        modifier = modifier,
+    ) { usesNavigationRail ->
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            containerColor = MaterialTheme.colorScheme.background,
+            topBar = {
+                EcoTopBar(
+                    title = stringResource(R.string.brand_name),
+                    onActionClick = { onEvent(HomeScreenEvent.NoticeIconClick) },
+                )
+            },
+            bottomBar = {
+                if (!usesNavigationRail) {
+                    EcoBottomTabBar(
+                        selectedTab = EcoBottomTab.HOME,
+                        onTabSelected = { selectedTab -> onEvent(HomeScreenEvent.TabSelect(selectedTab)) },
+                        onCameraClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
+                        isCameraEnabled = uiState.isCameraVerificationAvailable,
                     )
                 }
+            },
+        ) { innerPadding ->
+            Box(
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .consumeWindowInsets(innerPadding),
+                contentAlignment = Alignment.TopCenter,
+            ) {
+                Column(
+                    modifier =
+                        Modifier
+                            .widthIn(max = twoPaneContentMaxWidth())
+                            .fillMaxWidth()
+                            .verticalScroll(rememberScrollState())
+                            .padding(
+                                start = AppSpacing.screenHorizontal,
+                                end = AppSpacing.screenHorizontal,
+                                top = AppSpacing.xs,
+                                bottom = homeContentBottomPadding,
+                            ),
+                    verticalArrangement = Arrangement.spacedBy(AppSpacing.sm),
+                ) {
+                    if (uiState.notice != null) {
+                        HomeNoticeCard(
+                            notice = uiState.notice,
+                            onCloseClick = { onEvent(HomeScreenEvent.NoticeCloseClick) },
+                            onDetailClick = { onEvent(HomeScreenEvent.NoticeDetailClick) },
+                        )
+                    }
 
-                HomeSection(
-                    section = uiState.section,
-                    onEvent = onEvent,
-                )
+                    HomeSection(
+                        section = uiState.section,
+                        onEvent = onEvent,
+                    )
+                }
             }
         }
     }

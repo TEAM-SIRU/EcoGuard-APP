@@ -19,6 +19,7 @@ fun VerificationBlockedSheet(
     onPrimaryActionClick: () -> Unit,
     onSecondaryActionClick: () -> Unit,
     onDismissRequest: () -> Unit,
+    showSheet: Boolean = true,
 ) {
     when (blockReason) {
         is VerificationBlockReason.OutsideVerificationTime -> {
@@ -34,6 +35,7 @@ fun VerificationBlockedSheet(
                 primaryActionText = stringResource(R.string.action_confirm),
                 onPrimaryActionClick = onPrimaryActionClick,
                 onDismissRequest = onDismissRequest,
+                showSheet = showSheet,
             )
         }
 
@@ -52,6 +54,7 @@ fun VerificationBlockedSheet(
                 secondaryActionText = stringResource(R.string.action_close),
                 onSecondaryActionClick = onSecondaryActionClick,
                 onDismissRequest = onDismissRequest,
+                showSheet = showSheet,
             )
         }
 
@@ -65,6 +68,7 @@ fun VerificationBlockedSheet(
                 secondaryActionText = stringResource(R.string.camera_later),
                 onSecondaryActionClick = onSecondaryActionClick,
                 onDismissRequest = onDismissRequest,
+                showSheet = showSheet,
             )
         }
     }

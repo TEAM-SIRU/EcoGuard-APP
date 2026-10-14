@@ -34,6 +34,7 @@ import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.activity.viewmodel.ActivityScreenEvent
 import com.nativelap.ecoguard.feature.activity.viewmodel.ActivityUiState
 import com.nativelap.ecoguard.feature.activity.viewmodel.ActivityWeekGroupUiModel
+import com.nativelap.ecoguard.ui.component.EcoAdaptiveNavigationLayout
 import com.nativelap.ecoguard.ui.component.EcoBottomTab
 import com.nativelap.ecoguard.ui.component.EcoBottomTabBar
 import com.nativelap.ecoguard.ui.component.EcoCard
@@ -62,72 +63,81 @@ fun ActivityScreen(
     onEvent: (ActivityScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background,
-        bottomBar = {
-            EcoBottomTabBar(
-                selectedTab = EcoBottomTab.ACTIVITY,
-                onTabSelected = { selectedTab -> onEvent(ActivityScreenEvent.TabSelect(selectedTab)) },
-                onCameraClick = { onEvent(ActivityScreenEvent.CameraClick) },
-            )
-        },
-    ) { innerPadding ->
-        Box(
-            modifier =
-                Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .consumeWindowInsets(innerPadding),
-            contentAlignment = Alignment.TopCenter,
-        ) {
-            when (uiState) {
-                is ActivityUiState.Content -> {
-                    if (uiState.weekGroups.isEmpty()) {
+    EcoAdaptiveNavigationLayout(
+        selectedTab = EcoBottomTab.ACTIVITY,
+        onTabSelected = { selectedTab -> onEvent(ActivityScreenEvent.TabSelect(selectedTab)) },
+        onCameraClick = { onEvent(ActivityScreenEvent.CameraClick) },
+        modifier = modifier,
+    ) { usesNavigationRail ->
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            containerColor = MaterialTheme.colorScheme.background,
+            bottomBar = {
+                if (!usesNavigationRail) {
+                    EcoBottomTabBar(
+                        selectedTab = EcoBottomTab.ACTIVITY,
+                        onTabSelected = { selectedTab -> onEvent(ActivityScreenEvent.TabSelect(selectedTab)) },
+                        onCameraClick = { onEvent(ActivityScreenEvent.CameraClick) },
+                    )
+                }
+            },
+        ) { innerPadding ->
+            Box(
+                modifier =
+                    Modifier
+                        .fillMaxSize()
+                        .padding(innerPadding)
+                        .consumeWindowInsets(innerPadding),
+                contentAlignment = Alignment.TopCenter,
+            ) {
+                when (uiState) {
+                    is ActivityUiState.Content -> {
+                        if (uiState.weekGroups.isEmpty()) {
+                            ActivityEmptyLayout(
+                                headerContent = {
+                                    ActivitySummaryContent(
+                                        activityContent = uiState,
+                                        onMonthSelectorClick = { onEvent(ActivityScreenEvent.MonthSelectorClick) },
+                                    )
+
+                                    SectionDivider()
+                                },
+                                emptyContent = {
+                                    InlineEmptyState(
+                                        iconRes = R.drawable.ic_list_30,
+                                        title = stringResource(R.string.activity_empty_title),
+                                        description = stringResource(R.string.activity_empty_description),
+                                        actionText = stringResource(R.string.activity_start_verification),
+                                        actionMinWidth = 200.dp,
+                                        onActionClick = { onEvent(ActivityScreenEvent.StartVerificationClick) },
+                                    )
+                                },
+                            )
+                        } else {
+                            ActivityRecordList(
+                                activityContent = uiState,
+                                onEvent = onEvent,
+                            )
+                        }
+                    }
+
+                    ActivityUiState.LoadFailed -> {
                         ActivityEmptyLayout(
-                            headerContent = {
-                                ActivitySummaryContent(
-                                    activityContent = uiState,
-                                    onMonthSelectorClick = { onEvent(ActivityScreenEvent.MonthSelectorClick) },
-                                )
-
-                                SectionDivider()
-                            },
-                            emptyContent = {
-                                InlineEmptyState(
-                                    iconRes = R.drawable.ic_list_30,
-                                    title = stringResource(R.string.activity_empty_title),
-                                    description = stringResource(R.string.activity_empty_description),
-                                    actionText = stringResource(R.string.activity_start_verification),
-                                    actionMinWidth = 200.dp,
-                                    onActionClick = { onEvent(ActivityScreenEvent.StartVerificationClick) },
-                                )
-                            },
-                        )
-                    } else {
-                        ActivityRecordList(
-                            activityContent = uiState,
-                            onEvent = onEvent,
-                        )
+                            headerContent = {},
+                        ) {
+                            InlineEmptyState(
+                                iconRes = R.drawable.ic_map_30,
+                                title = stringResource(R.string.activity_load_failed),
+                                description = stringResource(R.string.common_try_again_later),
+                                actionText = stringResource(R.string.action_retry),
+                                onActionClick = { onEvent(ActivityScreenEvent.RetryClick) },
+                            )
+                        }
                     }
-                }
 
-                ActivityUiState.LoadFailed -> {
-                    ActivityEmptyLayout(
-                        headerContent = {},
-                    ) {
-                        InlineEmptyState(
-                            iconRes = R.drawable.ic_map_30,
-                            title = stringResource(R.string.activity_load_failed),
-                            description = stringResource(R.string.common_try_again_later),
-                            actionText = stringResource(R.string.action_retry),
-                            onActionClick = { onEvent(ActivityScreenEvent.RetryClick) },
-                        )
+                    ActivityUiState.Loading -> {
+                        Unit
                     }
-                }
-
-                ActivityUiState.Loading -> {
-                    Unit
                 }
             }
         }

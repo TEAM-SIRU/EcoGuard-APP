@@ -39,63 +39,17 @@ private val dialogMaxWidth = 400.dp
 fun EcoDialogSurface(
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
+    showDialog: Boolean = true,
     content: @Composable ColumnScope.() -> Unit,
 ) {
+    if (!showDialog) {
+        EcoDialogContent(onDismissRequest, modifier, content)
+        return
+    }
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(usePlatformDefaultWidth = false, decorFitsSystemWindows = false),
     ) {
-        val dialogWindow = (LocalView.current.parent as? DialogWindowProvider)?.window
-        DisposableEffect(dialogWindow) {
-            val previousDimAmount = dialogWindow?.attributes?.dimAmount
-            val insetsController = dialogWindow?.let { WindowCompat.getInsetsController(it, it.decorView) }
-            val previousStatusIcons = insetsController?.isAppearanceLightStatusBars
-            val previousNavigationIcons = insetsController?.isAppearanceLightNavigationBars
-            dialogWindow?.setDimAmount(0f)
-            insetsController?.isAppearanceLightStatusBars = true
-            insetsController?.isAppearanceLightNavigationBars = true
-            onDispose {
-                if (previousDimAmount != null) dialogWindow.setDimAmount(previousDimAmount)
-                if (previousStatusIcons != null) insetsController.isAppearanceLightStatusBars = previousStatusIcons
-                if (previousNavigationIcons !=
-                    null
-                ) {
-                    insetsController.isAppearanceLightNavigationBars = previousNavigationIcons
-                }
-            }
-        }
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f))
-                        .pointerInput(onDismissRequest) { detectTapGestures { onDismissRequest() } },
-            )
-            Box(
-                modifier = Modifier.fillMaxSize().windowInsetsPadding(WindowInsets.safeDrawing),
-                contentAlignment = Alignment.Center,
-            ) {
-                Surface(
-                    modifier =
-                        modifier
-                            .padding(horizontal = AppSpacing.screenHorizontal)
-                            .widthIn(max = dialogMaxWidth)
-                            .fillMaxWidth()
-                            .pointerInput(Unit) { detectTapGestures { } },
-                    shape = RoundedCornerShape(AppRadius.logo),
-                    color = MaterialTheme.colorScheme.surface,
-                ) {
-                    Column(
-                        modifier =
-                            Modifier
-                                .verticalScroll(rememberScrollState())
-                                .padding(AppSpacing.xl),
-                        verticalArrangement = Arrangement.spacedBy(AppSpacing.xl),
-                        content = content,
-                    )
-                }
-            }
-        }
+        EcoDialogContent(onDismissRequest, modifier, content)
     }
 }

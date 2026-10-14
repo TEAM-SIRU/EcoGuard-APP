@@ -44,9 +44,13 @@ fun Modifier.contentColumnWidth(maxWidth: Dp = AppComponentSize.contentMaxWidth)
 @Composable
 fun isExpandedLayout(): Boolean =
     with(LocalDensity.current) {
-        LocalWindowInfo.current.containerSize.width
-            .toDp() >= AppComponentSize.expandedLayoutMinWidth
+        isExpandedLayout(
+            LocalWindowInfo.current.containerSize.width
+                .toDp(),
+        )
     }
+
+fun isExpandedLayout(containerWidth: Dp): Boolean = containerWidth >= AppComponentSize.expandedLayoutMinWidth
 
 @Composable
 fun twoPaneContentMaxWidth(): Dp =
