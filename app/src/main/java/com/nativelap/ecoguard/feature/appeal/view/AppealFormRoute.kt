@@ -13,15 +13,22 @@ import com.nativelap.ecoguard.feature.appeal.viewmodel.AppealScreenEvent
 fun AppealFormRoute(
     initialUiState: AppealFormUiState,
     onEvent: (AppealScreenEvent) -> Unit = {},
+    useExternalInput: Boolean = false,
 ) {
     var appealContent by rememberSaveable { mutableStateOf(initialUiState.appealContent) }
 
     AppealFormScreen(
-        uiState = initialUiState.copy(appealContent = appealContent),
+        uiState = if (useExternalInput) initialUiState else initialUiState.copy(appealContent = appealContent),
         onEvent = { screenEvent ->
             when (screenEvent) {
-                is AppealScreenEvent.ContentChange -> appealContent = screenEvent.appealContent
-                else -> onEvent(screenEvent)
+                is AppealScreenEvent.ContentChange -> {
+                    appealContent = screenEvent.appealContent
+                    onEvent(screenEvent)
+                }
+
+                else -> {
+                    onEvent(screenEvent)
+                }
             }
         },
     )

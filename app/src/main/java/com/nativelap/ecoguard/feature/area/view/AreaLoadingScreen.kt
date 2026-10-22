@@ -9,6 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.area.viewmodel.AreaScreenEvent
+import com.nativelap.ecoguard.ui.component.EcoAdaptiveNavigationLayout
 import com.nativelap.ecoguard.ui.component.EcoBottomTab
 import com.nativelap.ecoguard.ui.component.EcoBottomTabBar
 import com.nativelap.ecoguard.ui.component.LoadingSkeletonScrollContent
@@ -20,24 +21,34 @@ fun AreaLoadingScreen(
     modifier: Modifier = Modifier,
     onEvent: (AreaScreenEvent) -> Unit = {},
 ) {
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background,
-        bottomBar = {
-            EcoBottomTabBar(
-                selectedTab = EcoBottomTab.AREA,
-                selectedIconResOverride = R.drawable.ic_map_active_alt,
-                onTabSelected = { selectedTab ->
-                    onEvent(AreaScreenEvent.TabSelect(selectedTab))
-                },
-                onCameraClick = { onEvent(AreaScreenEvent.CameraClick) },
+    EcoAdaptiveNavigationLayout(
+        selectedTab = EcoBottomTab.AREA,
+        onTabSelected = { selectedTab -> onEvent(AreaScreenEvent.TabSelect(selectedTab)) },
+        onCameraClick = { onEvent(AreaScreenEvent.CameraClick) },
+        selectedIconResOverride = R.drawable.ic_map_active_alt,
+        modifier = modifier,
+    ) { usesNavigationRail ->
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            containerColor = MaterialTheme.colorScheme.background,
+            bottomBar = {
+                if (!usesNavigationRail) {
+                    EcoBottomTabBar(
+                        selectedTab = EcoBottomTab.AREA,
+                        selectedIconResOverride = R.drawable.ic_map_active_alt,
+                        onTabSelected = { selectedTab ->
+                            onEvent(AreaScreenEvent.TabSelect(selectedTab))
+                        },
+                        onCameraClick = { onEvent(AreaScreenEvent.CameraClick) },
+                    )
+                }
+            },
+        ) { innerPadding ->
+            LoadingSkeletonScrollContent(
+                innerPadding = innerPadding,
+                title = stringResource(R.string.common_my_cleaning_area),
             )
-        },
-    ) { innerPadding ->
-        LoadingSkeletonScrollContent(
-            innerPadding = innerPadding,
-            title = stringResource(R.string.common_my_cleaning_area),
-        )
+        }
     }
 }
 

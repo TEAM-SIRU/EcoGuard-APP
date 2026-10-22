@@ -9,6 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.activity.viewmodel.ActivityScreenEvent
+import com.nativelap.ecoguard.ui.component.EcoAdaptiveNavigationLayout
 import com.nativelap.ecoguard.ui.component.EcoBottomTab
 import com.nativelap.ecoguard.ui.component.EcoBottomTabBar
 import com.nativelap.ecoguard.ui.component.LoadingSkeletonScrollContent
@@ -20,19 +21,30 @@ fun ActivityLoadingScreen(
     modifier: Modifier = Modifier,
     onEvent: (ActivityScreenEvent) -> Unit = {},
 ) {
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background,
-        bottomBar = {
-            EcoBottomTabBar(selectedTab = EcoBottomTab.ACTIVITY, onTabSelected = {
-                onEvent(ActivityScreenEvent.TabSelect(it))
-            }, onCameraClick = { onEvent(ActivityScreenEvent.CameraClick) })
-        },
-    ) { innerPadding ->
-        LoadingSkeletonScrollContent(
-            innerPadding = innerPadding,
-            title = stringResource(R.string.activity_title),
-        )
+    EcoAdaptiveNavigationLayout(
+        selectedTab = EcoBottomTab.ACTIVITY,
+        onTabSelected = { onEvent(ActivityScreenEvent.TabSelect(it)) },
+        onCameraClick = { onEvent(ActivityScreenEvent.CameraClick) },
+        modifier = modifier,
+    ) { usesNavigationRail ->
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            containerColor = MaterialTheme.colorScheme.background,
+            bottomBar = {
+                if (!usesNavigationRail) {
+                    EcoBottomTabBar(
+                        selectedTab = EcoBottomTab.ACTIVITY,
+                        onTabSelected = { onEvent(ActivityScreenEvent.TabSelect(it)) },
+                        onCameraClick = { onEvent(ActivityScreenEvent.CameraClick) },
+                    )
+                }
+            },
+        ) { innerPadding ->
+            LoadingSkeletonScrollContent(
+                innerPadding = innerPadding,
+                title = stringResource(R.string.activity_title),
+            )
+        }
     }
 }
 

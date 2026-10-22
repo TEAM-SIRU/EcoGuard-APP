@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.home.viewmodel.HomeScreenEvent
 import com.nativelap.ecoguard.ui.component.CenteredScrollContent
+import com.nativelap.ecoguard.ui.component.EcoAdaptiveNavigationLayout
 import com.nativelap.ecoguard.ui.component.EcoBottomTab
 import com.nativelap.ecoguard.ui.component.EcoBottomTabBar
 import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
@@ -29,22 +30,34 @@ fun HomeLoadFailedScreen(
     onEvent: (HomeScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background,
-        topBar = {
-            EcoTopBar(stringResource(R.string.brand_name), onActionClick = { onEvent(HomeScreenEvent.NoticeIconClick) })
-        },
-        bottomBar = {
-            EcoBottomTabBar(
-                selectedTab = EcoBottomTab.HOME,
-                onTabSelected = { onEvent(HomeScreenEvent.TabSelect(it)) },
-                onCameraClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
-            )
-        },
-    ) { innerPadding ->
-        CenteredScrollContent(innerPadding = innerPadding) {
-            HomeLoadFailedContent(onRetryClick = { onEvent(HomeScreenEvent.RetryClick) })
+    EcoAdaptiveNavigationLayout(
+        selectedTab = EcoBottomTab.HOME,
+        onTabSelected = { onEvent(HomeScreenEvent.TabSelect(it)) },
+        onCameraClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
+        modifier = modifier,
+    ) { usesNavigationRail ->
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            containerColor = MaterialTheme.colorScheme.background,
+            topBar = {
+                EcoTopBar(
+                    stringResource(R.string.brand_name),
+                    onActionClick = { onEvent(HomeScreenEvent.NoticeIconClick) },
+                )
+            },
+            bottomBar = {
+                if (!usesNavigationRail) {
+                    EcoBottomTabBar(
+                        selectedTab = EcoBottomTab.HOME,
+                        onTabSelected = { onEvent(HomeScreenEvent.TabSelect(it)) },
+                        onCameraClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
+                    )
+                }
+            },
+        ) { innerPadding ->
+            CenteredScrollContent(innerPadding = innerPadding) {
+                HomeLoadFailedContent(onRetryClick = { onEvent(HomeScreenEvent.RetryClick) })
+            }
         }
     }
 }

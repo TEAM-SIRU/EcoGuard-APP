@@ -39,6 +39,7 @@
     <string name="login_with_datagsm">DataGSM으로 로그인</string>
     <string name="login_in_progress">로그인하는 중이에요</string>
     <string name="login_failed">로그인하지 못했어요. 다시 시도해 주세요</string>
+    <string name="teacher_account_guide">선생님 계정 안내</string>
     <string name="teacher_web_only_title">선생님은 웹에서 이용해 주세요</string>
     <string name="teacher_web_only_description">모집·청소 구역·이의신청 관리는\n웹 관리자 페이지에서 할 수 있어요</string>
     <string name="web_address_copy">웹 주소 복사</string>
@@ -274,4 +275,24 @@
     <string name="home_verification_deadline">인증 마감</string>
     <string name="home_deadline_remaining">%1$s 남음</string>
     <string name="activity_appeal_label">이의신청</string>
+    <string name="notification_title">알림</string>
+    <string name="notice_title">공지사항</string>
+    <string name="notification_empty">새로운 알림이 없어요</string>
+    <string name="notification_empty_description">알림이 도착하면 여기에 표시돼요</string>
+    <string name="notification_failed">알림을 불러오지 못했어요</string>
+    <string name="notification_missing">연결된 내용을 확인할 수 없어요</string>
+    <string name="notification_read">읽음</string>
+    <string name="notification_unread">읽지 않음</string>
+    <string name="notice_empty">등록된 공지사항이 없어요</string>
+    <string name="notice_empty_description">새로운 공지사항이 등록되면 여기에 표시돼요</string>
+    <string name="notice_detail_failed">공지사항을 불러오지 못했어요</string>
+    <string name="notice_missing">공지사항을 찾을 수 없어요</string>
+    <string name="notice_return_to_list">목록으로 돌아가기</string>
+    <string name="demo_missing_record">기록을 찾을 수 없어요</string>
+    <string name="demo_missing_appeal">이의신청을 찾을 수 없어요</string>
+    <string name="appeal_reviewing_title">이의신청을 확인하고 있어요</string>
+    <string name="appeal_reviewing_description">선생님 확인이 끝나면 결과를 알려드릴게요</string>
+    <string name="help_later">추후 제공</string>
+    <string name="action_back">뒤로 가기</string>
+    <string name="notice_missing_description">공지사항 목록에서 다른 공지를 확인해 주세요</string>
 </resources>

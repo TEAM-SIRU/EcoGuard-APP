@@ -55,6 +55,7 @@ fun MonthPickerDialog(
     onApply: (year: Int, month: Int) -> Unit,
     latestYear: Int? = null,
     latestMonth: Int = 12,
+    showDialog: Boolean = true,
 ) {
     var selectedYear by rememberSaveable {
         mutableIntStateOf(
@@ -82,7 +83,7 @@ fun MonthPickerDialog(
         )
     }
 
-    EcoDialogSurface(onDismissRequest = onDismissRequest) {
+    EcoDialogSurface(onDismissRequest = onDismissRequest, showDialog = showDialog) {
         Column(verticalArrangement = Arrangement.spacedBy(AppSpacing.xs)) {
             Text(
                 text = stringResource(R.string.activity_select_month),

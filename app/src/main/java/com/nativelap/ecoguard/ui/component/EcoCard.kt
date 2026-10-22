@@ -15,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -40,6 +41,7 @@ fun EcoCard(
     contentPadding: PaddingValues = PaddingValues(AppSpacing.lg),
     emphasized: Boolean = false,
     onClick: (() -> Unit)? = null,
+    containerColor: Color = MaterialTheme.colorScheme.surface,
     content: @Composable ColumnScope.() -> Unit,
 ) {
     val cardShape = RoundedCornerShape(cornerRadius)
@@ -78,7 +80,7 @@ fun EcoCard(
                         ),
                 ).clip(cardShape)
                 .border(1.dp, MaterialTheme.colorScheme.outlineVariant, cardShape)
-                .background(MaterialTheme.colorScheme.surface)
+                .background(containerColor)
                 .then(
                     if (onClick != null) {
                         Modifier.clickable(onClick = onClick)

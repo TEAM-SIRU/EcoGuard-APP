@@ -40,6 +40,7 @@ fun MenuRow(
     modifier: Modifier = Modifier,
     valueText: String? = null,
     onClick: (() -> Unit)? = null,
+    enabled: Boolean = true,
     trailingContent: (@Composable RowScope.() -> Unit)? = null,
 ) {
     Row(
@@ -49,7 +50,7 @@ fun MenuRow(
                 .heightIn(min = AppComponentSize.minTouchTarget)
                 .then(
                     if (onClick != null) {
-                        Modifier.clickable(onClick = onClick)
+                        Modifier.clickable(onClick = onClick, enabled = enabled)
                     } else {
                         Modifier
                     },

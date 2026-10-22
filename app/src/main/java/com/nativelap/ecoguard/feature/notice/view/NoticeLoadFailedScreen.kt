@@ -24,7 +24,7 @@ import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-/** 10 공지 조회 실패. 공지 목록·상세 화면은 Figma에 없어 이 상태만 구현한다. */
+/** 공지 목록 조회 실패 상태. */
 @Composable
 fun NoticeLoadFailedScreen(
     onBackClick: () -> Unit,

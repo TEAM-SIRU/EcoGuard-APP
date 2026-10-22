@@ -9,6 +9,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.home.viewmodel.HomeScreenEvent
+import com.nativelap.ecoguard.ui.component.EcoAdaptiveNavigationLayout
 import com.nativelap.ecoguard.ui.component.EcoBottomTab
 import com.nativelap.ecoguard.ui.component.EcoBottomTabBar
 import com.nativelap.ecoguard.ui.component.LoadingSkeletonScrollContent
@@ -20,19 +21,30 @@ fun HomeLoadingScreen(
     modifier: Modifier = Modifier,
     onEvent: (HomeScreenEvent) -> Unit = {},
 ) {
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background,
-        bottomBar = {
-            EcoBottomTabBar(selectedTab = EcoBottomTab.HOME, onTabSelected = {
-                onEvent(HomeScreenEvent.TabSelect(it))
-            }, onCameraClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) })
-        },
-    ) { innerPadding ->
-        LoadingSkeletonScrollContent(
-            innerPadding = innerPadding,
-            title = stringResource(R.string.brand_name),
-        )
+    EcoAdaptiveNavigationLayout(
+        selectedTab = EcoBottomTab.HOME,
+        onTabSelected = { onEvent(HomeScreenEvent.TabSelect(it)) },
+        onCameraClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
+        modifier = modifier,
+    ) { usesNavigationRail ->
+        Scaffold(
+            modifier = Modifier.fillMaxSize(),
+            containerColor = MaterialTheme.colorScheme.background,
+            bottomBar = {
+                if (!usesNavigationRail) {
+                    EcoBottomTabBar(
+                        selectedTab = EcoBottomTab.HOME,
+                        onTabSelected = { onEvent(HomeScreenEvent.TabSelect(it)) },
+                        onCameraClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
+                    )
+                }
+            },
+        ) { innerPadding ->
+            LoadingSkeletonScrollContent(
+                innerPadding = innerPadding,
+                title = stringResource(R.string.brand_name),
+            )
+        }
     }
 }
 

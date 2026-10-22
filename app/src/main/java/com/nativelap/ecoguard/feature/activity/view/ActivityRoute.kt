@@ -14,6 +14,7 @@ fun ActivityRoute(
     uiState: ActivityUiState = ActivityUiState.Loading,
     onEvent: (ActivityScreenEvent) -> Unit = {},
     initialMonthPickerVisible: Boolean = false,
+    useNavigationOverlays: Boolean = false,
 ) {
     var isMonthPickerVisible by rememberSaveable { mutableStateOf(initialMonthPickerVisible) }
 
@@ -26,8 +27,13 @@ fun ActivityRoute(
         uiState = uiState,
         onEvent = { screenEvent ->
             when (screenEvent) {
-                ActivityScreenEvent.MonthSelectorClick -> isMonthPickerVisible = true
-                else -> onEvent(screenEvent)
+                ActivityScreenEvent.MonthSelectorClick -> {
+                    if (useNavigationOverlays) onEvent(screenEvent) else isMonthPickerVisible = true
+                }
+
+                else -> {
+                    onEvent(screenEvent)
+                }
             }
         },
     )
