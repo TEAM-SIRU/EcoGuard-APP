@@ -59,3 +59,11 @@ Navigation 3 runtime/ui 1.1.6, Serialization core 1.9.0, Kotlin Serialization �
 실제 `MainActivity`에서 샘플 로그인 → 알림 → 공지 상세 → 홈 버튼으로 백그라운드 이동 → `adb shell am kill com.nativelap.ecoguard` → 앱 재실행을 수행했다. 종료 전·후 PID가 달라 실제 프로세스 교체를 확인했고, 로그인 화면이 아닌 기존 공지 상세가 복원됐다. 뒤로가기로 알림 목록과 홈에 순서대로 돌아왔다. 알림 읽음 및 입력 상태는 별도의 StateRestorationTester 계측에서 검증했다.
 
 시스템 뒤로가기와 오버레이 기본 닫힘·확인 액션은 계측으로 확인했다. 예측 뒤로가기의 연속·취소 제스처는 별도 수동 검증 대상으로 남긴다.
+
+## 최종 내비게이션·Figma UI 점검 (Issue #17)
+
+2026-10-22 `App Screens · Redesign 2`의 58개 Figma 화면과 프로젝트 매핑 문서의 62개 Preview 상태를 다시 렌더링하고 비교했다. 390×844dp/fontScale 1.0에서 Figma 대응 화면의 구조와 토큰을 대조했으며, 840dp/fontScale 1.0에서 Rail과 대화면 콘텐츠 배치를, 320×596dp/fontScale 1.5에서 작은 화면의 줄바꿈·스크롤·하단 탭 접근성을 확인했다. Figma에 없는 Rail은 픽셀 동일성 대신 탭·카메라 액션의 표시와 콘텐츠 잘림 여부를 기준으로 검토했다. 디자이너 최종 판정은 통과다.
+
+AdaptiveNavigationTest의 테스트 호스트를 실제 MainActivity와 같은 투명 `SystemBarStyle.light` 설정으로 맞췄다. 정상 화면에서 어두운 시스템 아이콘을 사용하고 촬영 화면 진입 시 밝은 아이콘으로 바뀐 뒤 시스템 뒤로가기로 화면을 떠나면 어두운 아이콘으로 복구되는지 양쪽 시스템 바에서 검증한다.
+
+최종 검증 명령 `./gradlew --offline spotlessCheck :app:compileDebugKotlin :app:testDebugUnitTest :app:lintDebug :app:connectedDebugAndroidTest --no-daemon`이 성공했다. 계측 테스트 32개와 Preview 62개 렌더링이 통과했고, 840dp 및 320dp/fontScale 1.5에서 AdaptiveNavigationTest 캡처·복귀 검증도 별도로 통과했다. 디자이너 사후 UI 검토와 reviewer 사후 코드 검토에서 Critical·Warning은 없었다. AndroidX Navigation Suite 보안 검토에서도 Critical·Warning은 없었으며, 취약점 데이터베이스 조회는 실행하지 않았다. 실행 후 에뮬레이터 설정은 1080×2340px/density 440/fontScale 1.0으로 복원했다.
