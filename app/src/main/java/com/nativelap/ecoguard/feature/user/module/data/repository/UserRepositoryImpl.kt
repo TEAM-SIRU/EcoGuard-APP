@@ -26,8 +26,8 @@ class UserRepositoryImpl
                 is NetworkResult.Failure -> result.toAppResult()
             }
 
-        override suspend fun logout(): AppResult<Unit> =
-            when (val result = remoteDataSource.logout()) {
+        override suspend fun logout(accessToken: String): AppResult<Unit> =
+            when (val result = remoteDataSource.logout(accessToken)) {
                 is NetworkResult.Success -> AppResult.Success(Unit)
                 is NetworkResult.Failure -> result.toAppResult()
             }

@@ -371,7 +371,7 @@ class FeatureApiServiceTest {
                 contract("RecruitmentApiService", "getMyApplicationStatus", "GET", "api/v1/applications/me"),
                 contract("UserApiService", "getMyProfile", "GET", "api/v1/users/me"),
                 contract("UserApiService", "withdraw", "DELETE", "api/v1/users/me"),
-                contract("UserApiService", "logout", "POST", "api/v1/auth/logout"),
+                contract("UserApiService", "logout", "POST", "api/v1/auth/logout", "Header:Authorization"),
                 contract("VerificationApiService", "getManualReviewQueue", "GET", "api/v1/verifications"),
                 contract(
                     "VerificationApiService",

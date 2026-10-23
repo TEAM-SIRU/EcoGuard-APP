@@ -11,6 +11,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -30,6 +31,7 @@ abstract class CleaningAreaModule {
 object CleaningAreaApiServiceModule {
     @Provides
     @Singleton
-    fun provideCleaningAreaApiService(retrofit: Retrofit): CleaningAreaApiService =
-        retrofit.create(CleaningAreaApiService::class.java)
+    fun provideCleaningAreaApiService(
+        @Named("authenticated") retrofit: Retrofit,
+    ): CleaningAreaApiService = retrofit.create(CleaningAreaApiService::class.java)
 }

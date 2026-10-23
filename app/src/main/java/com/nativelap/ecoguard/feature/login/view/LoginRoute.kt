@@ -4,14 +4,15 @@ import androidx.compose.runtime.Composable
 import com.nativelap.ecoguard.feature.login.viewmodel.LoginScreenEvent
 import com.nativelap.ecoguard.feature.login.viewmodel.LoginUiState
 
-// 서버 연동 전까지는 고정 상태를 표시한다. ViewModel 연결은 로그인 기능 작업에서 추가한다.
+// 인증 상태와 화면 이벤트를 연결하고, 로그인 화면은 전달된 상태만 표시한다.
 @Composable
 fun LoginRoute(
+    uiState: LoginUiState = LoginUiState(),
     onLoginClick: () -> Unit = {},
     onTeacherAccountGuideClick: () -> Unit = {},
 ) {
     LoginScreen(
-        uiState = LoginUiState(),
+        uiState = uiState,
         onEvent = { screenEvent ->
             when (screenEvent) {
                 LoginScreenEvent.LoginClick -> onLoginClick()

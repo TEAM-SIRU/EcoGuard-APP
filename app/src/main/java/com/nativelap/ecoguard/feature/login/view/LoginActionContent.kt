@@ -30,6 +30,7 @@ private val loginActionSpacing = 10.dp
 fun LoginActionContent(
     isLoggingIn: Boolean,
     hasLoginFailed: Boolean,
+    hasRetryableLogoutPending: Boolean = false,
     onLoginClick: () -> Unit,
     onTeacherAccountGuideClick: () -> Unit = {},
     modifier: Modifier = Modifier,
@@ -37,6 +38,7 @@ fun LoginActionContent(
     val buttonTextRes =
         when {
             isLoggingIn -> R.string.login_in_progress
+            hasRetryableLogoutPending -> R.string.action_retry_logout
             hasLoginFailed -> R.string.action_retry_login
             else -> R.string.login_with_datagsm
         }

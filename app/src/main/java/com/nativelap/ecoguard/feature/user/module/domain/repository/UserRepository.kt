@@ -8,5 +8,5 @@ interface UserRepository {
 
     suspend fun withdraw(): AppResult<Unit>
 
-    suspend fun logout(): AppResult<Unit>
+    suspend fun logout(accessToken: String): AppResult<Unit>
 }

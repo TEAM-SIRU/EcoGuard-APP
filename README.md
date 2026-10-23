@@ -4,7 +4,7 @@
 
 ## 프로젝트 상태
 
-현재 프로젝트는 Kotlin과 Jetpack Compose를 사용하는 Android 앱입니다. Navigation 3로 로그인과 주요 화면을 연결했으며, 앱을 실행하면 로그인 화면이 표시됩니다. 로그인 화면에서 선생님 계정 안내를 열 수 있고, 학생 로그인 버튼은 샘플 학생 데이터로 홈에 진입합니다. 실제 인증·서버 연동·ViewModel 연결은 후속 작업입니다. 제품 기능, 대상 사용자, 전체 범위는 PRD가 없어 **확인 필요**입니다.
+현재 프로젝트는 Kotlin과 Jetpack Compose를 사용하는 Android 앱입니다. Navigation 3로 로그인과 주요 화면을 연결했고, DataGSM OAuth 로그인을 위한 Android client와 EcoGuard 세션 처리를 구현했습니다. 로그인은 서버에서 받은 인증 URL을 Custom Tab으로 열고, 검증된 App Link의 일회용 handoff 코드를 서버에 교환해 세션을 만듭니다. 서버 API 계층도 추가했지만 일반 기능 화면은 아직 샘플 데이터를 사용합니다. 제품 기능, 대상 사용자, 전체 범위는 PRD가 없어 **확인 필요**입니다.
 
 ### 디자인 및 구현 기준
 
@@ -18,7 +18,7 @@
 - 신청 입력: 학번·이름은 읽기 전용입니다. 동기는 Unicode 코드 포인트 기준 최대 200자로 제한하고 카운터를 표시합니다. 빈 내용·공백만 있는 내용·제출 중에는 신청 버튼을 비활성화합니다. 입력은 저장 가능한 Compose 상태로 유지하며 외부 상태 변경을 반영합니다.
 - 반응형: 기본 콘텐츠 최대폭은 600dp입니다. 홈·청소구역은 840dp 이상에서 2열·최대폭 960dp를 사용하며, 나머지 화면은 최대폭 600dp를 유지합니다.
 - 테마: 밝은 테마를 사용합니다. 다크 디자인 확정 전까지 다크 색상 구성도 밝은 테마와 같습니다.
-- 범위: 기존 Route·Screen·UiState·화면 이벤트 구조를 유지하며 샘플 데이터로 화면 전환을 연결합니다. 서버 요청과 실제 카메라 촬영은 연결하지 않았습니다.
+- 범위: 기존 Route·Screen·UiState·화면 이벤트 구조를 유지합니다. 인증은 DataGSM OAuth client와 세션 계층을 사용하며, 일반 기능 화면의 데이터 요청과 실제 카메라 촬영은 아직 연결하지 않았습니다.
 
 ### 구현 범위
 
@@ -38,7 +38,16 @@
 
 앱 시작 시 시스템 스플래시(흰 배경과 새싹 아이콘)를 표시합니다. 플랫폼 제약으로 Figma의 '환경지킴이' 글자는 스플래시에 표시하지 않습니다.
 
-후속 작업(현재 범위 제외): 실제 인증·토큰 검증, 서버 연동, ViewModel 연결, 실제 촬영, 이용안내. 구체적인 일정과 순서는 **확인 필요**입니다.
+OAuth staging 로그인은 서버와 도메인 설정이 완료되어야 검증할 수 있습니다. 서버의 `POST /api/v1/auth/authorize`, `POST /api/v1/auth/exchange`, callback의 `handoff_challenge` 전달 계약과 앱 링크 도메인의 `assetlinks.json`은 아직 배포·검증되지 않았습니다. 이 조건이 갖춰지기 전까지 end-to-end 로그인을 확인할 수 없습니다. 일반 기능 화면의 실제 데이터 연결, 실제 촬영, 이용안내는 후속 작업이며 일정은 **확인 필요**입니다.
+
+### 인증 및 서버 연동
+
+- 인증 시작: 앱이 `POST /api/v1/auth/authorize`에 PKCE S256 challenge를 보내고, 응답의 DataGSM 인증 URL을 Android Custom Tab으로 엽니다.
+- callback handoff: 서버 callback이 DataGSM 인증을 처리한 뒤 `https://ecoguard.https.gsmsv.site/auth/mobile-callback` App Link로 일회용 `handoff_code`와 이를 요청한 `handoff_challenge`를 전달하는 계약을 전제로 합니다. 앱은 challenge가 현재 로그인 시도와 일치하는지 확인한 뒤 `POST /api/v1/auth/exchange`로 코드를 교환합니다.
+- 세션: Access/Refresh Token은 Android Keystore로 보호되는 암호화 저장소에 보관하고, `SessionManager`가 세션 상태와 토큰 제공을 담당합니다. 앱 시작 시 저장된 세션을 복원합니다.
+- 보호 API 요청은 공통 Bearer interceptor를 사용합니다. 인증 실패 시 unauthenticated Retrofit으로 refresh를 한 번 수행하고, 성공하면 원 요청을 재시도합니다. Refresh 실패 시 로컬 세션을 만료시킵니다.
+- 로그아웃은 로컬 세션을 먼저 제거하고 서버 logout API를 호출합니다. 서버 요청 실패 여부는 앱 상태에서 별도로 처리합니다.
+- `authorize`·`exchange`·callback handoff는 현재 서버 Swagger에 계약이 완전히 정의되어 있지 않은 client 측 전제입니다. 서버 구현 및 Android App Link 도메인의 서명 지문을 포함한 `assetlinks.json` 배포가 필요합니다.
 
 ## 기술 스택
 
@@ -47,6 +56,8 @@
 | 모듈 | `:app` |
 | 언어 및 UI | Kotlin 2.2.10, Jetpack Compose, Material 3 |
 | 내비게이션·목적지 직렬화 | Navigation 3 1.1.6, Kotlin Serialization 1.9.0 |
+| 서버 통신·인증 | Retrofit 3.0.0, OkHttp 5.5.0, kotlinx.serialization, AndroidX Browser Custom Tabs 1.10.0 |
+| 의존성 주입 | Hilt 2.60.1 |
 | Android Gradle Plugin | 9.2.1 |
 | Gradle Wrapper | 9.4.1 |
 | Gradle daemon JDK | 21 |
@@ -133,7 +144,7 @@ EcoGuard-APP/
 └── settings.gradle.kts           # 프로젝트 및 모듈 설정
 ```
 
-앱 실행 흐름은 `MainActivity` → `EcoGuardNavHost` → 로그인 화면입니다. 샘플 로그인 상태에 따라 인증 전·후 NavDisplay를 분리합니다. 로그아웃·회원탈퇴 확인은 실제 서버 작업 없이 샘플 상태를 초기화하고 로그인으로 돌아갑니다.
+앱 실행 흐름은 `MainActivity` → `EcoGuardNavHost`이며, `AuthViewModel`이 세션 상태를 관찰해 인증 전·후 목적지를 전환합니다. 로그인 성공 세션은 앱 재시작 후 복원됩니다. 일반 기능 화면은 `DemoDestinationRoute`와 `DemoFlowController`가 샘플 상태를 주입하고, 서버 API 데이터와 연결되지 않았습니다. 로그아웃은 실제 세션을 로컬에서 종료하고 서버 logout API를 요청합니다. 회원탈퇴는 확인 UI만 있으며 서버 작업은 연결되지 않았습니다.
 
 ### 샘플 내비게이션
 
@@ -149,12 +160,15 @@ EcoGuard-APP/
 `app/src/main/java/com/nativelap/ecoguard/` 아래 구성은 다음과 같습니다.
 
 - `feature/<기능>/view/`: Route, Screen, 화면 전용 Composable, Preview용 `*PreviewFixtures`(일부 기능만)
-- `feature/<기능>/viewmodel/`: `*UiState`, `*ScreenEvent`, `*UiModel` 등 화면 상태 타입. `demo`에는 저장 가능한 샘플 앱 상태가 있습니다. 이름과 달리 ViewModel 클래스는 아직 없습니다.
+- `feature/auth/presentation/`: OAuth 로그인, handoff, 세션 상태를 다루는 `AuthViewModel`과 `AuthUiState`.
+- `feature/<기능>/viewmodel/`: 화면 상태 타입과 샘플 이벤트. `demo`에는 저장 가능한 샘플 앱 상태가 있습니다. 인증 외 기능의 ViewModel 클래스와 서버 데이터 연결은 아직 없습니다.
+- `feature/auth/data/`, `feature/auth/domain/`: 인증 API DTO·서비스·RemoteDataSource·Repository·UseCase, 암호화 토큰 저장과 세션 관리.
+- `core/network/`: Retrofit·OkHttp 설정, 공통 API 결과/오류 처리, Bearer 주입과 토큰 갱신.
 - `navigation/`: 직렬화 가능한 목적지, 인증 전·후 NavDisplay, 탭별 back stack·Navigator, 바텀시트 SceneStrategy
 - `ui/component/`: 여러 화면이 공유하는 컴포넌트(버튼, 상단 바, 하단 탭, 다이얼로그, 바텀시트, 스켈레톤 등)
 - `ui/theme/`: `Theme.kt`, `AppSpacing`, `AppRadius`, `AppComponentSize`, `AppIconSize`, `AppTypography`·`AppExtraTypography`, `AppExtraColors`
 
-기능별 Route·Screen은 전달받은 UiState와 화면 이벤트를 사용합니다. `DemoDestinationRoute`와 `DemoFlowController`가 샘플 상태를 주입하고 이벤트를 화면 이동으로 연결합니다. `DemoAppState`는 샘플 입력·제출·알림 읽음 상태를 저장하며, Navigator는 back stack 조작을 담당합니다. ViewModel이나 서버 데이터 흐름은 없습니다. `StateRestorationTester`로 신청·이의신청 입력, 알림 읽음 상태, 월 선택과 탭별 스택의 저장·복원을 확인했습니다. 실제 `MainActivity`에서도 백그라운드 프로세스 종료 후 공지 상세 복원과 뒤로가기(알림 → 홈)를 확인했습니다. 자세한 실행 조건은 [실제 프로세스 복원 검증](docs/navigation-verification.md#실제-프로세스-복원)을 참고하세요.
+기능별 Route·Screen은 전달받은 UiState와 화면 이벤트를 사용합니다. 인증은 `AuthViewModel`과 인증 Domain/Data 계층이 OAuth 흐름 및 세션을 처리합니다. 나머지 화면은 `DemoDestinationRoute`와 `DemoFlowController`가 샘플 상태를 주입하고 이벤트를 화면 이동으로 연결합니다. `DemoAppState`는 샘플 입력·제출·알림 읽음 상태를 저장하며, Navigator는 back stack 조작을 담당합니다. `StateRestorationTester`로 신청·이의신청 입력, 알림 읽음 상태, 월 선택과 탭별 스택의 저장·복원을 확인했습니다. 실제 `MainActivity`에서도 백그라운드 프로세스 종료 후 공지 상세 복원과 뒤로가기(알림 → 홈)를 확인했습니다. 자세한 실행 조건은 [실제 프로세스 복원 검증](docs/navigation-verification.md#실제-프로세스-복원)을 참고하세요.
 
 ## 문서와 확인 항목
 

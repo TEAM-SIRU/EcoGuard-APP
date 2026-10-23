@@ -68,6 +68,7 @@ fun LoginScreen(
                         LoginActionContent(
                             isLoggingIn = uiState.isLoggingIn,
                             hasLoginFailed = uiState.hasLoginFailed,
+                            hasRetryableLogoutPending = uiState.hasRetryableLogoutPending,
                             onLoginClick = { onEvent(LoginScreenEvent.LoginClick) },
                             onTeacherAccountGuideClick = {
                                 onEvent(LoginScreenEvent.TeacherAccountGuideClick)
@@ -79,6 +80,10 @@ fun LoginScreen(
                 footerContent = {
                     if (uiState.hasLoginFailed) {
                         EcoToast(message = stringResource(R.string.login_failed))
+                    } else if (uiState.hasSessionClearFailed) {
+                        EcoToast(message = stringResource(R.string.session_clear_failed))
+                    } else if (uiState.hasServerLogoutFailed) {
+                        EcoToast(message = stringResource(R.string.server_logout_failed))
                     }
                 },
             )

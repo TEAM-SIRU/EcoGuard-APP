@@ -6,4 +6,7 @@ import androidx.compose.runtime.Immutable
 data class LoginUiState(
     val isLoggingIn: Boolean = false,
     val hasLoginFailed: Boolean = false,
+    val hasSessionClearFailed: Boolean = false,
+    val hasServerLogoutFailed: Boolean = false,
+    val hasRetryableLogoutPending: Boolean = false,
 )
