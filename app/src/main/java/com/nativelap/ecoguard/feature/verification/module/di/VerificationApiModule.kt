@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -13,6 +14,7 @@ import javax.inject.Singleton
 object VerificationApiModule {
     @Provides
     @Singleton
-    fun provideVerificationApiService(retrofit: Retrofit): VerificationApiService =
-        retrofit.create(VerificationApiService::class.java)
+    fun provideVerificationApiService(
+        @Named("authenticated") retrofit: Retrofit,
+    ): VerificationApiService = retrofit.create(VerificationApiService::class.java)
 }

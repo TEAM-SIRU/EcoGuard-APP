@@ -39,6 +39,9 @@
     <string name="login_with_datagsm">DataGSM으로 로그인</string>
     <string name="login_in_progress">로그인하는 중이에요</string>
     <string name="login_failed">로그인하지 못했어요. 다시 시도해 주세요</string>
+    <string name="session_clear_failed">로그인 정보를 안전하게 삭제하지 못했어요. 앱을 다시 시작한 뒤 확인해 주세요</string>
+    <string name="server_logout_failed">서버 로그아웃을 완료하지 못했어요. 버튼을 눌러 다시 시도해 주세요</string>
+    <string name="action_retry_logout">로그아웃 다시 시도</string>
     <string name="teacher_account_guide">선생님 계정 안내</string>
     <string name="teacher_web_only_title">선생님은 웹에서 이용해 주세요</string>
     <string name="teacher_web_only_description">모집·청소 구역·이의신청 관리는\n웹 관리자 페이지에서 할 수 있어요</string>

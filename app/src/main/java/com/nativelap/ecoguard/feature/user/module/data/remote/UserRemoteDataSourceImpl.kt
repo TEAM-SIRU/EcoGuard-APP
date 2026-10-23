@@ -16,5 +16,6 @@ class UserRemoteDataSourceImpl
 
         override suspend fun withdraw(): NetworkResult<Unit> = apiExecutor.executeNoContent { apiService.withdraw() }
 
-        override suspend fun logout(): NetworkResult<Unit> = apiExecutor.executeNoContent { apiService.logout() }
+        override suspend fun logout(accessToken: String): NetworkResult<Unit> =
+            apiExecutor.executeNoContent { apiService.logout("Bearer $accessToken") }
     }

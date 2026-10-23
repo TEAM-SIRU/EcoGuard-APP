@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -13,6 +14,7 @@ import javax.inject.Singleton
 object ActivityApiServiceModule {
     @Provides
     @Singleton
-    fun provideActivityApiService(retrofit: Retrofit): ActivityApiService =
-        retrofit.create(ActivityApiService::class.java)
+    fun provideActivityApiService(
+        @Named("authenticated") retrofit: Retrofit,
+    ): ActivityApiService = retrofit.create(ActivityApiService::class.java)
 }

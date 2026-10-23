@@ -26,5 +26,5 @@ class LogoutUseCase
     constructor(
         private val repository: UserRepository,
     ) {
-        suspend operator fun invoke(): AppResult<Unit> = repository.logout()
+        suspend operator fun invoke(accessToken: String): AppResult<Unit> = repository.logout(accessToken)
     }

@@ -6,6 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -13,5 +14,7 @@ import javax.inject.Singleton
 object NoticeApiServiceModule {
     @Provides
     @Singleton
-    fun provideNoticeApiService(retrofit: Retrofit): NoticeApiService = retrofit.create(NoticeApiService::class.java)
+    fun provideNoticeApiService(
+        @Named("authenticated") retrofit: Retrofit,
+    ): NoticeApiService = retrofit.create(NoticeApiService::class.java)
 }
