@@ -14,6 +14,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.core.view.WindowCompat
 import androidx.test.platform.app.InstrumentationRegistry
+import com.nativelap.ecoguard.feature.auth.presentation.AuthUiState
 import com.nativelap.ecoguard.navigation.EcoGuardNavHost
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import org.junit.Assert.assertFalse
@@ -34,9 +35,14 @@ class AdaptiveNavigationTest {
             )
         }
         composeRule.setContent {
-            EcoGuardTheme { EcoGuardNavHost() }
+            EcoGuardTheme {
+                EcoGuardNavHost(
+                    authUiState = AuthUiState(sessionId = "test-session"),
+                    onLoginClick = {},
+                    onSignOut = {},
+                )
+            }
         }
-        composeRule.onNodeWithText("DataGSM으로 로그인").performClick()
 
         val isExpanded =
             composeRule.activity.resources.configuration.screenWidthDp >= 840
