@@ -5,6 +5,7 @@ import android.graphics.Color
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -25,6 +26,7 @@ import java.io.File
 
 class AdaptiveNavigationTest {
     @get:Rule val composeRule = createAndroidComposeRule<ComponentActivity>()
+    private val authUiState = mutableStateOf(AuthUiState())
 
     @Test
     fun showsExactlyOneNavigationPatternAndKeepsCameraActionAtCurrentWidth() {
@@ -37,12 +39,15 @@ class AdaptiveNavigationTest {
         composeRule.setContent {
             EcoGuardTheme {
                 EcoGuardNavHost(
-                    authUiState = AuthUiState(sessionId = "test-session"),
-                    onLoginClick = {},
-                    onSignOut = {},
+                    authUiState = authUiState.value,
+                    onLoginClick = {
+                        authUiState.value = AuthUiState(sessionId = TEST_SESSION_ID)
+                    },
+                    onSignOut = { authUiState.value = AuthUiState() },
                 )
             }
         }
+        composeRule.onNodeWithText("DataGSM으로 로그인").performClick()
 
         val isExpanded =
             composeRule.activity.resources.configuration.screenWidthDp >= 840
@@ -91,3 +96,5 @@ class AdaptiveNavigationTest {
         bitmap.recycle()
     }
 }
+
+private const val TEST_SESSION_ID = "instrumentation-test-session"

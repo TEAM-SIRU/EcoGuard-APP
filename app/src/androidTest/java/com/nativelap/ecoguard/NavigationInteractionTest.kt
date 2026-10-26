@@ -3,10 +3,7 @@ package com.nativelap.ecoguard
 import android.graphics.Bitmap
 import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher
@@ -40,31 +37,25 @@ import java.io.File
 
 class NavigationInteractionTest {
     @get:Rule val composeRule = createAndroidComposeRule<ComponentActivity>()
+    private val authUiState = mutableStateOf(AuthUiState())
 
     private fun startLoginScreen(restoration: StateRestorationTester? = null) {
-        startScreen(AuthUiState(), restoration)
-    }
-
-    private fun startApp(restoration: StateRestorationTester? = null) {
-        startScreen(AuthUiState(sessionId = "test-session"), restoration)
-    }
-
-    private fun startScreen(
-        authUiState: AuthUiState,
-        restoration: StateRestorationTester?,
-    ) {
         composeRule.activityRule.scenario.onActivity { it.enableEdgeToEdge() }
         val content: @androidx.compose.runtime.Composable () -> Unit = {
-            var currentAuthUiState by remember { mutableStateOf(authUiState) }
             EcoGuardTheme {
                 EcoGuardNavHost(
-                    authUiState = currentAuthUiState,
-                    onLoginClick = { currentAuthUiState = AuthUiState(sessionId = "test-session") },
-                    onSignOut = { currentAuthUiState = AuthUiState() },
+                    authUiState = authUiState.value,
+                    onLoginClick = { authUiState.value = AuthUiState(sessionId = TEST_SESSION_ID) },
+                    onSignOut = { authUiState.value = AuthUiState() },
                 )
             }
         }
         if (restoration == null) composeRule.setContent(content) else restoration.setContent(content)
+    }
+
+    private fun startApp(restoration: StateRestorationTester? = null) {
+        startLoginScreen(restoration)
+        composeRule.onNodeWithText("DataGSM으로 로그인").assertIsDisplayed().performClick()
     }
 
     @Test
@@ -312,3 +303,5 @@ class NavigationInteractionTest {
         }
     }
 }
+
+private const val TEST_SESSION_ID = "instrumentation-test-session"
