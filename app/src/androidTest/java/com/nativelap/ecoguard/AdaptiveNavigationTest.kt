@@ -18,6 +18,7 @@ import com.nativelap.ecoguard.feature.home.view.HomePreviewFixtures
 import com.nativelap.ecoguard.feature.home.view.HomeScreen
 import com.nativelap.ecoguard.feature.home.viewmodel.HomeScreenEvent
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -46,8 +47,7 @@ class AdaptiveNavigationTest {
             }
         }
 
-        val isExpanded =
-            composeRule.activity.resources.configuration.screenWidthDp >= 840
+        val isExpanded = composeRule.activity.resources.configuration.screenWidthDp >= 840
         if (isExpanded) {
             composeRule.onNodeWithTag("eco-navigation-rail").assertIsDisplayed()
             composeRule.onNodeWithTag("eco-bottom-navigation").assertDoesNotExist()
@@ -61,7 +61,7 @@ class AdaptiveNavigationTest {
         captureAdaptiveNavigation(isExpanded)
 
         composeRule.onNodeWithContentDescription("청소 인증 촬영").performClick()
-        composeRule.runOnIdle { assertTrue(cameraClicks == 1) }
+        composeRule.runOnIdle { assertEquals(1, cameraClicks) }
     }
 
     private fun assertLightSystemBarIcons() {
