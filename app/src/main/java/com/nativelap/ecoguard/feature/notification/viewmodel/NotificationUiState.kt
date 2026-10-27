@@ -7,6 +7,8 @@ sealed interface NotificationUiState {
 
     data object Failed : NotificationUiState
 
+    data object NotIntegrated : NotificationUiState
+
     data class Content(
         val notifications: List<NotificationUiModel>,
     ) : NotificationUiState

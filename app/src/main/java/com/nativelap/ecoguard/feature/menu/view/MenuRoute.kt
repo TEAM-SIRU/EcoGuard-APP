@@ -1,31 +1,56 @@
 package com.nativelap.ecoguard.feature.menu.view
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
+import com.nativelap.ecoguard.core.presentation.rememberActivityViewModel
 import com.nativelap.ecoguard.feature.menu.viewmodel.MenuDialogType
 import com.nativelap.ecoguard.feature.menu.viewmodel.MenuScreenEvent
 import com.nativelap.ecoguard.feature.menu.viewmodel.MenuUiState
+import com.nativelap.ecoguard.feature.menu.viewmodel.MenuViewModel
 import com.nativelap.ecoguard.ui.component.EcoConfirmDialog
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 
-// 서버 연동 전까지는 전달받은 고정 상태를 표시한다. 로그아웃·회원탈퇴 확인 다이얼로그 표시 여부만 Route가 관리한다.
+// Route가 프로필 상태를 수집하고 화면 이벤트만 상위 내비게이션에 전달한다.
 @Composable
 fun MenuRoute(
-    uiState: MenuUiState,
     onEvent: (MenuScreenEvent) -> Unit = {},
     initialDialogType: MenuDialogType? = null,
     useNavigationOverlays: Boolean = false,
+    viewModel: MenuViewModel? = null,
 ) {
-    var visibleDialogType by rememberSaveable { mutableStateOf(initialDialogType) }
+    val menuViewModel = viewModel ?: rememberActivityViewModel<MenuViewModel>()
+    val uiState by menuViewModel.uiState.collectAsState()
+    val context = LocalContext.current
+    var visibleDialogType by rememberSaveable {
+        mutableStateOf(initialDialogType)
+    }
+    val contentState = uiState as? MenuUiState.Content
+
+    androidx.compose.runtime.LaunchedEffect(contentState?.isWithdrawn) {
+        if (contentState?.isWithdrawn == true) onEvent(MenuScreenEvent.WithdrawalSucceeded)
+    }
+    androidx.compose.runtime.LaunchedEffect(contentState?.hasWithdrawalFailed) {
+        if (contentState?.hasWithdrawalFailed == true) {
+            android.widget.Toast
+                .makeText(
+                    context,
+                    R.string.withdrawal_failed,
+                    android.widget.Toast.LENGTH_LONG,
+                ).show()
+        }
+    }
 
     MenuScreen(
         uiState = uiState,
+        onRetry = menuViewModel::retry,
         onEvent = { screenEvent ->
             when (screenEvent) {
                 MenuScreenEvent.LogoutClick -> {
@@ -38,12 +63,11 @@ fun MenuRoute(
                 }
 
                 MenuScreenEvent.WithdrawClick -> {
-                    if (useNavigationOverlays) {
-                        onEvent(screenEvent)
-                    } else {
-                        visibleDialogType =
-                            MenuDialogType.WITHDRAW
-                    }
+                    visibleDialogType = MenuDialogType.WITHDRAW
+                }
+
+                MenuScreenEvent.WithdrawConfirm -> {
+                    menuViewModel.withdraw()
                 }
 
                 else -> {
@@ -94,9 +118,9 @@ fun MenuRoute(
 @Composable
 private fun MenuRouteLogoutDialogPreview() {
     EcoGuardTheme {
-        MenuRoute(
+        MenuScreen(
             uiState = MenuPreviewFixtures.menuState,
-            initialDialogType = MenuDialogType.LOGOUT,
+            onEvent = {},
         )
     }
 }
@@ -105,9 +129,9 @@ private fun MenuRouteLogoutDialogPreview() {
 @Composable
 private fun MenuRouteWithdrawDialogPreview() {
     EcoGuardTheme {
-        MenuRoute(
+        MenuScreen(
             uiState = MenuPreviewFixtures.menuState,
-            initialDialogType = MenuDialogType.WITHDRAW,
+            onEvent = {},
         )
     }
 }

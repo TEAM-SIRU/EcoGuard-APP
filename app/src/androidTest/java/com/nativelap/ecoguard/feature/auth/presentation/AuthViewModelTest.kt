@@ -12,6 +12,7 @@ import com.nativelap.ecoguard.core.network.NetworkResult
 import com.nativelap.ecoguard.feature.auth.domain.AuthRepository
 import com.nativelap.ecoguard.feature.auth.domain.AuthSession
 import com.nativelap.ecoguard.feature.auth.domain.CancelAuthUseCase
+import com.nativelap.ecoguard.feature.auth.domain.ClearSessionAfterWithdrawalUseCase
 import com.nativelap.ecoguard.feature.auth.domain.CompleteAuthUseCase
 import com.nativelap.ecoguard.feature.auth.domain.ObserveSessionUseCase
 import com.nativelap.ecoguard.feature.auth.domain.SessionRepository
@@ -54,6 +55,7 @@ class AuthViewModelTest {
                 VerifyAuthAttemptUseCase(repository),
                 CancelAuthUseCase(repository),
                 SignOutUseCase(repository, LogoutUseCase(userRepository)),
+                ClearSessionAfterWithdrawalUseCase(repository),
             ).also { viewModelStore.put("auth-view-model", it) }
     }
 
@@ -71,6 +73,19 @@ class AuthViewModelTest {
 
         assertFalse(viewModel.uiState.value.isLoggingIn)
         assertEquals(null, viewModel.uiState.value.authorizationUrl)
+    }
+
+    @Test
+    fun accountWithdrawalClearsLocalSessionAndPendingLogoutTokensWithoutCallingLogout() {
+        repository.session.value = AuthSession("session", "access", "refresh", null)
+        repository.rememberPendingLogout("stale-access")
+
+        viewModel.onWithdrawalSucceeded()
+
+        assertEquals(null, repository.session.value)
+        assertTrue(repository.pendingLogoutAccessTokens().isEmpty())
+        assertTrue(userRepository.logoutTokens.isEmpty())
+        assertFalse(viewModel.uiState.value.hasSessionClearFailed)
     }
 
     @Test

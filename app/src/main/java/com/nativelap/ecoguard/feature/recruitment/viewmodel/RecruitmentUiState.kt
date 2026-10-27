@@ -9,6 +9,7 @@ sealed interface RecruitmentUiState {
     data object LoadFailed : RecruitmentUiState
 
     data class Content(
+        val recruitmentId: Long,
         val semesterName: String,
         val maxApplicantsPerClass: Int,
         val periodStartDate: String,

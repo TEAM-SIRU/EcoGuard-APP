@@ -1,21 +1,26 @@
 package com.nativelap.ecoguard.feature.activity.view
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import com.nativelap.ecoguard.core.presentation.rememberActivityViewModel
 import com.nativelap.ecoguard.feature.activity.viewmodel.ActivityScreenEvent
 import com.nativelap.ecoguard.feature.activity.viewmodel.ActivityUiState
+import com.nativelap.ecoguard.feature.activity.viewmodel.ActivityViewModel
+import java.time.YearMonth
 
-// 서버 연동 전까지는 전달받은 고정 상태를 표시한다. 월 선택 팝업 표시 여부만 Route가 관리한다.
 @Composable
 fun ActivityRoute(
-    uiState: ActivityUiState = ActivityUiState.Loading,
-    onEvent: (ActivityScreenEvent) -> Unit = {},
+    onEvent: (ActivityScreenEvent) -> Unit,
     initialMonthPickerVisible: Boolean = false,
     useNavigationOverlays: Boolean = false,
+    viewModel: ActivityViewModel? = null,
 ) {
+    val activityViewModel = viewModel ?: rememberActivityViewModel<ActivityViewModel>()
+    val uiState = activityViewModel.uiState.collectAsState().value
     var isMonthPickerVisible by rememberSaveable { mutableStateOf(initialMonthPickerVisible) }
 
     if (uiState == ActivityUiState.Loading) {
@@ -31,6 +36,15 @@ fun ActivityRoute(
                     if (useNavigationOverlays) onEvent(screenEvent) else isMonthPickerVisible = true
                 }
 
+                is ActivityScreenEvent.MonthApply -> {
+                    activityViewModel.loadActivity(screenEvent.year, screenEvent.month)
+                    if (useNavigationOverlays) onEvent(screenEvent)
+                }
+
+                ActivityScreenEvent.RetryClick -> {
+                    activityViewModel.loadActivity()
+                }
+
                 else -> {
                     onEvent(screenEvent)
                 }
@@ -42,10 +56,12 @@ fun ActivityRoute(
         MonthPickerDialog(
             initialYear = uiState.year,
             initialMonth = uiState.month,
+            latestYear = YearMonth.now().year,
+            latestMonth = YearMonth.now().monthValue,
             onDismissRequest = { isMonthPickerVisible = false },
             onApply = { selectedYear, selectedMonth ->
                 isMonthPickerVisible = false
-                onEvent(ActivityScreenEvent.MonthApply(selectedYear, selectedMonth))
+                activityViewModel.loadActivity(selectedYear, selectedMonth)
             },
         )
     }

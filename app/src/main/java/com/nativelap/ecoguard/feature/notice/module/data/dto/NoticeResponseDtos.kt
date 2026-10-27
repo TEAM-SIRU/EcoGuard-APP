@@ -10,19 +10,19 @@ data class CreateNoticeResponseDto(
 
 @Serializable
 data class NoticeListItemResponseDto(
-    @SerialName("noticeId") val noticeId: Long? = null,
-    @SerialName("title") val title: String? = null,
-    @SerialName("preview") val preview: String? = null,
-    @SerialName("createdAt") val createdAt: String? = null,
-    @SerialName("read") val isRead: Boolean? = null,
+    @SerialName("noticeId") val noticeId: Long,
+    @SerialName("title") val title: String,
+    @SerialName("preview") val preview: String,
+    @SerialName("createdAt") val createdAt: String,
+    @SerialName("read") val isRead: Boolean,
 )
 
 @Serializable
 data class NoticeDetailResponseDto(
-    @SerialName("noticeId") val noticeId: Long? = null,
-    @SerialName("title") val title: String? = null,
-    @SerialName("content") val content: String? = null,
-    @SerialName("createdAt") val createdAt: String? = null,
+    @SerialName("noticeId") val noticeId: Long,
+    @SerialName("title") val title: String,
+    @SerialName("content") val content: String,
+    @SerialName("createdAt") val createdAt: String,
     @SerialName("previousNoticeId") val previousNoticeId: Long? = null,
     @SerialName("nextNoticeId") val nextNoticeId: Long? = null,
 )

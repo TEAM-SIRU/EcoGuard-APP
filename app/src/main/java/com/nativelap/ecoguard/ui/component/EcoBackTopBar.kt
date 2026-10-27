@@ -35,6 +35,7 @@ fun EcoBackTopBar(
     modifier: Modifier = Modifier,
     title: String? = null,
     trailingText: String? = null,
+    enabled: Boolean = true,
 ) {
     Box(
         modifier =
@@ -53,6 +54,7 @@ fun EcoBackTopBar(
         ) {
             IconButton(
                 onClick = onBackClick,
+                enabled = enabled,
                 modifier = Modifier.size(AppComponentSize.minTouchTarget),
             ) {
                 Icon(

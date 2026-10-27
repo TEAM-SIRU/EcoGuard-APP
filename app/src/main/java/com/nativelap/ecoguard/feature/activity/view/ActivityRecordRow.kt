@@ -34,16 +34,16 @@ import com.nativelap.ecoguard.ui.theme.extraTypography
 @Composable
 fun ActivityRecordRow(
     activityRecord: ActivityRecordUiModel,
-    onClick: () -> Unit,
+    onClick: (() -> Unit)?,
     modifier: Modifier = Modifier,
 ) {
     val isNotSubmitted = activityRecord.status == StatusChipType.NOT_SUBMITTED
+    val isClickable = !isNotSubmitted && onClick != null
     val separator = stringResource(R.string.format_list_separator)
     val detailParts =
         buildList {
             activityRecord.submittedTime?.let { add(it) }
-            add(activityRecord.areaName)
-            if (activityRecord.isAppealApproved) add(stringResource(R.string.activity_appeal_label))
+            activityRecord.areaName?.let(::add)
             if (isNotSubmitted) add(stringResource(R.string.activity_not_verified))
         }
 
@@ -52,12 +52,12 @@ fun ActivityRecordRow(
         subtitle = detailParts.joinToString(separator = separator),
         verticalPadding = 12.dp,
         modifier =
-            if (isNotSubmitted) {
+            if (!isClickable) {
                 modifier
             } else {
                 modifier.clickable(
                     role = Role.Button,
-                    onClick = onClick,
+                    onClick = requireNotNull(onClick),
                 )
             },
     ) {
@@ -90,7 +90,7 @@ fun ActivityRecordRow(
                 }
             }
 
-            if (isNotSubmitted) {
+            if (!isClickable) {
                 Spacer(modifier = Modifier.width(AppIconSize.button))
             } else {
                 Icon(

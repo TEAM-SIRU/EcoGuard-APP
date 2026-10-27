@@ -21,29 +21,29 @@ data class UpdateAreaRequestDto(
 
 @Serializable
 data class AreaMapResponseDto(
-    @SerialName("areaId") val areaId: Long? = null,
-    @SerialName("zoneCode") val zoneCode: String? = null,
-    @SerialName("name") val name: String? = null,
+    @SerialName("areaId") val areaId: Long,
+    @SerialName("zoneCode") val zoneCode: String,
+    @SerialName("name") val name: String,
     @SerialName("description") val description: String? = null,
     @SerialName("cleanTime") val cleanTime: String? = null,
-    @SerialName("semester") val semester: String? = null,
-    @SerialName("assignedStudents") val assignedStudents: List<AssignedStudentResponseDto>? = null,
-    @SerialName("active") val active: Boolean? = null,
+    @SerialName("semester") val semester: String,
+    @SerialName("assignedStudents") val assignedStudents: List<AssignedStudentResponseDto>,
+    @SerialName("active") val active: Boolean,
 )
 
 @Serializable
 data class AssignedStudentResponseDto(
-    @SerialName("studentId") val studentId: Long? = null,
+    @SerialName("studentId") val studentId: Long,
     @SerialName("studentNumber") val studentNumber: String? = null,
-    @SerialName("name") val name: String? = null,
+    @SerialName("name") val name: String,
 )
 
 @Serializable
 data class MyAssignmentResponseDto(
-    @SerialName("areaId") val areaId: Long? = null,
-    @SerialName("zoneCode") val zoneCode: String? = null,
-    @SerialName("areaName") val areaName: String? = null,
+    @SerialName("areaId") val areaId: Long,
+    @SerialName("zoneCode") val zoneCode: String,
+    @SerialName("areaName") val areaName: String,
     @SerialName("description") val description: String? = null,
     @SerialName("cleanTime") val cleanTime: String? = null,
-    @SerialName("members") val members: List<AssignedStudentResponseDto>? = null,
+    @SerialName("members") val members: List<AssignedStudentResponseDto>,
 )

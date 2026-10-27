@@ -13,7 +13,6 @@ internal object ActivityPreviewFixtures {
         recordId: Long,
         dateLabel: String,
         submittedTime: String,
-        isAppealApproved: Boolean = false,
     ) = ActivityRecordUiModel(
         recordId = recordId,
         dateLabel = dateLabel,
@@ -21,7 +20,6 @@ internal object ActivityPreviewFixtures {
         submittedTime = submittedTime,
         earnedMinutes = 10,
         status = StatusChipType.APPROVED,
-        isAppealApproved = isAppealApproved,
     )
 
     val weekGroups =
@@ -38,7 +36,6 @@ internal object ActivityPreviewFixtures {
                             submittedTime = "08:04",
                             earnedMinutes = 0,
                             status = StatusChipType.REVIEWING,
-                            isAppealApproved = false,
                         ),
                         approvedRecord(recordId = 9L, dateLabel = "9월 28일(월)", submittedTime = "08:05"),
                     ),
@@ -56,13 +53,11 @@ internal object ActivityPreviewFixtures {
                             submittedTime = "08:04",
                             earnedMinutes = 0,
                             status = StatusChipType.REJECTED,
-                            isAppealApproved = false,
                         ),
                         approvedRecord(
                             recordId = 6L,
                             dateLabel = "9월 21일(월)",
                             submittedTime = "08:07",
-                            isAppealApproved = true,
                         ),
                     ),
             ),
@@ -79,7 +74,6 @@ internal object ActivityPreviewFixtures {
                             submittedTime = null,
                             earnedMinutes = 0,
                             status = StatusChipType.NOT_SUBMITTED,
-                            isAppealApproved = false,
                         ),
                         approvedRecord(recordId = 3L, dateLabel = "9월 16일(수)", submittedTime = "08:06"),
                         approvedRecord(recordId = 2L, dateLabel = "9월 15일(화)", submittedTime = "08:01"),

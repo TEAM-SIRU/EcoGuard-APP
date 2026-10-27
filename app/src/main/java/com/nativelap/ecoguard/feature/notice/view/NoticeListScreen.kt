@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.notice.viewmodel.NoticeScreenEvent
+import com.nativelap.ecoguard.feature.notice.viewmodel.NoticeUiModel
 import com.nativelap.ecoguard.feature.notice.viewmodel.NoticeUiState
 import com.nativelap.ecoguard.ui.component.EcoBackTopBar
 import com.nativelap.ecoguard.ui.component.InlineEmptyState
@@ -113,6 +114,11 @@ fun NoticeListScreen(
 @Composable
 private fun NoticeListPreview() {
     EcoGuardTheme {
-        NoticeListScreen(NoticeUiState.Content(com.nativelap.ecoguard.feature.demo.viewmodel.DemoData.notices), {})
+        NoticeListScreen(
+            NoticeUiState.Content(
+                listOf(NoticeUiModel(1, "공지사항 예시", "2026.10.25", "공지 미리보기")),
+            ),
+            {},
+        )
     }
 }

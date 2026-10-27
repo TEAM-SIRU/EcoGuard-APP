@@ -19,7 +19,10 @@ sealed interface HomeUiState {
     ) : HomeUiState {
         /** 청소 구역이 배정된 환경지킴이만 하단 카메라로 인증할 수 있다. */
         val isCameraVerificationAvailable: Boolean
-            get() = section is HomeSectionUiModel.Cleaning
+            get() =
+                (section as? HomeSectionUiModel.Cleaning)
+                    ?.todayCleaning
+                    ?.status is TodayCleaningStatus.NotSubmitted
     }
 }
 
@@ -44,6 +47,8 @@ sealed interface HomeSectionUiModel {
     ) : HomeSectionUiModel
 
     data object WaitingAssignment : HomeSectionUiModel
+
+    data object NoRecruitment : HomeSectionUiModel
 
     data class Cleaning(
         val todayCleaning: TodayCleaningUiModel,

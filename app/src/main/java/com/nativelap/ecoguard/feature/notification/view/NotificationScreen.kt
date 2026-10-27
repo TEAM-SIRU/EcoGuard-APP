@@ -129,6 +129,17 @@ fun NotificationScreen(
                                     )
                                 }
                             }
+
+                            NotificationUiState.NotIntegrated -> {
+                                item {
+                                    InlineEmptyState(
+                                        R.drawable.ic_map_30,
+                                        stringResource(R.string.notification_not_integrated),
+                                        stringResource(R.string.notification_not_integrated_description),
+                                        Modifier.padding(vertical = AppSpacing.xl),
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -152,9 +163,7 @@ private fun NotificationCount(count: Int) {
 private fun NotificationPreview() {
     EcoGuardTheme {
         NotificationScreen(
-            NotificationUiState.Content(
-                com.nativelap.ecoguard.feature.demo.viewmodel.DemoData.notifications,
-            ),
+            NotificationUiState.NotIntegrated,
             EcoBottomTab.HOME,
             {
             },

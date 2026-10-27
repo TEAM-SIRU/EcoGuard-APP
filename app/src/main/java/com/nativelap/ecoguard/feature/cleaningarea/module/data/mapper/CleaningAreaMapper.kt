@@ -22,7 +22,7 @@ fun AreaMapResponseDto.toDomain(): CleaningArea =
         description = description,
         cleanTime = cleanTime,
         semester = semester.toSemesterValue(),
-        assignedStudents = assignedStudents?.map(AssignedStudentResponseDto::toDomain),
+        assignedStudents = assignedStudents.map(AssignedStudentResponseDto::toDomain),
         active = active,
     )
 
@@ -39,7 +39,7 @@ fun MyAssignmentResponseDto.toDomain(): MyCleaningAssignment =
         areaName = areaName,
         description = description,
         cleanTime = cleanTime,
-        members = members?.map(AssignedStudentResponseDto::toDomain),
+        members = members.map(AssignedStudentResponseDto::toDomain),
     )
 
 fun AssignedStudentResponseDto.toDomain(): AssignedStudent =

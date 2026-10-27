@@ -25,6 +25,8 @@ sealed interface MenuScreenEvent {
 
     data object WithdrawConfirm : MenuScreenEvent
 
+    data object WithdrawalSucceeded : MenuScreenEvent
+
     data class TabSelect(
         val tab: EcoBottomTab,
     ) : MenuScreenEvent

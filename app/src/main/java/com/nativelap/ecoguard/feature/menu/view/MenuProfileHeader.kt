@@ -38,7 +38,7 @@ private val profileInitialsMinFontSize = 10.sp
 
 @Composable
 fun MenuProfileHeader(
-    menuState: MenuUiState,
+    menuState: MenuUiState.Content,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -59,17 +59,19 @@ fun MenuProfileHeader(
             verticalArrangement = Arrangement.spacedBy(profileTextSpacing),
         ) {
             Text(
-                text = menuState.studentName,
+                text = menuState.userName,
                 modifier = Modifier.semantics { heading() },
                 style = MaterialTheme.typography.headlineSmall,
                 color = MaterialTheme.colorScheme.onSurface,
             )
 
-            Text(
-                text = stringResource(R.string.profile_class_role, menuState.grade, menuState.classNumber),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.extraColors.captionTextColor,
-            )
+            if (menuState.grade != null && menuState.classNumber != null) {
+                Text(
+                    text = stringResource(R.string.profile_class_role, menuState.grade, menuState.classNumber),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.extraColors.captionTextColor,
+                )
+            }
         }
     }
 }

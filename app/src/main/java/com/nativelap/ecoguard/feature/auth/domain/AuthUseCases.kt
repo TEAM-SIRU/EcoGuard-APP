@@ -96,6 +96,18 @@ class SignOutUseCase
         }
     }
 
+class ClearSessionAfterWithdrawalUseCase
+    @Inject
+    constructor(
+        private val sessionRepository: SessionRepository,
+    ) {
+        operator fun invoke(): Boolean {
+            val cleared = sessionRepository.clearLocalSession()
+            sessionRepository.pendingLogoutAccessTokens().forEach(sessionRepository::clearPendingLogout)
+            return cleared
+        }
+    }
+
 data class SignOutResult(
     val localSessionCleared: Boolean,
     val serverLogoutFailed: Boolean,

@@ -61,9 +61,13 @@ fun AppealFormScreen(
         bottomBar = {
             BottomCtaBar {
                 EcoPrimaryButton(
-                    text = stringResource(R.string.appeal_submit),
+                    text =
+                        stringResource(
+                            if (uiState.isSubmissionFailed) R.string.appeal_retry_send else R.string.appeal_submit,
+                        ),
                     onClick = { onEvent(AppealScreenEvent.SubmitClick) },
                     enabled = uiState.canSubmit,
+                    isLoading = uiState.isSubmitting,
                 )
             }
         },
@@ -119,6 +123,14 @@ fun AppealFormScreen(
                         placeholder = stringResource(R.string.appeal_content_hint),
                         maxLength = uiState.maxContentLength,
                         label = stringResource(R.string.appeal_content),
+                    )
+                }
+
+                if (uiState.isSubmissionFailed) {
+                    Text(
+                        text = stringResource(R.string.appeal_send_failed_description),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.error,
                     )
                 }
 

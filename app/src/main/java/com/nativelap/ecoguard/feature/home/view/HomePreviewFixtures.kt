@@ -34,6 +34,7 @@ internal object HomePreviewFixtures {
 
     fun todayCleaning(cleaningStatus: TodayCleaningStatus) =
         TodayCleaningUiModel(
+            areaId = 1,
             cleaningStartTime = "08:00",
             cleaningEndTime = "08:10",
             assignedAreaName = "본관 2층 복도 A",

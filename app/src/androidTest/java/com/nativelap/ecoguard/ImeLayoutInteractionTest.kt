@@ -13,7 +13,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import com.nativelap.ecoguard.feature.appeal.view.AppealFormScreen
 import com.nativelap.ecoguard.feature.appeal.viewmodel.AppealFormUiState
-import com.nativelap.ecoguard.feature.recruitment.view.ApplicationRoute
+import com.nativelap.ecoguard.feature.recruitment.view.ApplicationScreen
 import com.nativelap.ecoguard.feature.recruitment.viewmodel.ApplicationUiState
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
 import org.junit.Assert.assertTrue
@@ -37,7 +37,7 @@ class ImeLayoutInteractionTest {
                 if (isAppeal) {
                     AppealFormScreen(AppealFormUiState("반려 사유", "확인해 주세요", 0, 1, 200, "08:10"), {})
                 } else {
-                    ApplicationRoute(ApplicationUiState(2, 3, 5, "최민준", "학교를 깨끗하게 만들고 싶어요"))
+                    ApplicationScreen(ApplicationUiState(2, 3, "05", "최민준", "학교를 깨끗하게 만들고 싶어요"), {})
                 }
             }
         }

@@ -3,7 +3,7 @@ package com.nativelap.ecoguard.feature.home.viewmodel
 import com.nativelap.ecoguard.ui.component.EcoBottomTab
 
 sealed interface HomeScreenEvent {
-    data object NoticeIconClick : HomeScreenEvent
+    data object NotificationClick : HomeScreenEvent
 
     data object NoticeCloseClick : HomeScreenEvent
 
@@ -15,7 +15,11 @@ sealed interface HomeScreenEvent {
 
     data object ActivityRecordClick : HomeScreenEvent
 
-    data object AppealClick : HomeScreenEvent
+    data class AppealClick(
+        val verificationId: Long?,
+        val rejectionReason: String,
+        val verificationDeadlineTime: String,
+    ) : HomeScreenEvent
 
     data object RecruitmentClick : HomeScreenEvent
 

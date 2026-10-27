@@ -191,7 +191,10 @@ private fun ActivityRecordList(
                     weekGroup.records.forEach { activityRecord ->
                         ActivityRecordRow(
                             activityRecord = activityRecord,
-                            onClick = { onEvent(ActivityScreenEvent.RecordClick(activityRecord.recordId)) },
+                            onClick =
+                                activityRecord.recordId?.let { recordId ->
+                                    { onEvent(ActivityScreenEvent.RecordClick(recordId)) }
+                                },
                         )
                     }
                 }

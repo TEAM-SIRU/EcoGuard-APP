@@ -3,14 +3,9 @@ package com.nativelap.ecoguard.feature.appeal.module.data.repository
 import com.nativelap.ecoguard.core.domain.result.AppResult
 import com.nativelap.ecoguard.core.network.NetworkResult
 import com.nativelap.ecoguard.core.network.toAppResult
-import com.nativelap.ecoguard.feature.appeal.module.data.dto.AppealDecisionRequestDto
 import com.nativelap.ecoguard.feature.appeal.module.data.dto.CreateAppealRequestDto
 import com.nativelap.ecoguard.feature.appeal.module.data.mapper.toDomain
-import com.nativelap.ecoguard.feature.appeal.module.data.mapper.toRequestDto
 import com.nativelap.ecoguard.feature.appeal.module.data.remote.AppealRemoteDataSource
-import com.nativelap.ecoguard.feature.appeal.module.domain.model.Appeal
-import com.nativelap.ecoguard.feature.appeal.module.domain.model.AppealDecision
-import com.nativelap.ecoguard.feature.appeal.module.domain.model.AppealStatus
 import com.nativelap.ecoguard.feature.appeal.module.domain.model.MyAppeal
 import com.nativelap.ecoguard.feature.appeal.module.domain.repository.AppealRepository
 import java.io.File
@@ -43,37 +38,10 @@ class AppealRepositoryImpl
                     request = CreateAppealRequestDto(content),
                 ).toAppResultOrSuccess()
 
-        override suspend fun getAppeals(status: AppealStatus?): AppResult<List<Appeal>> {
-            val statusParameter = status.toWireValue()
-            return when (val result = remoteDataSource.getAppeals(statusParameter)) {
-                is NetworkResult.Success -> AppResult.Success(result.value.map { it.toDomain() })
-                is NetworkResult.Failure -> result.toAppResult()
-            }
-        }
-
         override suspend fun getMyAppeals(): AppResult<List<MyAppeal>> =
             when (val result = remoteDataSource.getMyAppeals()) {
                 is NetworkResult.Success -> AppResult.Success(result.value.map { it.toDomain() })
                 is NetworkResult.Failure -> result.toAppResult()
-            }
-
-        override suspend fun decideAppeal(
-            appealId: Long,
-            decision: AppealDecision,
-        ): AppResult<Unit> =
-            remoteDataSource
-                .decideAppeal(
-                    appealId = appealId,
-                    request = decision.toRequestDto(),
-                ).toAppResultOrSuccess()
-
-        private fun AppealStatus?.toWireValue(): String? =
-            when (this) {
-                null -> null
-                AppealStatus.Pending -> "PENDING"
-                AppealStatus.Approved -> "APPROVED"
-                AppealStatus.Rejected -> "REJECTED"
-                is AppealStatus.Unknown -> value
             }
 
         private fun NetworkResult<Unit>.toAppResultOrSuccess(): AppResult<Unit> =

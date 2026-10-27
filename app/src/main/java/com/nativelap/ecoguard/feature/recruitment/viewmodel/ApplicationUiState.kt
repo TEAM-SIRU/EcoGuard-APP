@@ -7,11 +7,12 @@ import com.nativelap.ecoguard.ui.component.TextInputLength
 data class ApplicationUiState(
     val grade: Int,
     val classNumber: Int,
-    val studentNumber: Int,
+    val studentNumber: String,
     val studentName: String,
     val motivation: String = "",
     val maxApplicantsPerClass: Int = 6,
     val isApplying: Boolean = false,
+    val isSubmissionFailed: Boolean = false,
 ) {
     val canApply: Boolean
         get() = motivation.isNotBlank() && TextInputLength.count(motivation) <= MAX_MOTIVATION_LENGTH && !isApplying

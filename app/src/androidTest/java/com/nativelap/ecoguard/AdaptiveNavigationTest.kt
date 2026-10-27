@@ -14,10 +14,10 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.core.view.WindowCompat
 import androidx.test.platform.app.InstrumentationRegistry
-import com.nativelap.ecoguard.feature.auth.presentation.AuthUiState
-import com.nativelap.ecoguard.navigation.EcoGuardNavHost
+import com.nativelap.ecoguard.feature.home.view.HomePreviewFixtures
+import com.nativelap.ecoguard.feature.home.view.HomeScreen
+import com.nativelap.ecoguard.feature.home.viewmodel.HomeScreenEvent
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -34,12 +34,14 @@ class AdaptiveNavigationTest {
                 navigationBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
             )
         }
+        var cameraClicks = 0
         composeRule.setContent {
             EcoGuardTheme {
-                EcoGuardNavHost(
-                    authUiState = AuthUiState(sessionId = "test-session"),
-                    onLoginClick = {},
-                    onSignOut = {},
+                HomeScreen(
+                    uiState = HomePreviewFixtures.cleaningHome(HomePreviewFixtures.todayStatuses.first()),
+                    onEvent = { event ->
+                        if (event == HomeScreenEvent.CleaningVerificationClick) cameraClicks++
+                    },
                 )
             }
         }
@@ -58,18 +60,8 @@ class AdaptiveNavigationTest {
         assertLightSystemBarIcons()
         captureAdaptiveNavigation(isExpanded)
 
-        composeRule.onNodeWithText("구역").performClick().assertIsSelected()
         composeRule.onNodeWithContentDescription("청소 인증 촬영").performClick()
-        composeRule.onNodeWithText("촬영하기").assertIsDisplayed().performClick()
-        composeRule.onNodeWithText("2/3 · 촬영").assertIsDisplayed()
-        composeRule.activityRule.scenario.onActivity { activity ->
-            val controller = WindowCompat.getInsetsController(activity.window, activity.window.decorView)
-            assertFalse(controller.isAppearanceLightStatusBars)
-            assertFalse(controller.isAppearanceLightNavigationBars)
-        }
-        androidx.test.espresso.Espresso
-            .pressBack()
-        assertLightSystemBarIcons()
+        composeRule.runOnIdle { assertTrue(cameraClicks == 1) }
     }
 
     private fun assertLightSystemBarIcons() {

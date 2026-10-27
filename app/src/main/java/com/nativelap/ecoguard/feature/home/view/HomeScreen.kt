@@ -23,10 +23,12 @@ import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.home.viewmodel.HomeScreenEvent
 import com.nativelap.ecoguard.feature.home.viewmodel.HomeSectionUiModel
 import com.nativelap.ecoguard.feature.home.viewmodel.HomeUiState
+import com.nativelap.ecoguard.feature.home.viewmodel.TodayCleaningStatus
 import com.nativelap.ecoguard.ui.component.EcoAdaptiveNavigationLayout
 import com.nativelap.ecoguard.ui.component.EcoBottomTab
 import com.nativelap.ecoguard.ui.component.EcoBottomTabBar
 import com.nativelap.ecoguard.ui.component.EcoTopBar
+import com.nativelap.ecoguard.ui.component.StatusChipType
 import com.nativelap.ecoguard.ui.component.isExpandedLayout
 import com.nativelap.ecoguard.ui.component.twoPaneContentMaxWidth
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
@@ -41,6 +43,20 @@ fun HomeScreen(
     onEvent: (HomeScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val appealEvent =
+        (uiState.section as? HomeSectionUiModel.Cleaning)?.let { cleaning ->
+            val rejectedStatus = cleaning.todayCleaning.status as? TodayCleaningStatus.Rejected
+            rejectedStatus?.let { status ->
+                HomeScreenEvent.AppealClick(
+                    verificationId =
+                        cleaning.recentRecords
+                            .firstOrNull { it.status == StatusChipType.REJECTED }
+                            ?.recordId,
+                    rejectionReason = status.rejectionReason,
+                    verificationDeadlineTime = cleaning.todayCleaning.cleaningEndTime,
+                )
+            }
+        }
     EcoAdaptiveNavigationLayout(
         selectedTab = EcoBottomTab.HOME,
         onTabSelected = { selectedTab -> onEvent(HomeScreenEvent.TabSelect(selectedTab)) },
@@ -54,7 +70,7 @@ fun HomeScreen(
             topBar = {
                 EcoTopBar(
                     title = stringResource(R.string.brand_name),
-                    onActionClick = { onEvent(HomeScreenEvent.NoticeIconClick) },
+                    onActionClick = { onEvent(HomeScreenEvent.NotificationClick) },
                 )
             },
             bottomBar = {
@@ -100,6 +116,7 @@ fun HomeScreen(
 
                     HomeSection(
                         section = uiState.section,
+                        appealEvent = appealEvent,
                         onEvent = onEvent,
                     )
                 }
@@ -111,6 +128,7 @@ fun HomeScreen(
 @Composable
 private fun HomeSection(
     section: HomeSectionUiModel,
+    appealEvent: HomeScreenEvent.AppealClick?,
     onEvent: (HomeScreenEvent) -> Unit,
 ) {
     when (section) {
@@ -127,6 +145,10 @@ private fun HomeSection(
             )
         }
 
+        HomeSectionUiModel.NoRecruitment -> {
+            HomeNoRecruitmentCard()
+        }
+
         is HomeSectionUiModel.Cleaning -> {
             if (isExpandedLayout()) {
                 Row(horizontalArrangement = Arrangement.spacedBy(AppSpacing.xl)) {
@@ -136,7 +158,7 @@ private fun HomeSection(
                             onVerificationClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
                             onSubmittedPhotoClick = { onEvent(HomeScreenEvent.SubmittedPhotoClick) },
                             onActivityRecordClick = { onEvent(HomeScreenEvent.ActivityRecordClick) },
-                            onAppealClick = { onEvent(HomeScreenEvent.AppealClick) },
+                            onAppealClick = { appealEvent?.let(onEvent) },
                         )
 
                         HomeWeekCleaningCard(weekCleaning = section.weekCleaning)
@@ -154,7 +176,7 @@ private fun HomeSection(
                     onVerificationClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
                     onSubmittedPhotoClick = { onEvent(HomeScreenEvent.SubmittedPhotoClick) },
                     onActivityRecordClick = { onEvent(HomeScreenEvent.ActivityRecordClick) },
-                    onAppealClick = { onEvent(HomeScreenEvent.AppealClick) },
+                    onAppealClick = { appealEvent?.let(onEvent) },
                 )
 
                 HomeWeekCleaningCard(weekCleaning = section.weekCleaning)

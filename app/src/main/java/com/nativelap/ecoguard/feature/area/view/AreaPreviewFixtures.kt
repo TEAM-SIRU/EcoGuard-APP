@@ -10,9 +10,7 @@ internal object AreaPreviewFixtures {
             selectedFloor = 2,
             areaName = "2-1반 앞부터 중앙 계단 앞까지",
             areaDescription = "바닥을 쓸고 창틀 먼지를 닦아요",
-            cleaningStartTime = "08:00",
-            cleaningEndTime = "08:10",
-            teammateNames = listOf("김서연", "이도윤"),
-            myName = "최민준",
+            cleaningTime = "08:00 ~ 08:10",
+            memberNames = listOf("김서연", "이도윤", "최민준"),
         )
 }

@@ -27,21 +27,57 @@ sealed interface EcoGuardDestination : NavKey {
 
     @Serializable data object Recruitment : EcoGuardDestination
 
-    @Serializable data object Application : EcoGuardDestination
-
-    @Serializable data object ApplicationResult : EcoGuardDestination
-
-    @Serializable data object CameraGuide : EcoGuardDestination
-
-    @Serializable data class CameraCapture(
-        val appealRecordId: Long? = null,
+    @Serializable data class Application(
+        val recruitmentId: Long,
+        val grade: Int,
+        val classNo: Int,
     ) : EcoGuardDestination
 
-    @Serializable data object PhotoConfirm : EcoGuardDestination
+    @Serializable data class ApplicationResult(
+        val applicationOrder: Int,
+        val appliedDateTime: String,
+    ) : EcoGuardDestination
 
-    @Serializable data object SubmissionCompleted : EcoGuardDestination
+    @Serializable data class CameraGuide(
+        val areaId: Long,
+        val areaName: String,
+        val cleaningStartTime: String,
+        val cleaningEndTime: String,
+        val timeRemaining: String,
+    ) : EcoGuardDestination
 
-    @Serializable data object UploadFailed : EcoGuardDestination
+    @Serializable data class CameraCapture(
+        val areaId: Long,
+        val areaName: String,
+        val cleaningStartTime: String,
+        val cleaningEndTime: String,
+        val timeRemaining: String,
+        val deadlineTime: String,
+    ) : EcoGuardDestination
+
+    @Serializable data class PhotoConfirm(
+        val areaId: Long,
+        val areaName: String,
+        val cleaningStartTime: String,
+        val cleaningEndTime: String,
+        val capturedTime: String,
+        val deadlineTime: String,
+        val photoPath: String,
+    ) : EcoGuardDestination
+
+    @Serializable data class SubmissionCompleted(
+        val areaName: String,
+        val submittedAt: String,
+        val verificationId: Long,
+        val photoPath: String,
+    ) : EcoGuardDestination
+
+    @Serializable data class UploadFailed(
+        val areaId: Long,
+        val areaName: String,
+        val photoPath: String,
+        val deadlineTime: String,
+    ) : EcoGuardDestination
 
     @Serializable data object VerificationTimeEnded : EcoGuardDestination
 
@@ -63,6 +99,8 @@ sealed interface EcoGuardDestination : NavKey {
 
     @Serializable data class AppealForm(
         val recordId: Long,
+        val rejectionReason: String = "",
+        val verificationDeadlineTime: String = "",
     ) : EcoGuardDestination
 
     @Serializable data class AppealSubmitted(

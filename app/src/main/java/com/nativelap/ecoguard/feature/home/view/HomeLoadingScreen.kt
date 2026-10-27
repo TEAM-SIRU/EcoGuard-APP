@@ -25,6 +25,7 @@ fun HomeLoadingScreen(
         selectedTab = EcoBottomTab.HOME,
         onTabSelected = { onEvent(HomeScreenEvent.TabSelect(it)) },
         onCameraClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
+        isCameraEnabled = false,
         modifier = modifier,
     ) { usesNavigationRail ->
         Scaffold(
@@ -36,6 +37,7 @@ fun HomeLoadingScreen(
                         selectedTab = EcoBottomTab.HOME,
                         onTabSelected = { onEvent(HomeScreenEvent.TabSelect(it)) },
                         onCameraClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
+                        isCameraEnabled = false,
                     )
                 }
             },
