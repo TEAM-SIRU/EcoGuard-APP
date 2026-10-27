@@ -1,11 +1,15 @@
 package com.nativelap.ecoguard.feature.verification.view
 
-import androidx.compose.foundation.layout.Arrangement
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
@@ -13,8 +17,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.produceState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -33,6 +40,9 @@ import com.nativelap.ecoguard.ui.component.PhotoPlaceholder
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppSpacing
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import java.io.File
 
 private val capturedPhotoHeight = 256.dp
 
@@ -44,14 +54,27 @@ fun PhotoConfirmScreen(
     areaName: String,
     capturedTime: String,
     onEvent: (VerificationScreenEvent) -> Unit,
+    photoPath: String? = null,
+    isSending: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
+    BackHandler(enabled = isSending) {}
+    val capturedPhoto =
+        produceState<Bitmap?>(initialValue = null, photoPath) {
+            value =
+                photoPath?.let { path ->
+                    withContext(Dispatchers.IO) {
+                        decodePreviewBitmap(File(path))
+                    }
+                }
+        }
     Scaffold(
         modifier = modifier.fillMaxSize(),
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             EcoBackTopBar(
                 onBackClick = { onEvent(VerificationScreenEvent.BackClick) },
+                enabled = !isSending,
                 trailingText =
                     stringResource(
                         R.string.format_step,
@@ -67,6 +90,7 @@ fun PhotoConfirmScreen(
                         EcoSecondaryButton(
                             text = stringResource(R.string.photo_retake),
                             onClick = { onEvent(VerificationScreenEvent.RetakeClick) },
+                            enabled = !isSending,
                             modifier = itemModifier,
                         )
                     },
@@ -74,6 +98,8 @@ fun PhotoConfirmScreen(
                         EcoPrimaryButton(
                             text = stringResource(R.string.photo_send),
                             onClick = { onEvent(VerificationScreenEvent.SendClick) },
+                            enabled = photoPath != null && !isSending,
+                            isLoading = isSending,
                             modifier = itemModifier,
                         )
                     },
@@ -107,11 +133,25 @@ fun PhotoConfirmScreen(
                         ),
                 )
 
-                PhotoPlaceholder(
-                    label = stringResource(R.string.photo_captured),
-                    height = capturedPhotoHeight,
-                    modifier = Modifier.padding(bottom = AppSpacing.xl),
-                )
+                val bitmap = capturedPhoto.value
+                if (bitmap == null) {
+                    PhotoPlaceholder(
+                        label = stringResource(R.string.photo_captured),
+                        height = capturedPhotoHeight,
+                        modifier = Modifier.padding(bottom = AppSpacing.xl),
+                    )
+                } else {
+                    Image(
+                        bitmap = bitmap.asImageBitmap(),
+                        contentDescription = stringResource(R.string.photo_captured),
+                        contentScale = ContentScale.Crop,
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .height(capturedPhotoHeight)
+                                .padding(bottom = AppSpacing.xl),
+                    )
+                }
 
                 InfoTableBox {
                     InfoRow(
@@ -133,6 +173,21 @@ fun PhotoConfirmScreen(
         }
     }
 }
+
+private fun decodePreviewBitmap(photoFile: File): Bitmap? {
+    if (!photoFile.isFile) return null
+    val bounds = BitmapFactory.Options().apply { inJustDecodeBounds = true }
+    BitmapFactory.decodeFile(photoFile.absolutePath, bounds)
+    val largestDimension = maxOf(bounds.outHeight, bounds.outWidth)
+    val sampleSize =
+        generateSequence(1) { it * 2 }.takeWhile { PREVIEW_MAX_DIMENSION * it < largestDimension }.lastOrNull() ?: 1
+    return BitmapFactory.decodeFile(
+        photoFile.absolutePath,
+        BitmapFactory.Options().apply { inSampleSize = sampleSize.coerceAtLeast(1) },
+    )
+}
+
+private const val PREVIEW_MAX_DIMENSION = 768
 
 @Preview(name = "Photo confirm", showBackground = true, widthDp = 390, heightDp = 844)
 @Preview(

@@ -15,8 +15,6 @@ import com.nativelap.ecoguard.feature.activity.view.ActivitySummaryContent
 import com.nativelap.ecoguard.feature.activity.viewmodel.ActivityUiState
 import com.nativelap.ecoguard.feature.home.view.HomeNoticeCard
 import com.nativelap.ecoguard.feature.home.viewmodel.HomeNoticeUiModel
-import com.nativelap.ecoguard.feature.login.view.TeacherAccountGuideScreen
-import com.nativelap.ecoguard.feature.login.viewmodel.TeacherAccountGuideScreenEvent
 import com.nativelap.ecoguard.ui.component.EcoSegmentedControl
 import com.nativelap.ecoguard.ui.component.InlineEmptyState
 import com.nativelap.ecoguard.ui.component.SectionHeader
@@ -94,28 +92,6 @@ class CompactTouchTargetTest {
         }
         clickNearTouchEdge("2026년 9월")
         composeRule.runOnIdle { assertEquals(1, clicks) }
-    }
-
-    @Test fun teacherLogoutKeeps48DpTouchTargetWithCompactVisualHeight() {
-        var logoutClicks = 0
-        composeRule.setContent {
-            EcoGuardTheme {
-                TeacherAccountGuideScreen(
-                    onEvent = { event ->
-                        if (event == TeacherAccountGuideScreenEvent.LogoutClick) logoutClicks++
-                    },
-                )
-            }
-        }
-
-        val logoutBounds = composeRule.onNodeWithText("로그아웃").fetchSemanticsNode().boundsInRoot
-        val touchEdge = with(composeRule.density) { 23.75.dp.toPx() }
-
-        composeRule.onRoot().performTouchInput {
-            click(Offset(logoutBounds.center.x, logoutBounds.center.y - touchEdge))
-            click(Offset(logoutBounds.center.x, logoutBounds.center.y + touchEdge))
-        }
-        composeRule.runOnIdle { assertEquals(2, logoutClicks) }
     }
 
     private fun clickNearTouchEdge(text: String) {

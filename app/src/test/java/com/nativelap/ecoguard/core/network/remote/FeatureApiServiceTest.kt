@@ -51,8 +51,6 @@ class FeatureApiServiceTest {
                 }
             }
 
-        assertEquals(36, expectedApiContracts.size)
-        assertEquals(35, expectedApiContracts.map { it.verb to it.path }.toSet().size)
         assertEquals(expectedApiContracts.size, actualContracts.size)
         assertEquals(expectedApiContracts.toSet(), actualContracts.toSet())
     }
@@ -60,7 +58,26 @@ class FeatureApiServiceTest {
     @Test
     fun `activity service maps student id and query parameters`() =
         runSuspendTest {
-            val callFactory = RecordingCallFactory(body = "{}")
+            val callFactory =
+                RecordingCallFactory(
+                    body =
+                        """
+                        {
+                          "totalMinutes": 0,
+                          "year": 2026,
+                          "month": 10,
+                          "monthlyMinutes": 0,
+                          "summary": {
+                            "completedDays": 0,
+                            "requiredDays": 5,
+                            "approvedCount": 0,
+                            "rejectedCount": 0,
+                            "notSubmittedCount": 0
+                          },
+                          "records": []
+                        }
+                        """.trimIndent(),
+                )
             val service = createService<ActivityApiService>(callFactory)
 
             service.getStudentActivity(studentId = 74, year = 2026, month = 10)
@@ -73,16 +90,16 @@ class FeatureApiServiceTest {
         }
 
     @Test
-    fun `recruitment service maps applicant path parameter`() =
+    fun `recruitment service maps current recruitment path`() =
         runSuspendTest {
-            val callFactory = RecordingCallFactory(body = "[]")
+            val callFactory = RecordingCallFactory(body = "{}")
             val service = createService<RecruitmentApiService>(callFactory)
 
-            service.getApplicants(recruitmentId = 81)
+            service.getCurrentRecruitment()
 
             val request = checkNotNull(callFactory.lastRequest)
             assertEquals("GET", request.method)
-            assertEquals("/api/v1/recruitments/81/applications", request.url.encodedPath)
+            assertEquals("/api/v1/recruitments/current", request.url.encodedPath)
         }
 
     @Test
@@ -154,23 +171,24 @@ class FeatureApiServiceTest {
 
             service.createAppealWithPhotos(
                 verificationId = 23,
-                content = "검토 요청",
+                content = "검토 요청".toRequestBody("text/plain".toMediaType()),
                 photos = listOf(photo),
             )
 
             val request = checkNotNull(callFactory.lastRequest)
             assertEquals("POST", request.method)
             assertEquals("/api/v1/verifications/23/appeals", request.url.encodedPath)
-            assertEquals("검토 요청", request.url.queryParameter("content"))
             val multipartPayload = Buffer()
             checkNotNull(request.body).writeTo(multipartPayload)
+            val payload = multipartPayload.readUtf8()
+            assertTrue(payload.contains("name=\"content\""))
             assertTrue(
                 request.body
                     ?.contentType()
                     .toString()
                     .startsWith("multipart/form-data"),
             )
-            assertTrue(multipartPayload.readUtf8().contains("name=\"photos\""))
+            assertTrue(payload.contains("name=\"photos\""))
         }
 
     private inline fun <reified T : Any> createService(callFactory: RecordingCallFactory): T {
@@ -275,7 +293,7 @@ class FeatureApiServiceTest {
                     "POST",
                     "api/v1/verifications/{verificationId}/appeals",
                     "Path:verificationId",
-                    "Query:content",
+                    "Part:content",
                     "Part",
                     isMultipart = true,
                 ),
@@ -287,16 +305,7 @@ class FeatureApiServiceTest {
                     "Path:verificationId",
                     "Body",
                 ),
-                contract("AppealApiService", "getAppeals", "GET", "api/v1/appeals", "Query:status"),
                 contract("AppealApiService", "getMyAppeals", "GET", "api/v1/appeals/me"),
-                contract(
-                    "AppealApiService",
-                    "decideAppeal",
-                    "PATCH",
-                    "api/v1/appeals/{appealId}",
-                    "Path:appealId",
-                    "Body",
-                ),
                 contract("CleaningAreaApiService", "getAreas", "GET", "api/v1/cleaning-areas"),
                 contract(
                     "CleaningAreaApiService",
@@ -335,35 +344,11 @@ class FeatureApiServiceTest {
                     "Path:noticeId",
                     "Body",
                 ),
-                contract("RecruitmentApiService", "getRecruitments", "GET", "api/v1/recruitments"),
-                contract("RecruitmentApiService", "createRecruitment", "POST", "api/v1/recruitments", "Body"),
-                contract(
-                    "RecruitmentApiService",
-                    "getApplicants",
-                    "GET",
-                    "api/v1/recruitments/{recruitmentId}/applications",
-                    "Path:recruitmentId",
-                ),
                 contract(
                     "RecruitmentApiService",
                     "apply",
                     "POST",
                     "api/v1/recruitments/{recruitmentId}/applications",
-                    "Path:recruitmentId",
-                    "Body",
-                ),
-                contract(
-                    "RecruitmentApiService",
-                    "deleteRecruitment",
-                    "DELETE",
-                    "api/v1/recruitments/{recruitmentId}",
-                    "Path:recruitmentId",
-                ),
-                contract(
-                    "RecruitmentApiService",
-                    "updateRecruitment",
-                    "PATCH",
-                    "api/v1/recruitments/{recruitmentId}",
                     "Path:recruitmentId",
                     "Body",
                 ),
@@ -384,6 +369,8 @@ class FeatureApiServiceTest {
                     "Part",
                     isMultipart = true,
                 ),
+                contract("VerificationApiService", "getTodayVerification", "GET", "api/v1/verifications/today"),
+                contract("VerificationApiService", "getMyVerifications", "GET", "api/v1/verifications/me"),
                 contract(
                     "VerificationApiService",
                     "getReviewResult",
@@ -399,8 +386,6 @@ class FeatureApiServiceTest {
                     "Path:verificationId",
                     "Body",
                 ),
-                contract("VerificationApiService", "getTodayVerification", "GET", "api/v1/verifications/today"),
-                contract("VerificationApiService", "getMyVerifications", "GET", "api/v1/verifications/me"),
             )
 
         private fun contract(

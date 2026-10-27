@@ -184,10 +184,7 @@ private fun AreaDetailContent(
         areaContent.floors.map { floor ->
             stringResource(R.string.format_floor, floor)
         }
-    val memberSeparator = stringResource(R.string.format_list_separator)
-    val memberNames =
-        (areaContent.teammateNames + stringResource(R.string.area_member_me, areaContent.myName))
-            .joinToString(separator = memberSeparator)
+    val memberNames = areaContent.memberNames.joinToString(separator = stringResource(R.string.format_list_separator))
 
     Column {
         EcoSegmentedControl(

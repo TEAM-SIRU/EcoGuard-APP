@@ -210,10 +210,6 @@ class RedesignRenderTest {
                     "SplashScreenPreview",
                 ),
                 Pair(
-                    "com.nativelap.ecoguard.feature.login.view.TeacherAccountGuideScreenKt",
-                    "TeacherAccountGuideScreenPreview",
-                ),
-                Pair(
                     "com.nativelap.ecoguard.feature.menu.view.MenuRouteKt",
                     "MenuRouteLogoutDialogPreview",
                 ),

@@ -56,6 +56,7 @@ class MainActivity : ComponentActivity() {
                     authUiState = authUiState,
                     onLoginClick = authViewModel::startLogin,
                     onSignOut = authViewModel::signOut,
+                    onWithdrawalSuccess = authViewModel::onWithdrawalSucceeded,
                 )
             }
         }

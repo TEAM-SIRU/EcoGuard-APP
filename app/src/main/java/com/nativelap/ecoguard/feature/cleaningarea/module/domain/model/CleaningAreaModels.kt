@@ -1,20 +1,20 @@
 package com.nativelap.ecoguard.feature.cleaningarea.module.domain.model
 
 data class CleaningArea(
-    val areaId: Long?,
-    val zoneCode: String?,
-    val name: String?,
+    val areaId: Long,
+    val zoneCode: String,
+    val name: String,
     val description: String?,
     val cleanTime: String?,
     val semester: SemesterValue?,
-    val assignedStudents: List<AssignedStudent>?,
-    val active: Boolean?,
+    val assignedStudents: List<AssignedStudent>,
+    val active: Boolean,
 )
 
 data class AssignedStudent(
-    val studentId: Long?,
+    val studentId: Long,
     val studentNumber: String?,
-    val name: String?,
+    val name: String,
 )
 
 data class AreaAssignment(
@@ -23,12 +23,12 @@ data class AreaAssignment(
 )
 
 data class MyCleaningAssignment(
-    val areaId: Long?,
-    val zoneCode: String?,
-    val areaName: String?,
+    val areaId: Long,
+    val zoneCode: String,
+    val areaName: String,
     val description: String?,
     val cleanTime: String?,
-    val members: List<AssignedStudent>?,
+    val members: List<AssignedStudent>,
 )
 
 data class AreaActivationUpdate(

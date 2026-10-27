@@ -7,6 +7,7 @@ import com.nativelap.ecoguard.feature.recruitment.viewmodel.RecruitmentUiState
 internal object RecruitmentPreviewFixtures {
     val openRecruitment =
         RecruitmentUiState.Content(
+            recruitmentId = 1L,
             semesterName = "2학기",
             maxApplicantsPerClass = 6,
             periodStartDate = "9월 1일(화)",

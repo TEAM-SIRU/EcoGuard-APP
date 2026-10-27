@@ -11,15 +11,13 @@ sealed interface AppealScreenEvent {
 
     data object RetrySendClick : AppealScreenEvent
 
+    data object RetryHistoryClick : AppealScreenEvent
+
     data object EditContentClick : AppealScreenEvent
 
     data object ResubmitClick : AppealScreenEvent
 
     data object ActivityRecordClick : AppealScreenEvent
-
-    data class HistoryItemClick(
-        val appealId: Long,
-    ) : AppealScreenEvent
 
     data object HomeClick : AppealScreenEvent
 

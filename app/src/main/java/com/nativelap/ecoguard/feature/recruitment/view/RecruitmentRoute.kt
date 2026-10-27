@@ -1,28 +1,58 @@
 package com.nativelap.ecoguard.feature.recruitment.view
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import com.nativelap.ecoguard.core.presentation.rememberActivityViewModel
 import com.nativelap.ecoguard.feature.recruitment.viewmodel.RecruitmentScreenEvent
 import com.nativelap.ecoguard.feature.recruitment.viewmodel.RecruitmentUiState
+import com.nativelap.ecoguard.feature.recruitment.viewmodel.RecruitmentViewModel
 
-// 서버 연동 전까지는 전달받은 고정 상태를 표시한다. ViewModel 연결은 모집 기능 작업에서 추가한다.
 @Composable
 fun RecruitmentRoute(
-    uiState: RecruitmentUiState,
     onEvent: (RecruitmentScreenEvent) -> Unit = {},
+    onOpenApplication: (recruitmentId: Long, grade: Int, classNo: Int) -> Unit = { _, _, _ -> },
+    viewModel: RecruitmentViewModel? = null,
 ) {
-    when (uiState) {
+    val screenViewModel = viewModel ?: rememberActivityViewModel<RecruitmentViewModel>()
+    val uiState by screenViewModel.uiState.collectAsState()
+
+    LaunchedEffect(screenViewModel) {
+        screenViewModel.loadRecruitment()
+    }
+
+    when (val currentUiState = uiState) {
         RecruitmentUiState.Loading -> {
             RecruitmentLoadingScreen()
         }
 
         RecruitmentUiState.LoadFailed -> {
-            RecruitmentLoadFailedScreen(onEvent = onEvent)
+            RecruitmentLoadFailedScreen(
+                onEvent = { event ->
+                    if (event == RecruitmentScreenEvent.RetryClick) {
+                        screenViewModel.loadRecruitment()
+                    } else {
+                        onEvent(event)
+                    }
+                },
+            )
         }
 
         is RecruitmentUiState.Content -> {
             RecruitmentScreen(
-                uiState = uiState,
-                onEvent = onEvent,
+                uiState = currentUiState,
+                onEvent = { event ->
+                    if (event == RecruitmentScreenEvent.ApplyClick) {
+                        onOpenApplication(
+                            currentUiState.recruitmentId,
+                            currentUiState.grade,
+                            currentUiState.classNumber,
+                        )
+                    } else {
+                        onEvent(event)
+                    }
+                },
             )
         }
     }

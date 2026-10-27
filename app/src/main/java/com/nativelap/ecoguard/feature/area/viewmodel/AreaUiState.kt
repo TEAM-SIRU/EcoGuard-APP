@@ -14,10 +14,8 @@ sealed interface AreaUiState {
         val floors: List<Int>,
         val selectedFloor: Int,
         val areaName: String,
-        val areaDescription: String,
-        val cleaningStartTime: String,
-        val cleaningEndTime: String,
-        val teammateNames: List<String>,
-        val myName: String,
+        val areaDescription: String?,
+        val cleaningTime: String?,
+        val memberNames: List<String>,
     ) : AreaUiState
 }

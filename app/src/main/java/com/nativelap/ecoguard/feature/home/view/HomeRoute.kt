@@ -1,35 +1,46 @@
 package com.nativelap.ecoguard.feature.home.view
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import com.nativelap.ecoguard.core.presentation.rememberActivityViewModel
 import com.nativelap.ecoguard.feature.home.viewmodel.HomeScreenEvent
 import com.nativelap.ecoguard.feature.home.viewmodel.HomeUiState
+import com.nativelap.ecoguard.feature.home.viewmodel.HomeViewModel
 
-// 서버 연동 전까지는 전달받은 고정 상태를 표시한다. ViewModel 연결은 홈 기능 작업에서 추가한다.
 @Composable
 fun HomeRoute(
-    uiState: HomeUiState = HomeUiState.Loading,
-    onEvent: (HomeScreenEvent) -> Unit = {},
+    onEvent: (HomeScreenEvent) -> Unit,
+    viewModel: HomeViewModel? = null,
 ) {
+    val homeViewModel = viewModel ?: rememberActivityViewModel<HomeViewModel>()
+    val uiState = homeViewModel.uiState.collectAsState().value
+    val handleEvent: (HomeScreenEvent) -> Unit = { event ->
+        when (event) {
+            HomeScreenEvent.RetryClick -> homeViewModel.loadHome()
+            HomeScreenEvent.NoticeCloseClick -> homeViewModel.dismissNotice()
+            else -> onEvent(event)
+        }
+    }
     when (uiState) {
         HomeUiState.Loading -> {
-            HomeLoadingScreen(onEvent = onEvent)
+            HomeLoadingScreen(onEvent = handleEvent)
         }
 
         HomeUiState.LoadFailed -> {
-            HomeLoadFailedScreen(onEvent = onEvent)
+            HomeLoadFailedScreen(onEvent = handleEvent)
         }
 
         is HomeUiState.RemovedFromActivity -> {
             HomeActivityRemovedScreen(
                 removalReason = uiState.removalReason,
-                onEvent = onEvent,
+                onEvent = handleEvent,
             )
         }
 
         is HomeUiState.Content -> {
             HomeScreen(
                 uiState = uiState,
-                onEvent = onEvent,
+                onEvent = handleEvent,
             )
         }
     }

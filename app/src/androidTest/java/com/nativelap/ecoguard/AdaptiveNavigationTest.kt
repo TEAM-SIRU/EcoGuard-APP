@@ -5,7 +5,6 @@ import android.graphics.Color
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -15,10 +14,11 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.core.view.WindowCompat
 import androidx.test.platform.app.InstrumentationRegistry
-import com.nativelap.ecoguard.feature.auth.presentation.AuthUiState
-import com.nativelap.ecoguard.navigation.EcoGuardNavHost
+import com.nativelap.ecoguard.feature.home.view.HomePreviewFixtures
+import com.nativelap.ecoguard.feature.home.view.HomeScreen
+import com.nativelap.ecoguard.feature.home.viewmodel.HomeScreenEvent
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
-import org.junit.Assert.assertFalse
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
@@ -26,7 +26,6 @@ import java.io.File
 
 class AdaptiveNavigationTest {
     @get:Rule val composeRule = createAndroidComposeRule<ComponentActivity>()
-    private val authUiState = mutableStateOf(AuthUiState())
 
     @Test
     fun showsExactlyOneNavigationPatternAndKeepsCameraActionAtCurrentWidth() {
@@ -36,21 +35,19 @@ class AdaptiveNavigationTest {
                 navigationBarStyle = SystemBarStyle.light(Color.TRANSPARENT, Color.TRANSPARENT),
             )
         }
+        var cameraClicks = 0
         composeRule.setContent {
             EcoGuardTheme {
-                EcoGuardNavHost(
-                    authUiState = authUiState.value,
-                    onLoginClick = {
-                        authUiState.value = AuthUiState(sessionId = TEST_SESSION_ID)
+                HomeScreen(
+                    uiState = HomePreviewFixtures.cleaningHome(HomePreviewFixtures.todayStatuses.first()),
+                    onEvent = { event ->
+                        if (event == HomeScreenEvent.CleaningVerificationClick) cameraClicks++
                     },
-                    onSignOut = { authUiState.value = AuthUiState() },
                 )
             }
         }
-        composeRule.onNodeWithText("DataGSM으로 로그인").performClick()
 
-        val isExpanded =
-            composeRule.activity.resources.configuration.screenWidthDp >= 840
+        val isExpanded = composeRule.activity.resources.configuration.screenWidthDp >= 840
         if (isExpanded) {
             composeRule.onNodeWithTag("eco-navigation-rail").assertIsDisplayed()
             composeRule.onNodeWithTag("eco-bottom-navigation").assertDoesNotExist()
@@ -63,18 +60,8 @@ class AdaptiveNavigationTest {
         assertLightSystemBarIcons()
         captureAdaptiveNavigation(isExpanded)
 
-        composeRule.onNodeWithText("구역").performClick().assertIsSelected()
         composeRule.onNodeWithContentDescription("청소 인증 촬영").performClick()
-        composeRule.onNodeWithText("촬영하기").assertIsDisplayed().performClick()
-        composeRule.onNodeWithText("2/3 · 촬영").assertIsDisplayed()
-        composeRule.activityRule.scenario.onActivity { activity ->
-            val controller = WindowCompat.getInsetsController(activity.window, activity.window.decorView)
-            assertFalse(controller.isAppearanceLightStatusBars)
-            assertFalse(controller.isAppearanceLightNavigationBars)
-        }
-        androidx.test.espresso.Espresso
-            .pressBack()
-        assertLightSystemBarIcons()
+        composeRule.runOnIdle { assertEquals(1, cameraClicks) }
     }
 
     private fun assertLightSystemBarIcons() {
@@ -96,5 +83,3 @@ class AdaptiveNavigationTest {
         bitmap.recycle()
     }
 }
-
-private const val TEST_SESSION_ID = "instrumentation-test-session"

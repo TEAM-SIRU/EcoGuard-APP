@@ -20,4 +20,23 @@ class HomeUiStateTest {
     fun cameraVerificationIsUnavailableWhileWaitingForAssignment() {
         assertFalse(HomePreviewFixtures.waitingAssignmentHome.isCameraVerificationAvailable)
     }
+
+    @Test
+    fun cameraVerificationIsUnavailableWhenServerDoesNotAllowTodaySubmission() {
+        val homeState =
+            HomeUiState.Content(
+                notice = null,
+                section =
+                    HomeSectionUiModel.Cleaning(
+                        todayCleaning =
+                            HomePreviewFixtures.todayCleaning(
+                                TodayCleaningStatus.OutsideVerificationTime(availableFromTime = "08:00"),
+                            ),
+                        weekCleaning = HomePreviewFixtures.weekCleaning(isTodayCompleted = false),
+                        recentRecords = emptyList(),
+                    ),
+            )
+
+        assertFalse(homeState.isCameraVerificationAvailable)
+    }
 }

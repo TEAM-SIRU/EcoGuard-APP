@@ -1,37 +1,49 @@
 package com.nativelap.ecoguard.feature.recruitment.view
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
+import com.nativelap.ecoguard.core.presentation.rememberActivityViewModel
+import com.nativelap.ecoguard.feature.recruitment.viewmodel.ApplicationResultUiState
 import com.nativelap.ecoguard.feature.recruitment.viewmodel.ApplicationUiState
+import com.nativelap.ecoguard.feature.recruitment.viewmodel.ApplicationViewModel
 import com.nativelap.ecoguard.feature.recruitment.viewmodel.RecruitmentScreenEvent
-import com.nativelap.ecoguard.ui.component.TextInputLength
 
 @Composable
 fun ApplicationRoute(
+    recruitmentId: Long,
     uiState: ApplicationUiState,
     onEvent: (RecruitmentScreenEvent) -> Unit = {},
+    onSubmitted: (ApplicationResultUiState.Completed) -> Unit = {},
+    viewModel: ApplicationViewModel? = null,
 ) {
-    var motivation by rememberSaveable(uiState.grade, uiState.classNumber, uiState.studentNumber, uiState.motivation) {
-        mutableStateOf(TextInputLength.limit(uiState.motivation, ApplicationUiState.MAX_MOTIVATION_LENGTH))
+    val screenViewModel = viewModel ?: rememberActivityViewModel<ApplicationViewModel>()
+    val applicationUiState by screenViewModel.uiState.collectAsState()
+    val submissionResult by screenViewModel.submissionResult.collectAsState()
+
+    LaunchedEffect(screenViewModel, recruitmentId) {
+        screenViewModel.initialize(recruitmentId, uiState)
     }
-    val applicationState = uiState.copy(motivation = motivation)
+
+    LaunchedEffect(screenViewModel, submissionResult) {
+        submissionResult?.let { completedState ->
+            screenViewModel.consumeSubmissionResult()
+            onSubmitted(completedState)
+        }
+    }
+
+    val applicationState = applicationUiState ?: uiState
     ApplicationScreen(
         uiState = applicationState,
         onEvent = { screenEvent ->
             when (screenEvent) {
                 is RecruitmentScreenEvent.MotivationChange -> {
-                    if (!uiState.isApplying) {
-                        motivation =
-                            TextInputLength.limit(screenEvent.motivation, ApplicationUiState.MAX_MOTIVATION_LENGTH)
-                        onEvent(screenEvent.copy(motivation = motivation))
-                    }
+                    screenViewModel.updateMotivation(screenEvent.motivation)
                 }
 
                 RecruitmentScreenEvent.ApplyClick -> {
-                    if (applicationState.canApply) onEvent(screenEvent)
+                    screenViewModel.submitApplication()
                 }
 
                 else -> {

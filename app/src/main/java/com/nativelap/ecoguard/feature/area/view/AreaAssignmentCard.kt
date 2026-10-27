@@ -23,25 +23,30 @@ fun AreaAssignmentCard(
         cornerRadius = AppRadius.listCard,
         contentPadding = PaddingValues(vertical = AppSpacing.xxs),
     ) {
-        TwoLineTextRow(
-            title = areaContent.areaName,
-            subtitle = stringResource(R.string.area_description_format, areaContent.areaDescription),
-            verticalPadding = 12.dp,
-        )
+        if (areaContent.areaDescription != null) {
+            TwoLineTextRow(
+                title = areaContent.areaName,
+                subtitle = stringResource(R.string.area_description_format, areaContent.areaDescription),
+                verticalPadding = 12.dp,
+            )
+        } else {
+            TwoLineTextRow(
+                title = areaContent.areaName,
+                subtitle = "",
+                verticalPadding = 12.dp,
+            )
+        }
+
+        if (areaContent.cleaningTime != null) {
+            TwoLineTextRow(
+                title = areaContent.cleaningTime,
+                subtitle = stringResource(R.string.home_cleaning_time),
+                verticalPadding = 12.dp,
+            )
+        }
 
         TwoLineTextRow(
-            title =
-                stringResource(
-                    R.string.recruitment_daily_time,
-                    areaContent.cleaningStartTime,
-                    areaContent.cleaningEndTime,
-                ),
-            subtitle = stringResource(R.string.home_cleaning_time),
-            verticalPadding = 12.dp,
-        )
-
-        TwoLineTextRow(
-            title = stringResource(R.string.area_member_count, areaContent.teammateNames.size + 1),
+            title = stringResource(R.string.area_member_count, areaContent.memberNames.size),
             subtitle = memberNames,
             verticalPadding = 12.dp,
         )

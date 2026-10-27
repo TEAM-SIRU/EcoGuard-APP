@@ -20,8 +20,8 @@ fun MyActivityResponseDto.toDomain(): MyActivity =
         year = year,
         month = month,
         monthlyMinutes = monthlyMinutes,
-        summary = summary?.toDomain(),
-        records = records?.map(ActivityRecordDto::toDomain),
+        summary = summary.toDomain(),
+        records = records.map(ActivityRecordDto::toDomain),
     )
 
 fun StudentActivityResponseDto.toDomain(): StudentActivity =
@@ -41,7 +41,7 @@ fun WeeklyActivityResponseDto.toDomain(): WeeklyActivity =
         weekEnd = weekEnd,
         completedDays = completedDays,
         requiredDays = requiredDays,
-        days = days?.map(WeeklyDayDto::toDomain),
+        days = days.map(WeeklyDayDto::toDomain),
     )
 
 private fun ActivityRecordDto.toDomain(): ActivityRecord =
@@ -69,7 +69,7 @@ private fun WeeklyDayDto.toDomain(): WeeklyDay =
         result = result.toActivityResultStatus(),
     )
 
-private fun String?.toActivityResultStatus(): ActivityResultStatus =
+private fun String.toActivityResultStatus(): ActivityResultStatus =
     when (this) {
         "APPROVED" -> ActivityResultStatus.APPROVED
         "REJECTED" -> ActivityResultStatus.REJECTED

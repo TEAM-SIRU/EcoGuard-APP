@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.nativelap.ecoguard.core.network.NetworkResult
 import com.nativelap.ecoguard.feature.auth.domain.CancelAuthUseCase
+import com.nativelap.ecoguard.feature.auth.domain.ClearSessionAfterWithdrawalUseCase
 import com.nativelap.ecoguard.feature.auth.domain.CompleteAuthUseCase
 import com.nativelap.ecoguard.feature.auth.domain.ObserveSessionUseCase
 import com.nativelap.ecoguard.feature.auth.domain.SignOutUseCase
@@ -27,6 +28,7 @@ class AuthViewModel
         private val verifyAuthAttemptUseCase: VerifyAuthAttemptUseCase,
         private val cancelAuthUseCase: CancelAuthUseCase,
         private val signOutUseCase: SignOutUseCase,
+        private val clearSessionAfterWithdrawal: ClearSessionAfterWithdrawalUseCase,
     ) : ViewModel() {
         private val mutableUiState = MutableStateFlow(AuthUiState())
         val uiState = mutableUiState.asStateFlow()
@@ -141,6 +143,17 @@ class AuthViewModel
                         hasRetryableLogoutPending = result.hasRetryableLogoutPending,
                     )
                 }
+            }
+        }
+
+        fun onWithdrawalSucceeded() {
+            val cleared = clearSessionAfterWithdrawal()
+            mutableUiState.update { state ->
+                state.copy(
+                    isLoggingIn = false,
+                    hasSessionClearFailed = !cleared,
+                    hasLoginFailed = false,
+                )
             }
         }
 

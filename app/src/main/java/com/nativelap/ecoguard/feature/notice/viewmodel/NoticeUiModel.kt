@@ -8,4 +8,5 @@ data class NoticeUiModel(
     val title: String,
     val publishedDate: String,
     val body: String,
+    val isRead: Boolean? = null,
 )

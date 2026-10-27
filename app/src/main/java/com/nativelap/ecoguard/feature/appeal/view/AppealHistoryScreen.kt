@@ -1,6 +1,5 @@
 package com.nativelap.ecoguard.feature.appeal.view
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -17,17 +16,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.appeal.viewmodel.AppealHistoryItemUiModel
+import com.nativelap.ecoguard.feature.appeal.viewmodel.AppealHistoryUiState
 import com.nativelap.ecoguard.feature.appeal.viewmodel.AppealScreenEvent
+import com.nativelap.ecoguard.ui.component.BottomCtaBar
+import com.nativelap.ecoguard.ui.component.CenteredScrollContent
 import com.nativelap.ecoguard.ui.component.EcoBackTopBar
 import com.nativelap.ecoguard.ui.component.EcoCard
+import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
 import com.nativelap.ecoguard.ui.component.PageTitle
 import com.nativelap.ecoguard.ui.component.StatusChip
 import com.nativelap.ecoguard.ui.component.StatusChipType
+import com.nativelap.ecoguard.ui.component.StatusMessage
 import com.nativelap.ecoguard.ui.component.TwoLineTextRow
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
 import com.nativelap.ecoguard.ui.theme.AppRadius
@@ -39,7 +42,7 @@ import com.nativelap.ecoguard.ui.theme.extraTypography
 /** 09-3 이의신청 내역. 인증별 차수, 보낸 시각, 결과를 목록으로 보여준다. */
 @Composable
 fun AppealHistoryScreen(
-    appealHistoryItems: List<AppealHistoryItemUiModel>,
+    uiState: AppealHistoryUiState,
     onEvent: (AppealScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -49,59 +52,108 @@ fun AppealHistoryScreen(
         topBar = {
             EcoBackTopBar(onBackClick = { onEvent(AppealScreenEvent.BackClick) })
         },
+        bottomBar = {
+            if (uiState == AppealHistoryUiState.LoadFailed) {
+                BottomCtaBar {
+                    EcoPrimaryButton(
+                        text = stringResource(R.string.action_retry),
+                        onClick = { onEvent(AppealScreenEvent.RetryHistoryClick) },
+                    )
+                }
+            }
+        },
     ) { innerPadding ->
-        Box(
+        when (uiState) {
+            AppealHistoryUiState.Loading -> {
+                CenteredScrollContent(innerPadding = innerPadding) {
+                    Text(stringResource(R.string.common_loading))
+                }
+            }
+
+            AppealHistoryUiState.Empty -> {
+                CenteredScrollContent(innerPadding = innerPadding) {
+                    StatusMessage(
+                        title = stringResource(R.string.appeal_history_empty),
+                        description = "",
+                        iconRes = R.drawable.ic_alert_64,
+                    )
+                }
+            }
+
+            AppealHistoryUiState.LoadFailed -> {
+                CenteredScrollContent(innerPadding = innerPadding) {
+                    StatusMessage(
+                        title = stringResource(R.string.appeal_history_load_failed),
+                        description = stringResource(R.string.appeal_history_load_failed_description),
+                        iconRes = R.drawable.ic_alert_64,
+                    )
+                }
+            }
+
+            is AppealHistoryUiState.Content -> {
+                AppealHistoryContent(
+                    innerPadding = innerPadding,
+                    appealHistoryItems = uiState.items,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun AppealHistoryContent(
+    innerPadding: PaddingValues,
+    appealHistoryItems: List<AppealHistoryItemUiModel>,
+) {
+    Box(
+        modifier =
+            Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .consumeWindowInsets(innerPadding),
+        contentAlignment = Alignment.TopCenter,
+    ) {
+        LazyColumn(
             modifier =
                 Modifier
-                    .fillMaxSize()
-                    .padding(innerPadding)
-                    .consumeWindowInsets(innerPadding),
-            contentAlignment = Alignment.TopCenter,
+                    .widthIn(max = AppComponentSize.contentMaxWidth)
+                    .fillMaxWidth(),
         ) {
-            LazyColumn(
-                modifier =
-                    Modifier
-                        .widthIn(max = AppComponentSize.contentMaxWidth)
-                        .fillMaxWidth(),
-            ) {
-                item {
-                    PageTitle(
-                        title = stringResource(R.string.profile_appeal_history),
-                        modifier =
-                            Modifier.padding(
-                                start = AppSpacing.screenHorizontal,
-                                end = AppSpacing.screenHorizontal,
-                                top = AppSpacing.xs,
-                                bottom = AppSpacing.lg,
-                            ),
-                    )
-                }
+            item {
+                PageTitle(
+                    title = stringResource(R.string.profile_appeal_history),
+                    modifier =
+                        Modifier.padding(
+                            start = AppSpacing.screenHorizontal,
+                            end = AppSpacing.screenHorizontal,
+                            top = AppSpacing.xs,
+                            bottom = AppSpacing.lg,
+                        ),
+                )
+            }
 
-                item {
-                    Text(
-                        text = stringResource(R.string.format_total_count, appealHistoryItems.size),
-                        modifier =
-                            Modifier.padding(
-                                start = AppSpacing.screenHorizontal,
-                                end = AppSpacing.screenHorizontal,
-                                top = AppSpacing.md,
-                            ),
-                        style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
-                        color = MaterialTheme.extraColors.captionTextColor,
-                    )
-                }
+            item {
+                Text(
+                    text = stringResource(R.string.format_total_count, appealHistoryItems.size),
+                    modifier =
+                        Modifier.padding(
+                            start = AppSpacing.screenHorizontal,
+                            end = AppSpacing.screenHorizontal,
+                            top = AppSpacing.md,
+                        ),
+                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Medium),
+                    color = MaterialTheme.extraColors.captionTextColor,
+                )
+            }
 
-                item {
-                    EcoCard(
-                        modifier = Modifier.padding(horizontal = AppSpacing.md, vertical = AppSpacing.sm),
-                        cornerRadius = AppRadius.listCard,
-                        contentPadding = PaddingValues(vertical = AppSpacing.xxs),
-                    ) {
-                        appealHistoryItems.forEach { appealHistoryItem ->
-                            AppealHistoryRow(appealHistoryItem = appealHistoryItem, onClick = {
-                                onEvent(AppealScreenEvent.HistoryItemClick(appealHistoryItem.appealId))
-                            })
-                        }
+            item {
+                EcoCard(
+                    modifier = Modifier.padding(horizontal = AppSpacing.md, vertical = AppSpacing.sm),
+                    cornerRadius = AppRadius.listCard,
+                    contentPadding = PaddingValues(vertical = AppSpacing.xxs),
+                ) {
+                    appealHistoryItems.forEach { appealHistoryItem ->
+                        AppealHistoryRow(appealHistoryItem = appealHistoryItem)
                     }
                 }
             }
@@ -110,10 +162,7 @@ fun AppealHistoryScreen(
 }
 
 @Composable
-private fun AppealHistoryRow(
-    appealHistoryItem: AppealHistoryItemUiModel,
-    onClick: () -> Unit,
-) {
+private fun AppealHistoryRow(appealHistoryItem: AppealHistoryItemUiModel) {
     val separator = stringResource(R.string.format_list_separator)
     val subtitleParts =
         buildList {
@@ -134,11 +183,6 @@ private fun AppealHistoryRow(
     TwoLineTextRow(
         title = stringResource(R.string.verification_detail_title, appealHistoryItem.verificationDate),
         subtitle = subtitleParts.joinToString(separator = separator),
-        modifier =
-            Modifier.clickable(
-                role = Role.Button,
-                onClick = onClick,
-            ),
         verticalPadding = AppSpacing.sm,
     ) {
         StatusChip(
@@ -154,7 +198,7 @@ private fun AppealHistoryRow(
 private fun AppealHistoryScreenPreview() {
     EcoGuardTheme {
         AppealHistoryScreen(
-            appealHistoryItems = AppealPreviewFixtures.historyItems,
+            uiState = AppealHistoryUiState.Content(AppealPreviewFixtures.historyItems),
             onEvent = {},
         )
     }

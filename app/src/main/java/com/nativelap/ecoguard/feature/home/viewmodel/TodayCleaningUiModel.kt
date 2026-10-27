@@ -4,6 +4,7 @@ import androidx.compose.runtime.Immutable
 
 @Immutable
 data class TodayCleaningUiModel(
+    val areaId: Long,
     val cleaningStartTime: String,
     val cleaningEndTime: String,
     val assignedAreaName: String,

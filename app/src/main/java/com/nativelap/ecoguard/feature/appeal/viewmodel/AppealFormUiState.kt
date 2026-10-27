@@ -10,7 +10,10 @@ data class AppealFormUiState(
     val maxPhotoCount: Int,
     val maxContentLength: Int,
     val verificationDeadlineTime: String,
+    val isSubmitting: Boolean = false,
+    val isSubmissionFailed: Boolean = false,
+    val isSubmitted: Boolean = false,
 ) {
     val canSubmit: Boolean
-        get() = appealContent.isNotBlank()
+        get() = appealContent.isNotBlank() && !isSubmitting && !isSubmitted
 }

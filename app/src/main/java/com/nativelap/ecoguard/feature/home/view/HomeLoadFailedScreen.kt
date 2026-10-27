@@ -34,6 +34,7 @@ fun HomeLoadFailedScreen(
         selectedTab = EcoBottomTab.HOME,
         onTabSelected = { onEvent(HomeScreenEvent.TabSelect(it)) },
         onCameraClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
+        isCameraEnabled = false,
         modifier = modifier,
     ) { usesNavigationRail ->
         Scaffold(
@@ -42,7 +43,7 @@ fun HomeLoadFailedScreen(
             topBar = {
                 EcoTopBar(
                     stringResource(R.string.brand_name),
-                    onActionClick = { onEvent(HomeScreenEvent.NoticeIconClick) },
+                    onActionClick = { onEvent(HomeScreenEvent.NotificationClick) },
                 )
             },
             bottomBar = {
@@ -51,6 +52,7 @@ fun HomeLoadFailedScreen(
                         selectedTab = EcoBottomTab.HOME,
                         onTabSelected = { onEvent(HomeScreenEvent.TabSelect(it)) },
                         onCameraClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
+                        isCameraEnabled = false,
                     )
                 }
             },
