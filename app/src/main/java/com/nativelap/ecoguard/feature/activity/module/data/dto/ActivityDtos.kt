@@ -57,3 +57,19 @@ data class WeeklyActivityResponseDto(
     @SerialName("requiredDays") val requiredDays: Int,
     @SerialName("days") val days: List<WeeklyDayDto>,
 )
+
+@Serializable
+data class WeeklyParticipationDayDto(
+    @SerialName("date") val date: String,
+    @SerialName("submittedCount") val submittedCount: Int,
+    @SerialName("approvedCount") val approvedCount: Int,
+    @SerialName("participationRate") val participationRate: Int,
+)
+
+@Serializable
+data class WeeklyParticipationResponseDto(
+    @SerialName("weekStart") val weekStart: String,
+    @SerialName("weekEnd") val weekEnd: String,
+    @SerialName("assignedCount") val assignedCount: Int,
+    @SerialName("days") val days: List<WeeklyParticipationDayDto>,
+)
