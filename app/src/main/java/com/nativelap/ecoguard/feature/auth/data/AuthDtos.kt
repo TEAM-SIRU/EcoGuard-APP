@@ -28,6 +28,19 @@ data class AuthSessionResponseDto(
 )
 
 @Serializable
+data class LoginRequestDto(
+    @SerialName("authCode") val authCode: String,
+    @SerialName("redirectUri") val redirectUri: String? = null,
+)
+
+@Serializable
+data class LoginResponseDto(
+    @SerialName("accessToken") val accessToken: String,
+    @SerialName("refreshToken") val refreshToken: String,
+    @SerialName("user") val user: AuthUserDto? = null,
+)
+
+@Serializable
 data class AuthUserDto(
     @SerialName("userId") val userId: Long? = null,
     @SerialName("name") val name: String? = null,
