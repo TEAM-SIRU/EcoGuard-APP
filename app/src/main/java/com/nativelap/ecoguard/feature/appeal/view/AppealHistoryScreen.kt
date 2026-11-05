@@ -1,5 +1,6 @@
 package com.nativelap.ecoguard.feature.appeal.view
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.consumeWindowInsets
@@ -94,6 +95,7 @@ fun AppealHistoryScreen(
                 AppealHistoryContent(
                     innerPadding = innerPadding,
                     appealHistoryItems = uiState.items,
+                    onItemClick = { onEvent(AppealScreenEvent.HistoryItemClick(it)) },
                 )
             }
         }
@@ -104,6 +106,7 @@ fun AppealHistoryScreen(
 private fun AppealHistoryContent(
     innerPadding: PaddingValues,
     appealHistoryItems: List<AppealHistoryItemUiModel>,
+    onItemClick: (Long) -> Unit,
 ) {
     Box(
         modifier =
@@ -153,7 +156,10 @@ private fun AppealHistoryContent(
                     contentPadding = PaddingValues(vertical = AppSpacing.xxs),
                 ) {
                     appealHistoryItems.forEach { appealHistoryItem ->
-                        AppealHistoryRow(appealHistoryItem = appealHistoryItem)
+                        AppealHistoryRow(
+                            appealHistoryItem = appealHistoryItem,
+                            onClick = { onItemClick(appealHistoryItem.appealId) },
+                        )
                     }
                 }
             }
@@ -162,7 +168,10 @@ private fun AppealHistoryContent(
 }
 
 @Composable
-private fun AppealHistoryRow(appealHistoryItem: AppealHistoryItemUiModel) {
+private fun AppealHistoryRow(
+    appealHistoryItem: AppealHistoryItemUiModel,
+    onClick: () -> Unit,
+) {
     val separator = stringResource(R.string.format_list_separator)
     val subtitleParts =
         buildList {
@@ -183,6 +192,7 @@ private fun AppealHistoryRow(appealHistoryItem: AppealHistoryItemUiModel) {
     TwoLineTextRow(
         title = stringResource(R.string.verification_detail_title, appealHistoryItem.verificationDate),
         subtitle = subtitleParts.joinToString(separator = separator),
+        modifier = Modifier.clickable(onClick = onClick),
         verticalPadding = AppSpacing.sm,
     ) {
         StatusChip(

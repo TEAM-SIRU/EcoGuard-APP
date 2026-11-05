@@ -66,7 +66,7 @@ class CompactTouchTargetTest {
         var details = 0
         composeRule.setContent {
             EcoGuardTheme {
-                HomeNoticeCard(HomeNoticeUiModel("2026. 09. 01", "활동 안내", "본문", false), {
+                HomeNoticeCard(HomeNoticeUiModel("2026. 09. 01", "활동 안내", "본문", false, noticeId = 1L), {
                     closes++
                 }, { details++ }, Modifier.padding(40.dp))
             }

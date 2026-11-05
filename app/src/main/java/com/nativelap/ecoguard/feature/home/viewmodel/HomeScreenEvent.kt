@@ -7,11 +7,15 @@ sealed interface HomeScreenEvent {
 
     data object NoticeCloseClick : HomeScreenEvent
 
-    data object NoticeDetailClick : HomeScreenEvent
+    data class NoticeDetailClick(
+        val noticeId: Long,
+    ) : HomeScreenEvent
 
     data object CleaningVerificationClick : HomeScreenEvent
 
-    data object SubmittedPhotoClick : HomeScreenEvent
+    data class SubmittedPhotoClick(
+        val verificationId: Long,
+    ) : HomeScreenEvent
 
     data object ActivityRecordClick : HomeScreenEvent
 

@@ -23,6 +23,7 @@ import androidx.compose.ui.unit.dp
 import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.feature.home.viewmodel.TodayCleaningStatus
 import com.nativelap.ecoguard.feature.home.viewmodel.TodayCleaningUiModel
+import com.nativelap.ecoguard.feature.verification.module.domain.model.VerificationUnavailableReason
 import com.nativelap.ecoguard.ui.component.EcoCard
 import com.nativelap.ecoguard.ui.component.EcoPrimaryButton
 import com.nativelap.ecoguard.ui.component.EcoSecondaryButton
@@ -100,6 +101,7 @@ fun HomeTodayCleaningCard(
 
         TodayCleaningAction(
             cleaningStatus = cleaningStatus,
+            hasVerificationId = todayCleaning.verificationId != null,
             onVerificationClick = onVerificationClick,
             onSubmittedPhotoClick = onSubmittedPhotoClick,
             onActivityRecordClick = onActivityRecordClick,
@@ -117,10 +119,34 @@ private fun todayCleaningTitle(cleaningStatus: TodayCleaningStatus): String =
         }
 
         is TodayCleaningStatus.OutsideVerificationTime -> {
-            stringResource(
-                R.string.home_verification_available_from,
-                cleaningStatus.availableFromTime,
-            )
+            when (cleaningStatus.reason) {
+                VerificationUnavailableReason.BEFORE_START -> {
+                    stringResource(
+                        R.string.home_verification_available_from,
+                        cleaningStatus.availableFromTime,
+                    )
+                }
+
+                VerificationUnavailableReason.AFTER_END -> {
+                    stringResource(R.string.verification_time_ended)
+                }
+
+                VerificationUnavailableReason.WEEKEND -> {
+                    stringResource(R.string.verification_weekend_title)
+                }
+
+                VerificationUnavailableReason.VACATION -> {
+                    stringResource(R.string.verification_vacation_title)
+                }
+
+                VerificationUnavailableReason.ALREADY_SUBMITTED -> {
+                    stringResource(R.string.home_already_submitted)
+                }
+
+                VerificationUnavailableReason.UNKNOWN -> {
+                    stringResource(R.string.home_verification_unavailable)
+                }
+            }
         }
 
         is TodayCleaningStatus.AiReviewing -> {
@@ -265,6 +291,7 @@ private fun RejectionReasonBox(
 @Composable
 private fun TodayCleaningAction(
     cleaningStatus: TodayCleaningStatus,
+    hasVerificationId: Boolean,
     onVerificationClick: () -> Unit,
     onSubmittedPhotoClick: () -> Unit,
     onActivityRecordClick: () -> Unit,
@@ -283,7 +310,14 @@ private fun TodayCleaningAction(
 
         is TodayCleaningStatus.OutsideVerificationTime -> {
             EcoSecondaryButton(
-                text = stringResource(R.string.home_outside_verification_time),
+                text =
+                    stringResource(
+                        if (cleaningStatus.reason == VerificationUnavailableReason.BEFORE_START) {
+                            R.string.home_outside_verification_time
+                        } else {
+                            R.string.home_verification_unavailable
+                        },
+                    ),
                 onClick = {},
                 modifier = modifier,
                 leadingIconRes = R.drawable.ic_clock_20,
@@ -295,9 +329,10 @@ private fun TodayCleaningAction(
         is TodayCleaningStatus.TeacherReviewing,
         -> {
             EcoSecondaryButton(
-                text = stringResource(R.string.home_view_submitted_photo),
+                text = stringResource(R.string.home_view_verification_detail),
                 onClick = onSubmittedPhotoClick,
                 modifier = modifier,
+                enabled = hasVerificationId,
             )
         }
 
@@ -314,6 +349,7 @@ private fun TodayCleaningAction(
                 text = stringResource(R.string.home_appeal),
                 onClick = onAppealClick,
                 modifier = modifier,
+                enabled = hasVerificationId,
             )
         }
     }

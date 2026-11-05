@@ -12,6 +12,7 @@ import com.nativelap.ecoguard.feature.recruitment.module.domain.model.Recruitmen
 import com.nativelap.ecoguard.feature.verification.module.domain.model.MyVerification
 import com.nativelap.ecoguard.feature.verification.module.domain.model.TodayVerification
 import com.nativelap.ecoguard.feature.verification.module.domain.model.VerificationStatus
+import com.nativelap.ecoguard.feature.verification.module.domain.model.VerificationUnavailableReason
 import com.nativelap.ecoguard.ui.component.StatusChipType
 import java.time.Duration
 import java.time.LocalDate
@@ -67,6 +68,7 @@ internal fun List<NoticeListItem>.toHomeNoticeUiModel(): HomeNoticeUiModel? =
             headline = notice.title,
             body = notice.preview,
             isNew = !notice.isRead,
+            noticeId = notice.noticeId.takeIf { it > 0L },
         )
     }
 
@@ -105,6 +107,7 @@ private fun TodayVerification.toTodayCleaningUiModel(
             } else {
                 TodayCleaningStatus.OutsideVerificationTime(
                     availableFromTime = startTime.toDisplayTimeOrUnknown(),
+                    reason = unavailableReason?.value ?: VerificationUnavailableReason.UNKNOWN,
                 )
             }
         } else {
@@ -157,6 +160,7 @@ private fun TodayVerification.toTodayCleaningUiModel(
         cleaningEndTime = cleaningRange.end,
         assignedAreaName = assignment.areaName,
         status = statusModel,
+        verificationId = verificationId?.takeIf { it > 0L },
     )
 }
 

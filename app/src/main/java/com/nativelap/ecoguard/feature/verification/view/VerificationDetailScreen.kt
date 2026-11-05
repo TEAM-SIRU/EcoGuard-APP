@@ -81,7 +81,7 @@ fun VerificationDetailScreen(
                 )
 
                 PhotoPlaceholder(
-                    label = stringResource(R.string.photo_submitted_label),
+                    label = stringResource(R.string.verification_photo_unavailable),
                     height = detailPhotoHeight,
                     modifier = Modifier.padding(bottom = AppSpacing.xl),
                 )

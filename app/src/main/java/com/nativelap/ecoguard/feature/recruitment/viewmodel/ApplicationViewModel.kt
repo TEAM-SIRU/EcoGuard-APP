@@ -24,6 +24,9 @@ class ApplicationViewModel
         private val _uiState = MutableStateFlow<ApplicationUiState?>(null)
         val uiState: StateFlow<ApplicationUiState?> = _uiState.asStateFlow()
 
+        private val mutableSuccessfulSubmissionCount = MutableStateFlow(0L)
+        val successfulSubmissionCount = mutableSuccessfulSubmissionCount.asStateFlow()
+
         private val _submissionResult = MutableStateFlow<ApplicationResultUiState.Completed?>(null)
         val submissionResult: StateFlow<ApplicationResultUiState.Completed?> = _submissionResult.asStateFlow()
 
@@ -80,6 +83,7 @@ class ApplicationViewModel
                             _uiState.value = currentState.copy(isApplying = false, isSubmissionFailed = true)
                         } else {
                             _uiState.value = currentState.copy(isApplying = false)
+                            mutableSuccessfulSubmissionCount.value += 1
                             _submissionResult.value = completedState
                         }
                     }

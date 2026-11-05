@@ -8,15 +8,19 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.window.DialogProperties
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.scene.DialogSceneStrategy
 import androidx.navigation3.ui.NavDisplay
+import com.nativelap.ecoguard.R
 import com.nativelap.ecoguard.core.presentation.LocalFeatureSessionId
 import com.nativelap.ecoguard.core.presentation.clearFeatureViewModelsForSession
 import com.nativelap.ecoguard.core.presentation.findActivity
@@ -25,6 +29,7 @@ import com.nativelap.ecoguard.feature.activity.view.ActivityRoute
 import com.nativelap.ecoguard.feature.activity.viewmodel.ActivityScreenEvent
 import com.nativelap.ecoguard.feature.appeal.view.AppealFormRoute
 import com.nativelap.ecoguard.feature.appeal.view.AppealHistoryRoute
+import com.nativelap.ecoguard.feature.appeal.view.AppealResultRoute
 import com.nativelap.ecoguard.feature.appeal.viewmodel.AppealFormUiState
 import com.nativelap.ecoguard.feature.appeal.viewmodel.AppealScreenEvent
 import com.nativelap.ecoguard.feature.area.view.AreaRoute
@@ -53,7 +58,9 @@ import com.nativelap.ecoguard.feature.recruitment.view.ApplicationRoute
 import com.nativelap.ecoguard.feature.recruitment.view.RecruitmentRoute
 import com.nativelap.ecoguard.feature.recruitment.viewmodel.ApplicationResultUiState
 import com.nativelap.ecoguard.feature.recruitment.viewmodel.ApplicationUiState
+import com.nativelap.ecoguard.feature.recruitment.viewmodel.ApplicationViewModel
 import com.nativelap.ecoguard.feature.recruitment.viewmodel.RecruitmentScreenEvent
+import com.nativelap.ecoguard.feature.verification.module.domain.model.VerificationUnavailableReason
 import com.nativelap.ecoguard.feature.verification.view.CameraCaptureRoute
 import com.nativelap.ecoguard.feature.verification.view.CameraGuideScreen
 import com.nativelap.ecoguard.feature.verification.view.PhotoConfirmScreen
@@ -65,6 +72,7 @@ import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationScreenE
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationSubmissionUiState
 import com.nativelap.ecoguard.feature.verification.viewmodel.VerificationSubmissionViewModel
 import com.nativelap.ecoguard.ui.component.EcoBottomTab
+import kotlinx.coroutines.flow.collect
 import java.io.File
 import java.time.Instant
 import java.time.ZoneId
@@ -131,15 +139,45 @@ internal fun EcoGuardMainNavDisplay(
     onWithdrawalSuccess: () -> Unit = {},
 ) {
     val navigator = remember(navigationState) { EcoGuardMainNavigator(navigationState) }
+    val context = androidx.compose.ui.platform.LocalContext.current
     val homeViewModel = rememberActivityViewModel<HomeViewModel>()
     val home by homeViewModel.uiState.collectAsState()
     val menu by rememberActivityViewModel<MenuViewModel>().uiState.collectAsState()
+    val applicationViewModel = rememberActivityViewModel<ApplicationViewModel>()
+    val homeRefreshTracker = rememberActivityViewModel<HomeRefreshTracker>()
+    val lifecycleOwner = context.findActivity()
+    val successfulApplicationCount by
+        produceState(
+            initialValue = 0L,
+            key1 = applicationViewModel,
+            key2 = lifecycleOwner,
+        ) {
+            lifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                applicationViewModel.successfulSubmissionCount.collect { count -> value = count }
+            }
+        }
     val submitViewModel = rememberActivityViewModel<VerificationSubmissionViewModel>()
     val upload by submitViewModel.uiState.collectAsState()
 
+    RefreshHomeAfterVerification(upload, homeRefreshTracker::claimVerificationRefresh, homeViewModel::loadHome)
+    RefreshHomeAfterApplication(
+        successfulApplicationCount,
+        homeRefreshTracker::claimApplicationRefresh,
+        homeViewModel::loadHome,
+    )
+
     fun camera() {
-        val today = ((home as? HomeUiState.Content)?.section as? HomeSectionUiModel.Cleaning)?.todayCleaning ?: return
-        val status = today.status as? TodayCleaningStatus.NotSubmitted ?: return
+        val today = ((home as? HomeUiState.Content)?.section as? HomeSectionUiModel.Cleaning)?.todayCleaning
+        val status = today?.status as? TodayCleaningStatus.NotSubmitted
+        if (today == null || status == null) {
+            android.widget.Toast
+                .makeText(
+                    context,
+                    cameraUnavailableMessage(home),
+                    android.widget.Toast.LENGTH_SHORT,
+                ).show()
+            return
+        }
         navigator.push(
             EcoGuardDestination.CameraGuide(
                 today.areaId,
@@ -181,8 +219,16 @@ internal fun EcoGuardMainNavDisplay(
                                 navigator.push(EcoGuardDestination.Notifications)
                             }
 
-                            HomeScreenEvent.NoticeListClick, HomeScreenEvent.NoticeDetailClick -> {
+                            HomeScreenEvent.NoticeListClick -> {
                                 navigator.push(EcoGuardDestination.Notices)
+                            }
+
+                            is HomeScreenEvent.NoticeDetailClick -> {
+                                navigator.push(EcoGuardDestination.NoticeDetail(e.noticeId))
+                            }
+
+                            is HomeScreenEvent.SubmittedPhotoClick -> {
+                                navigator.push(EcoGuardDestination.VerificationDetail(e.verificationId))
                             }
 
                             HomeScreenEvent.CleaningVerificationClick -> {
@@ -555,10 +601,27 @@ internal fun EcoGuardMainNavDisplay(
                 EcoGuardDestination.AppealHistory -> {
                     AppealHistoryRoute(onEvent = { e ->
                         when (e) {
-                            AppealScreenEvent.BackClick -> navigator.goBack()
-                            AppealScreenEvent.HomeClick -> navigator.returnToHome()
-                            AppealScreenEvent.ActivityRecordClick -> navigator.navigateToTab(EcoBottomTab.ACTIVITY)
-                            else -> Unit
+                            AppealScreenEvent.BackClick -> {
+                                navigator.goBack()
+                            }
+
+                            AppealScreenEvent.HomeClick -> {
+                                navigator.returnToHome()
+                            }
+
+                            AppealScreenEvent.ActivityRecordClick -> {
+                                navigator.navigateToTab(EcoBottomTab.ACTIVITY)
+                            }
+
+                            is AppealScreenEvent.HistoryItemClick -> {
+                                navigator.push(
+                                    EcoGuardDestination.AppealResult(e.appealId),
+                                )
+                            }
+
+                            else -> {
+                                Unit
+                            }
                         }
                     })
                 }
@@ -582,7 +645,14 @@ internal fun EcoGuardMainNavDisplay(
                     )
                 }
 
-                is EcoGuardDestination.AppealSubmitted, is EcoGuardDestination.AppealResult -> {
+                is EcoGuardDestination.AppealResult -> {
+                    AppealResultRoute(
+                        appealId = destination.appealId,
+                        onBack = navigator::goBack,
+                    )
+                }
+
+                is EcoGuardDestination.AppealSubmitted -> {
                     navigator.goBack()
                 }
 
@@ -637,3 +707,55 @@ private fun String.toDisplayTime(): String =
     runCatching {
         DateTimeFormatter.ofPattern("HH:mm").withZone(ZoneId.systemDefault()).format(Instant.parse(this))
     }.getOrElse { substringAfter('T').take(5).ifBlank { this } }
+
+@Composable
+internal fun RefreshHomeAfterVerification(
+    upload: VerificationSubmissionUiState,
+    claimRefresh: (Long) -> Boolean,
+    refreshHome: () -> Unit,
+) {
+    androidx.compose.runtime.LaunchedEffect(upload) {
+        if (upload is VerificationSubmissionUiState.Completed && claimRefresh(upload.verificationId)) {
+            refreshHome()
+        }
+    }
+}
+
+@Composable
+internal fun RefreshHomeAfterApplication(
+    successfulSubmissionCount: Long,
+    claimRefresh: (Long) -> Boolean,
+    refreshHome: () -> Unit,
+) {
+    androidx.compose.runtime.LaunchedEffect(successfulSubmissionCount) {
+        if (successfulSubmissionCount > 0 && claimRefresh(successfulSubmissionCount)) {
+            refreshHome()
+        }
+    }
+}
+
+internal fun cameraUnavailableMessage(home: HomeUiState): Int {
+    val status = ((home as? HomeUiState.Content)?.section as? HomeSectionUiModel.Cleaning)?.todayCleaning?.status
+    return when (status) {
+        is TodayCleaningStatus.OutsideVerificationTime -> {
+            when (status.reason) {
+                VerificationUnavailableReason.BEFORE_START -> R.string.home_outside_verification_time
+                VerificationUnavailableReason.AFTER_END -> R.string.verification_time_ended
+                VerificationUnavailableReason.WEEKEND -> R.string.verification_weekend_title
+                VerificationUnavailableReason.VACATION -> R.string.verification_vacation_title
+                VerificationUnavailableReason.ALREADY_SUBMITTED -> R.string.home_already_submitted
+                VerificationUnavailableReason.UNKNOWN -> R.string.home_verification_unavailable
+            }
+        }
+
+        is TodayCleaningStatus.AiReviewing, is TodayCleaningStatus.TeacherReviewing,
+        is TodayCleaningStatus.Approved, is TodayCleaningStatus.Rejected,
+        -> {
+            R.string.home_already_submitted
+        }
+
+        else -> {
+            R.string.home_verification_unavailable
+        }
+    }
+}
