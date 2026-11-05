@@ -145,6 +145,7 @@ fun HomeNoticeCard(
                 Modifier
                     .padding(top = AppSpacing.sm)
                     .clickable(
+                        enabled = notice.noticeId != null,
                         role = Role.Button,
                         onClick = onDetailClick,
                     ),

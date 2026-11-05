@@ -20,6 +20,7 @@ internal object HomePreviewFixtures {
             body = "매일 08:00 – 08:10에 청소하고\n사진 1장으로 인증해 주세요.",
             isNew = true,
             emphasizedPhrases = listOf("08:00 – 08:10", "사진 1장"),
+            noticeId = 1L,
         )
 
     val todayStatuses =

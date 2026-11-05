@@ -55,7 +55,7 @@ fun VerificationDetailRoute(
                     BottomCtaBar {
                         EcoPrimaryButton(
                             text = stringResource(R.string.action_retry),
-                            onClick = { onEvent(VerificationResultScreenEvent.RetryClick) },
+                            onClick = { screenViewModel.load(verificationId) },
                         )
                     }
                 },

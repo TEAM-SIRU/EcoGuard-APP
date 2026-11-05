@@ -45,4 +45,15 @@ class AppealPhotoImportTest {
             photo.delete()
         }
     }
+
+    @Test
+    fun webpSignatureIsAcceptedForAppeal() {
+        val photo = File.createTempFile("appeal-photo-test-", ".webp")
+        try {
+            photo.writeBytes("RIFF0000WEBP".toByteArray())
+            assertTrue(photo.hasImageSignature("image/webp"))
+        } finally {
+            photo.delete()
+        }
+    }
 }

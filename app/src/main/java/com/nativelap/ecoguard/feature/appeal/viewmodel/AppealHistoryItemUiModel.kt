@@ -11,4 +11,6 @@ data class AppealHistoryItemUiModel(
     val sentDateTime: String,
     val status: StatusChipType,
     val earnedMinutes: Int?,
+    val replyTitle: String? = null,
+    val reply: String? = null,
 )

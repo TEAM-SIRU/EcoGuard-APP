@@ -18,6 +18,8 @@ import com.nativelap.ecoguard.feature.verification.module.domain.model.MyVerific
 import com.nativelap.ecoguard.feature.verification.module.domain.model.TodayVerification
 import com.nativelap.ecoguard.feature.verification.module.domain.model.VerificationStatus
 import com.nativelap.ecoguard.feature.verification.module.domain.model.VerificationStatusValue
+import com.nativelap.ecoguard.feature.verification.module.domain.model.VerificationUnavailableReason
+import com.nativelap.ecoguard.feature.verification.module.domain.model.VerificationUnavailableReasonValue
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -86,6 +88,7 @@ class HomeUiMapperTest {
                 ),
             ).toHomeNoticeUiModel()
 
+        assertEquals(31L, notice?.noticeId)
         assertEquals("10월 25일", notice?.publishedDate)
         assertEquals("오늘 활동 안내", notice?.headline)
         assertEquals("인증 마감 시간을 확인해 주세요.", notice?.body)
@@ -181,10 +184,25 @@ class HomeUiMapperTest {
                         ),
                     ),
                 weeklyActivity = weeklyActivity(today),
-                monthlyActivity = monthlyActivity(today),
+                monthlyActivity =
+                    monthlyActivity(today).copy(
+                        records =
+                            listOf(
+                                ActivityRecord(
+                                    today.minusDays(1).toString(),
+                                    "복도",
+                                    ActivityResultStatus.REJECTED,
+                                    999L,
+                                    null,
+                                    0,
+                                ),
+                            ),
+                    ),
                 today = today,
             )
 
+        assertEquals(999L, rejected?.recentRecords?.firstOrNull()?.recordId)
+        assertEquals(101L, rejected?.todayCleaning?.verificationId)
         assertEquals(
             "청소 구역이 사진에 보이지 않아요",
             (rejected?.todayCleaning?.status as? TodayCleaningStatus.Rejected)?.rejectionReason,
@@ -205,6 +223,67 @@ class HomeUiMapperTest {
                 today = today,
             )
         assertNull(unknown)
+    }
+
+    @Test
+    fun missingTodayVerificationIdNeverUsesAnotherRecord() {
+        val today = LocalDate.parse("2026-10-25")
+        val cleaning =
+            assignment().toHomeCleaningSection(
+                todayVerification = todayVerification(false, true, VerificationStatus.PROCESSING, null),
+                myVerifications = emptyList(),
+                weeklyActivity = weeklyActivity(today),
+                monthlyActivity = monthlyActivity(today),
+                today = today,
+            )
+        assertNull(cleaning?.todayCleaning?.verificationId)
+    }
+
+    @Test
+    fun unavailableReasonComesFromServer() {
+        val today = LocalDate.parse("2026-10-25")
+        val verification =
+            todayVerification(false, false).copy(
+                unavailableReason =
+                    VerificationUnavailableReasonValue(
+                        VerificationUnavailableReason.WEEKEND,
+                        "WEEKEND",
+                    ),
+            )
+        val cleaning =
+            assignment().toHomeCleaningSection(
+                todayVerification = verification,
+                myVerifications = emptyList(),
+                weeklyActivity = weeklyActivity(today),
+                monthlyActivity = monthlyActivity(today),
+                today = today,
+            )
+        assertEquals(
+            VerificationUnavailableReason.WEEKEND,
+            (cleaning?.todayCleaning?.status as TodayCleaningStatus.OutsideVerificationTime).reason,
+        )
+    }
+
+    @Test
+    fun nonPositiveNoticeAndVerificationIdsAreNotNavigable() {
+        listOf(0L, -1L).forEach { invalidId ->
+            val notice =
+                listOf(
+                    NoticeListItem(invalidId, "공지", "내용", "2026-10-20", false),
+                ).toHomeNoticeUiModel()
+            assertNull(notice?.noticeId)
+
+            val today = LocalDate.parse("2026-10-25")
+            val cleaning =
+                assignment().toHomeCleaningSection(
+                    todayVerification = todayVerification(false, true, VerificationStatus.PROCESSING, invalidId),
+                    myVerifications = emptyList(),
+                    weeklyActivity = weeklyActivity(today),
+                    monthlyActivity = monthlyActivity(today),
+                    today = today,
+                )
+            assertNull(cleaning?.todayCleaning?.verificationId)
+        }
     }
 
     @Test

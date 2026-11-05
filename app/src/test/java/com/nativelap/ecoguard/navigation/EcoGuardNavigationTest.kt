@@ -49,6 +49,18 @@ class EcoGuardNavigationTest {
     }
 
     @Test
+    fun appealResultBackReturnsToAppealHistory() {
+        val state = state()
+        val navigator = EcoGuardMainNavigator(state)
+        navigator.push(EcoGuardDestination.AppealHistory)
+        navigator.push(EcoGuardDestination.AppealResult(43))
+
+        navigator.goBack()
+
+        assertEquals(EcoGuardDestination.AppealHistory, state.currentBackStack.last())
+    }
+
+    @Test
     fun duplicateDestinationPushDoesNotDuplicateBackStack() {
         val state = state()
         val navigator = EcoGuardMainNavigator(state)

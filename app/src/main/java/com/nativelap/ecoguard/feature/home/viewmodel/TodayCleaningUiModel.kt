@@ -1,6 +1,7 @@
 package com.nativelap.ecoguard.feature.home.viewmodel
 
 import androidx.compose.runtime.Immutable
+import com.nativelap.ecoguard.feature.verification.module.domain.model.VerificationUnavailableReason
 
 @Immutable
 data class TodayCleaningUiModel(
@@ -9,6 +10,7 @@ data class TodayCleaningUiModel(
     val cleaningEndTime: String,
     val assignedAreaName: String,
     val status: TodayCleaningStatus,
+    val verificationId: Long? = null,
 )
 
 @Immutable
@@ -19,6 +21,7 @@ sealed interface TodayCleaningStatus {
 
     data class OutsideVerificationTime(
         val availableFromTime: String,
+        val reason: VerificationUnavailableReason = VerificationUnavailableReason.BEFORE_START,
     ) : TodayCleaningStatus
 
     data class AiReviewing(

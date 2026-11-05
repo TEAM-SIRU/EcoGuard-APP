@@ -213,7 +213,8 @@ internal fun File.hasImageSignature(mimeType: String): Boolean {
             }
 
             "image/webp" -> {
-                readCount >= 12 && String(header, 0, 4, Charsets.US_ASCII) == "RIFF" &&
+                readCount >= 12 &&
+                    String(header, 0, 4, Charsets.US_ASCII) == "RIFF" &&
                     String(header, 8, 4, Charsets.US_ASCII) == "WEBP"
             }
 

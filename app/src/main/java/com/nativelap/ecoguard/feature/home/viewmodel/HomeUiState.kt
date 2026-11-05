@@ -33,6 +33,7 @@ data class HomeNoticeUiModel(
     val body: String,
     val isNew: Boolean,
     val emphasizedPhrases: List<String> = emptyList(),
+    val noticeId: Long? = null,
 )
 
 @Immutable

@@ -1,6 +1,10 @@
 package com.nativelap.ecoguard.feature.appeal.viewmodel
 
 sealed interface AppealScreenEvent {
+    data class HistoryItemClick(
+        val appealId: Long,
+    ) : AppealScreenEvent
+
     data class ContentChange(
         val appealContent: String,
     ) : AppealScreenEvent

@@ -28,7 +28,6 @@ import com.nativelap.ecoguard.ui.component.EcoAdaptiveNavigationLayout
 import com.nativelap.ecoguard.ui.component.EcoBottomTab
 import com.nativelap.ecoguard.ui.component.EcoBottomTabBar
 import com.nativelap.ecoguard.ui.component.EcoTopBar
-import com.nativelap.ecoguard.ui.component.StatusChipType
 import com.nativelap.ecoguard.ui.component.isExpandedLayout
 import com.nativelap.ecoguard.ui.component.twoPaneContentMaxWidth
 import com.nativelap.ecoguard.ui.theme.AppComponentSize
@@ -48,10 +47,7 @@ fun HomeScreen(
             val rejectedStatus = cleaning.todayCleaning.status as? TodayCleaningStatus.Rejected
             rejectedStatus?.let { status ->
                 HomeScreenEvent.AppealClick(
-                    verificationId =
-                        cleaning.recentRecords
-                            .firstOrNull { it.status == StatusChipType.REJECTED }
-                            ?.recordId,
+                    verificationId = cleaning.todayCleaning.verificationId,
                     rejectionReason = status.rejectionReason,
                     verificationDeadlineTime = cleaning.todayCleaning.cleaningEndTime,
                 )
@@ -110,7 +106,9 @@ fun HomeScreen(
                         HomeNoticeCard(
                             notice = uiState.notice,
                             onCloseClick = { onEvent(HomeScreenEvent.NoticeCloseClick) },
-                            onDetailClick = { onEvent(HomeScreenEvent.NoticeDetailClick) },
+                            onDetailClick = {
+                                uiState.notice.noticeId?.let { onEvent(HomeScreenEvent.NoticeDetailClick(it)) }
+                            },
                         )
                     }
 
@@ -156,7 +154,11 @@ private fun HomeSection(
                         HomeTodayCleaningCard(
                             todayCleaning = section.todayCleaning,
                             onVerificationClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
-                            onSubmittedPhotoClick = { onEvent(HomeScreenEvent.SubmittedPhotoClick) },
+                            onSubmittedPhotoClick = {
+                                section.todayCleaning.verificationId?.let {
+                                    onEvent(HomeScreenEvent.SubmittedPhotoClick(it))
+                                }
+                            },
                             onActivityRecordClick = { onEvent(HomeScreenEvent.ActivityRecordClick) },
                             onAppealClick = { appealEvent?.let(onEvent) },
                         )
@@ -174,7 +176,11 @@ private fun HomeSection(
                 HomeTodayCleaningCard(
                     todayCleaning = section.todayCleaning,
                     onVerificationClick = { onEvent(HomeScreenEvent.CleaningVerificationClick) },
-                    onSubmittedPhotoClick = { onEvent(HomeScreenEvent.SubmittedPhotoClick) },
+                    onSubmittedPhotoClick = {
+                        section.todayCleaning.verificationId?.let {
+                            onEvent(HomeScreenEvent.SubmittedPhotoClick(it))
+                        }
+                    },
                     onActivityRecordClick = { onEvent(HomeScreenEvent.ActivityRecordClick) },
                     onAppealClick = { appealEvent?.let(onEvent) },
                 )

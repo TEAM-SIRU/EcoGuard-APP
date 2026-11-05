@@ -8,6 +8,7 @@ import com.nativelap.ecoguard.feature.appeal.module.domain.model.MyAppeal
 import com.nativelap.ecoguard.feature.appeal.module.domain.usecase.GetMyAppealsUseCase
 import com.nativelap.ecoguard.ui.component.StatusChipType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,29 +28,33 @@ class AppealHistoryViewModel
         private val _uiState = MutableStateFlow<AppealHistoryUiState>(AppealHistoryUiState.Loading)
         val uiState: StateFlow<AppealHistoryUiState> = _uiState.asStateFlow()
 
-        fun loadHistory() {
-            _uiState.value = AppealHistoryUiState.Loading
-            viewModelScope.launch {
-                when (val result = getMyAppeals()) {
-                    is AppResult.Success -> {
-                        val items = result.value.mapNotNull(MyAppeal::toUiModel)
-                        _uiState.value =
-                            when {
-                                items.size != result.value.size -> AppealHistoryUiState.LoadFailed
-                                items.isEmpty() -> AppealHistoryUiState.Empty
-                                else -> AppealHistoryUiState.Content(items)
-                            }
-                    }
+        private var loadJob: Job? = null
 
-                    is AppResult.Failure -> {
-                        _uiState.value = AppealHistoryUiState.LoadFailed
+        fun loadHistory() {
+            loadJob?.cancel()
+            _uiState.value = AppealHistoryUiState.Loading
+            loadJob =
+                viewModelScope.launch {
+                    when (val result = getMyAppeals()) {
+                        is AppResult.Success -> {
+                            val items = result.value.mapNotNull(MyAppeal::toUiModel)
+                            _uiState.value =
+                                when {
+                                    items.size != result.value.size -> AppealHistoryUiState.LoadFailed
+                                    items.isEmpty() -> AppealHistoryUiState.Empty
+                                    else -> AppealHistoryUiState.Content(items)
+                                }
+                        }
+
+                        is AppResult.Failure -> {
+                            _uiState.value = AppealHistoryUiState.LoadFailed
+                        }
                     }
                 }
-            }
         }
     }
 
-private fun MyAppeal.toUiModel(): AppealHistoryItemUiModel? {
+internal fun MyAppeal.toUiModel(): AppealHistoryItemUiModel? {
     val validAppealId = appealId?.takeIf { it > 0L } ?: return null
     val formattedVerificationDate = verificationDate.toDisplayDate() ?: return null
     val validRound = round?.takeIf { it > 0 } ?: return null
@@ -68,6 +73,8 @@ private fun MyAppeal.toUiModel(): AppealHistoryItemUiModel? {
         status = chip,
         sentDateTime = formattedCreatedAt,
         earnedMinutes = awardedMinutes,
+        replyTitle = replyTitle?.takeIf(String::isNotBlank),
+        reply = reply?.takeIf(String::isNotBlank),
     )
 }
 

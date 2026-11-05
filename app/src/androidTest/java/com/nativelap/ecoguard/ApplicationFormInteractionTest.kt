@@ -18,6 +18,7 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
 import androidx.test.espresso.Espresso
+import com.nativelap.ecoguard.core.domain.result.AppError
 import com.nativelap.ecoguard.core.domain.result.AppResult
 import com.nativelap.ecoguard.feature.recruitment.module.domain.model.ApplicationStatus
 import com.nativelap.ecoguard.feature.recruitment.module.domain.model.ApplicationStatusValue
@@ -146,6 +147,32 @@ class ApplicationFormInteractionTest {
         composeRule.waitUntil { submittedResults.size == 1 }
 
         assertEquals(1, submittedResults.single().applicationOrder)
+    }
+
+    @Test
+    fun failedApplicationDoesNotIncrementSuccessfulSubmissionCount() {
+        val resultGate = CompletableDeferred<AppResult<ApplyResult>>()
+        val viewModel =
+            ApplicationViewModel(
+                ApplyForRecruitmentUseCase(FakeRecruitmentRepository(resultGate)),
+            )
+        composeRule.setContent {
+            EcoGuardTheme {
+                ApplicationRoute(
+                    recruitmentId = 10,
+                    uiState = ApplicationUiState(2, 3, "05", "민준"),
+                    viewModel = viewModel,
+                )
+            }
+        }
+        composeRule.waitUntil { viewModel.uiState.value != null }
+        composeRule.onNodeWithContentDescription("신청 동기").performTextInput("신청합니다")
+        composeRule.onNodeWithText("신청하기").performClick()
+        composeRule.waitUntil { viewModel.uiState.value?.isApplying == true }
+
+        resultGate.complete(AppResult.Failure(AppError.Connectivity))
+        composeRule.waitUntil { viewModel.uiState.value?.isSubmissionFailed == true }
+        composeRule.runOnIdle { assertEquals(0L, viewModel.successfulSubmissionCount.value) }
     }
 
     private class FakeRecruitmentRepository(
