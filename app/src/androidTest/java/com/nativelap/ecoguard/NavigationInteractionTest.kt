@@ -28,7 +28,8 @@ import com.nativelap.ecoguard.feature.notice.view.NoticeListScreen
 import com.nativelap.ecoguard.feature.notice.viewmodel.NoticeDetailUiState
 import com.nativelap.ecoguard.feature.notice.viewmodel.NoticeScreenEvent
 import com.nativelap.ecoguard.feature.notice.viewmodel.NoticeUiState
-import com.nativelap.ecoguard.feature.notification.view.NotificationRoute
+import com.nativelap.ecoguard.feature.notification.view.NotificationScreen
+import com.nativelap.ecoguard.feature.notification.viewmodel.NotificationScreenEvent
 import com.nativelap.ecoguard.feature.notification.viewmodel.NotificationUiState
 import com.nativelap.ecoguard.navigation.EcoGuardDestination
 import com.nativelap.ecoguard.navigation.EcoGuardMainNavigator
@@ -108,13 +109,12 @@ class NavigationInteractionTest {
             EcoGuardTheme {
                 when (navigationState.currentBackStack.last()) {
                     EcoGuardDestination.Notifications -> {
-                        NotificationRoute(
+                        NotificationScreen(
                             uiState = NotificationUiState.NotIntegrated,
                             selectedTab = navigationState.selectedTab,
-                            onBack = navigator::goBack,
-                            onTab = navigator::navigateToTab,
-                            onCamera = {},
-                            onOpenNotification = { false },
+                            onEvent = { event ->
+                                if (event == NotificationScreenEvent.BackClick) navigator.goBack()
+                            },
                         )
                     }
 

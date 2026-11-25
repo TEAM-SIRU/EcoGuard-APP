@@ -7,6 +7,7 @@ data class NotificationUiModel(
     val notificationId: Long,
     val title: String,
     val sentDate: String,
-    val target: NotificationTarget,
+    val target: NotificationTarget?,
     val isRead: Boolean = false,
+    val body: String = "",
 )

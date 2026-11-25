@@ -314,4 +314,7 @@
     <string name="help_later">추후 제공</string>
     <string name="action_back">뒤로 가기</string>
     <string name="notice_missing_description">공지사항 목록에서 다른 공지를 확인해 주세요</string>
+    <string name="notification_unread_count">읽지 않은 알림 %1$d개</string>
+    <string name="notification_read_all">모두 읽음</string>
+    <string name="notification_update_failed">알림을 갱신하지 못했어요.</string>
 </resources>

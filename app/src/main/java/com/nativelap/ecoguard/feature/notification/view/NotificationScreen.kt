@@ -12,9 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Badge
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -89,7 +91,23 @@ fun NotificationScreen(
                     ) {
                         when (uiState) {
                             is NotificationUiState.Content -> {
-                                item { NotificationCount(uiState.notifications.size) }
+                                item {
+                                    Badge {
+                                        Text(stringResource(R.string.notification_unread_count, uiState.unreadCount))
+                                    }
+                                    TextButton(
+                                        enabled = !uiState.isUpdating && uiState.unreadCount > 0,
+                                        onClick = { onEvent(NotificationScreenEvent.ReadAllClick) },
+                                    ) {
+                                        Text(stringResource(R.string.notification_read_all))
+                                    }
+                                    if (uiState.updateFailed) {
+                                        Text(stringResource(R.string.notification_update_failed))
+                                        TextButton(onClick = { onEvent(NotificationScreenEvent.RetryClick) }) {
+                                            Text(stringResource(R.string.action_retry))
+                                        }
+                                    }
+                                }
                                 items(uiState.notifications, key = { it.notificationId }) { notification ->
                                     NotificationCard(
                                         notification,

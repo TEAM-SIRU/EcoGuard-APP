@@ -3,6 +3,8 @@ package com.nativelap.ecoguard.feature.notification.viewmodel
 import com.nativelap.ecoguard.ui.component.EcoBottomTab
 
 sealed interface NotificationScreenEvent {
+    data object ReadAllClick : NotificationScreenEvent
+
     data object BackClick : NotificationScreenEvent
 
     data object RetryClick : NotificationScreenEvent
