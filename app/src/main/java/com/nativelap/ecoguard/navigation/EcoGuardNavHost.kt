@@ -52,7 +52,6 @@ import com.nativelap.ecoguard.feature.notice.view.NoticeDetailRoute
 import com.nativelap.ecoguard.feature.notice.view.NoticeListRoute
 import com.nativelap.ecoguard.feature.notice.viewmodel.NoticeScreenEvent
 import com.nativelap.ecoguard.feature.notification.view.NotificationRoute
-import com.nativelap.ecoguard.feature.notification.viewmodel.NotificationUiState
 import com.nativelap.ecoguard.feature.recruitment.view.ApplicationResultScreen
 import com.nativelap.ecoguard.feature.recruitment.view.ApplicationRoute
 import com.nativelap.ecoguard.feature.recruitment.view.RecruitmentRoute
@@ -334,12 +333,10 @@ internal fun EcoGuardMainNavDisplay(
 
                 EcoGuardDestination.Notifications -> {
                     NotificationRoute(
-                        NotificationUiState.NotIntegrated,
                         navigationState.selectedTab,
                         navigator::goBack,
                         navigator::navigateToTab,
                         ::camera,
-                        { false },
                     )
                 }
 

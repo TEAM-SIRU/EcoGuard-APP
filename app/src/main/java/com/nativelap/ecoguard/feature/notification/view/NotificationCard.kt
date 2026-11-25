@@ -47,6 +47,13 @@ fun NotificationCard(
                 overflow = TextOverflow.Ellipsis,
             )
             Text(
+                notification.body,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
                 notification.sentDate,
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.extraColors.captionTextColor,
