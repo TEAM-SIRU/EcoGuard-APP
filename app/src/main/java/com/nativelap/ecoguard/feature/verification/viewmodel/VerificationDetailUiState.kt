@@ -17,5 +17,6 @@ sealed interface VerificationDetailUiState {
         val status: StatusChipType,
         val areaName: String,
         val submittedDateTime: String,
+        val photoUrl: String?,
     ) : VerificationDetailUiState
 }
