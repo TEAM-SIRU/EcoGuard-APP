@@ -15,26 +15,13 @@ data class AuthorizeResponseDto(
 )
 
 @Serializable
-data class ExchangeRequestDto(
-    @SerialName("handoffCode") val handoffCode: String,
-    @SerialName("handoffVerifier") val handoffVerifier: String,
+data class LoginRequestDto(
+    @SerialName("authCode") val authCode: String,
+    @SerialName("redirectUri") val redirectUri: String,
 )
 
 @Serializable
 data class AuthSessionResponseDto(
-    @SerialName("accessToken") val accessToken: String,
-    @SerialName("refreshToken") val refreshToken: String,
-    @SerialName("user") val user: AuthUserDto? = null,
-)
-
-@Serializable
-data class LoginRequestDto(
-    @SerialName("authCode") val authCode: String,
-    @SerialName("redirectUri") val redirectUri: String? = null,
-)
-
-@Serializable
-data class LoginResponseDto(
     @SerialName("accessToken") val accessToken: String,
     @SerialName("refreshToken") val refreshToken: String,
     @SerialName("user") val user: AuthUserDto? = null,

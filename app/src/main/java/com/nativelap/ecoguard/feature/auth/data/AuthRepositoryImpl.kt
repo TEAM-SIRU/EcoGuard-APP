@@ -68,12 +68,13 @@ class AuthRepositoryImpl
                     )
                 }
                 exchangeMutex.withLock {
-                    val verifier =
-                        sessionManager.claimPendingExchange(challenge)
-                            ?: return@withLock NetworkResult.Failure(
-                                com.nativelap.ecoguard.core.network.NetworkError.InvalidResponse,
-                            )
-                    when (val result = remote.exchange(handoffCode, verifier)) {
+                    val verifier = sessionManager.claimPendingExchange(challenge)
+                    if (verifier == null) {
+                        return@withLock NetworkResult.Failure(
+                            com.nativelap.ecoguard.core.network.NetworkError.InvalidResponse,
+                        )
+                    }
+                    when (val result = remote.login(handoffCode, MOBILE_CALLBACK_URI)) {
                         is NetworkResult.Failure -> {
                             result
                         }
@@ -112,6 +113,7 @@ class AuthRepositoryImpl
 
         private companion object {
             const val MAX_HANDOFF_CODE_LENGTH = 2048
+            const val MOBILE_CALLBACK_URI = "https://ecoguard.https.gsmsv.site/auth/mobile-callback"
             val ALLOWED_AUTH_HOSTS = setOf("oauth.authorization.datagsm.kr")
         }
     }

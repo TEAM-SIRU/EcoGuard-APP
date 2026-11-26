@@ -10,8 +10,8 @@ interface AuthApiService {
         @Body request: AuthorizeRequestDto,
     ): Response<AuthorizeResponseDto>
 
-    @POST("api/v1/auth/exchange")
-    suspend fun exchange(
-        @Body request: ExchangeRequestDto,
+    @POST("api/v1/auth/login")
+    suspend fun login(
+        @Body request: LoginRequestDto,
     ): Response<AuthSessionResponseDto>
 }

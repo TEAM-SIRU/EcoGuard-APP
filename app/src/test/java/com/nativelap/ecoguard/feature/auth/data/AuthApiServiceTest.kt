@@ -11,12 +11,12 @@ import retrofit2.http.POST
 
 class AuthApiServiceTest {
     @Test
-    fun `authorize and exchange use proposed server contract paths and request bodies`() {
+    fun `authorize and login use server contract paths and request bodies`() {
         val authorize = method("authorize")
-        val exchange = method("exchange")
+        val login = method("login")
 
         assertEquals("api/v1/auth/authorize", authorize.getAnnotation(POST::class.java).value)
-        assertEquals("api/v1/auth/exchange", exchange.getAnnotation(POST::class.java).value)
+        assertEquals("api/v1/auth/login", login.getAnnotation(POST::class.java).value)
         assertNotNull(
             authorize.parameterAnnotations
                 .flatMap { it.toList() }
@@ -24,7 +24,7 @@ class AuthApiServiceTest {
                 .single(),
         )
         assertNotNull(
-            exchange.parameterAnnotations
+            login.parameterAnnotations
                 .flatMap { it.toList() }
                 .filterIsInstance<Body>()
                 .single(),
@@ -40,8 +40,13 @@ class AuthApiServiceTest {
             json.encodeToString(AuthorizeRequestDto("challenge", "S256")),
         )
         assertEquals(
-            """{"handoffCode":"one-time-code","handoffVerifier":"verifier"}""",
-            json.encodeToString(ExchangeRequestDto("one-time-code", "verifier")),
+            """{"authCode":"one-time-code","redirectUri":"https://ecoguard.https.gsmsv.site/auth/mobile-callback"}""",
+            json.encodeToString(
+                LoginRequestDto(
+                    "one-time-code",
+                    "https://ecoguard.https.gsmsv.site/auth/mobile-callback",
+                ),
+            ),
         )
     }
 

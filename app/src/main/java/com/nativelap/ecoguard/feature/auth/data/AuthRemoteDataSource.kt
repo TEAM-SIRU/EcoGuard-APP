@@ -8,9 +8,9 @@ import javax.inject.Singleton
 interface AuthRemoteDataSource {
     suspend fun authorize(challenge: String): NetworkResult<AuthorizeResponseDto>
 
-    suspend fun exchange(
-        code: String,
-        verifier: String,
+    suspend fun login(
+        authCode: String,
+        redirectUri: String,
     ): NetworkResult<AuthSessionResponseDto>
 }
 
@@ -24,8 +24,11 @@ class AuthRemoteDataSourceImpl
         override suspend fun authorize(challenge: String): NetworkResult<AuthorizeResponseDto> =
             executor.execute { api.authorize(AuthorizeRequestDto(challenge, "S256")) }
 
-        override suspend fun exchange(
-            code: String,
-            verifier: String,
-        ): NetworkResult<AuthSessionResponseDto> = executor.execute { api.exchange(ExchangeRequestDto(code, verifier)) }
+        override suspend fun login(
+            authCode: String,
+            redirectUri: String,
+        ): NetworkResult<AuthSessionResponseDto> =
+            executor.execute {
+                api.login(LoginRequestDto(authCode, redirectUri))
+            }
     }

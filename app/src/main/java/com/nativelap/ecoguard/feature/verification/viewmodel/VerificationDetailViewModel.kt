@@ -81,6 +81,7 @@ private fun MyVerification.toDetailUiState(): VerificationDetailUiState {
         status = chip,
         areaName = area,
         submittedDateTime = "$recordDate $time",
+        photoUrl = photoUrl,
     )
 }
 
