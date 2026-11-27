@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,9 +13,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -89,7 +92,27 @@ fun NotificationScreen(
                     ) {
                         when (uiState) {
                             is NotificationUiState.Content -> {
-                                item { NotificationCount(uiState.notifications.size) }
+                                item {
+                                    NotificationCount(uiState.notifications.size)
+                                    if (uiState.isUpdatingReadState) {
+                                        Row(
+                                            horizontalArrangement = Arrangement.spacedBy(AppSpacing.xs),
+                                            verticalAlignment = Alignment.CenterVertically,
+                                            modifier = Modifier.padding(horizontal = AppSpacing.xs),
+                                        ) {
+                                            CircularProgressIndicator()
+                                            Text(stringResource(R.string.notification_read_update_in_progress))
+                                        }
+                                    }
+                                    if (uiState.unreadCount > 0) {
+                                        TextButton(
+                                            enabled = !uiState.isUpdatingReadState,
+                                            onClick = { onEvent(NotificationScreenEvent.MarkAllReadClick) },
+                                        ) {
+                                            Text(stringResource(R.string.notification_mark_all_read))
+                                        }
+                                    }
+                                }
                                 items(uiState.notifications, key = { it.notificationId }) { notification ->
                                     NotificationCard(
                                         notification,
@@ -98,6 +121,7 @@ fun NotificationScreen(
                                                 NotificationScreenEvent.NotificationClick(notification.notificationId),
                                             )
                                         },
+                                        isEnabled = !uiState.isUpdatingReadState,
                                     )
                                 }
                             }
@@ -129,17 +153,6 @@ fun NotificationScreen(
                                     )
                                 }
                             }
-
-                            NotificationUiState.NotIntegrated -> {
-                                item {
-                                    InlineEmptyState(
-                                        R.drawable.ic_map_30,
-                                        stringResource(R.string.notification_not_integrated),
-                                        stringResource(R.string.notification_not_integrated_description),
-                                        Modifier.padding(vertical = AppSpacing.xl),
-                                    )
-                                }
-                            }
                         }
                     }
                 }
@@ -163,7 +176,7 @@ private fun NotificationCount(count: Int) {
 private fun NotificationPreview() {
     EcoGuardTheme {
         NotificationScreen(
-            NotificationUiState.NotIntegrated,
+            NotificationUiState.Empty,
             EcoBottomTab.HOME,
             {
             },

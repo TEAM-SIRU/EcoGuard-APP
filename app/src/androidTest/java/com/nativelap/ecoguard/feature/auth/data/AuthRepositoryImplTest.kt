@@ -92,11 +92,11 @@ class AuthRepositoryImplTest {
         }
 
     @Test
-    fun completeLoginPersistsTheExchangedSessionAndRejectsASecondExchange() =
+    fun completeLoginPersistsTheSessionAndRejectsASecondLogin() =
         runBlocking {
             val remote =
                 FakeAuthRemoteDataSource().apply {
-                    exchangeResult =
+                    loginResult =
                         NetworkResult.Success(
                             AuthSessionResponseDto(
                                 accessToken = "access-token",
@@ -130,13 +130,14 @@ class AuthRepositoryImplTest {
                         ?.user
                         ?.name,
                 )
-                assertEquals(1, remote.exchangeCalls.size)
-                assertEquals("one-time-code", remote.exchangeCalls.single().first)
+                assertEquals(1, remote.loginCalls.size)
+                assertEquals("one-time-code", remote.loginCalls.single().first)
+                assertEquals(MOBILE_CALLBACK_URI, remote.loginCalls.single().second)
                 assertEquals(
                     NetworkResult.Failure(NetworkError.InvalidResponse),
                     harness.repository.completeLogin("one-time-code", challenge),
                 )
-                assertEquals(1, remote.exchangeCalls.size)
+                assertEquals(1, remote.loginCalls.size)
             } finally {
                 harness.clear()
             }
@@ -151,7 +152,7 @@ class AuthRepositoryImplTest {
             ).forEach { (accessToken, refreshToken) ->
                 val remote =
                     FakeAuthRemoteDataSource().apply {
-                        exchangeResult =
+                        loginResult =
                             NetworkResult.Success(
                                 AuthSessionResponseDto(
                                     accessToken = accessToken,
@@ -172,7 +173,7 @@ class AuthRepositoryImplTest {
                     )
                     assertEquals(null, harness.sessionManager.getAccessToken())
                     assertEquals(null, harness.sessionManager.getRefreshToken())
-                    assertEquals(1, remote.exchangeCalls.size)
+                    assertEquals(1, remote.loginCalls.size)
                 } finally {
                     harness.clear()
                 }
@@ -184,7 +185,7 @@ class AuthRepositoryImplTest {
         runBlocking {
             val remote =
                 FakeAuthRemoteDataSource().apply {
-                    exchangeResult =
+                    loginResult =
                         NetworkResult.Success(
                             AuthSessionResponseDto(
                                 accessToken = "access-token",
@@ -205,7 +206,7 @@ class AuthRepositoryImplTest {
                 )
                 assertEquals(null, harness.sessionManager.getAccessToken())
                 assertEquals(null, harness.sessionManager.getRefreshToken())
-                assertEquals(1, remote.exchangeCalls.size)
+                assertEquals(1, remote.loginCalls.size)
             } finally {
                 harness.clear()
             }
@@ -233,7 +234,7 @@ class AuthRepositoryImplTest {
                     NetworkResult.Failure(NetworkError.InvalidResponse),
                     harness.repository.completeLogin("one-time-code", "different-challenge"),
                 )
-                assertTrue(remote.exchangeCalls.isEmpty())
+                assertTrue(remote.loginCalls.isEmpty())
             } finally {
                 harness.clear()
             }
@@ -244,7 +245,7 @@ class AuthRepositoryImplTest {
         runBlocking {
             val remote =
                 FakeAuthRemoteDataSource().apply {
-                    exchangeResult = NetworkResult.Failure(NetworkError.Http(503))
+                    loginResult = NetworkResult.Failure(NetworkError.Http(503))
                 }
             val harness = createHarness(remote)
 
@@ -261,7 +262,7 @@ class AuthRepositoryImplTest {
                     NetworkResult.Failure(NetworkError.InvalidResponse),
                     harness.repository.completeLogin("one-time-code", challenge),
                 )
-                assertEquals(1, remote.exchangeCalls.size)
+                assertEquals(1, remote.loginCalls.size)
             } finally {
                 harness.clear()
             }
@@ -431,22 +432,22 @@ class AuthRepositoryImplTest {
         var authorizationUrl = authorizationUrl
         var authorizeResult: NetworkResult<AuthorizeResponseDto> =
             NetworkResult.Success(AuthorizeResponseDto(authorizationUrl))
-        var exchangeResult: NetworkResult<AuthSessionResponseDto> =
+        var loginResult: NetworkResult<AuthSessionResponseDto> =
             NetworkResult.Failure(NetworkError.Connectivity)
         var authorizeChallenge: String? = null
-        val exchangeCalls = mutableListOf<Pair<String, String>>()
+        val loginCalls = mutableListOf<Pair<String, String>>()
 
         override suspend fun authorize(challenge: String): NetworkResult<AuthorizeResponseDto> {
             authorizeChallenge = challenge
             return authorizeResult
         }
 
-        override suspend fun exchange(
-            code: String,
-            verifier: String,
+        override suspend fun login(
+            authCode: String,
+            redirectUri: String,
         ): NetworkResult<AuthSessionResponseDto> {
-            exchangeCalls += code to verifier
-            return exchangeResult
+            loginCalls += authCode to redirectUri
+            return loginResult
         }
     }
 
@@ -454,6 +455,7 @@ class AuthRepositoryImplTest {
         const val ANDROID_KEYSTORE_PROVIDER = "AndroidKeyStore"
         const val AUTH_KEY_ALIAS = "ecoguard_auth_session_key"
         const val MAX_HANDOFF_CODE_LENGTH = 2048
+        const val MOBILE_CALLBACK_URI = "https://ecoguard.https.gsmsv.site/auth/mobile-callback"
         const val SESSION_PREFERENCES_NAME = "secure_auth_session"
     }
 }

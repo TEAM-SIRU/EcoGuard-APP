@@ -52,7 +52,7 @@ import com.nativelap.ecoguard.feature.notice.view.NoticeDetailRoute
 import com.nativelap.ecoguard.feature.notice.view.NoticeListRoute
 import com.nativelap.ecoguard.feature.notice.viewmodel.NoticeScreenEvent
 import com.nativelap.ecoguard.feature.notification.view.NotificationRoute
-import com.nativelap.ecoguard.feature.notification.viewmodel.NotificationUiState
+import com.nativelap.ecoguard.feature.notification.view.NotificationSettingsRoute
 import com.nativelap.ecoguard.feature.recruitment.view.ApplicationResultScreen
 import com.nativelap.ecoguard.feature.recruitment.view.ApplicationRoute
 import com.nativelap.ecoguard.feature.recruitment.view.RecruitmentRoute
@@ -319,28 +319,60 @@ internal fun EcoGuardMainNavDisplay(
                 EcoGuardDestination.Menu -> {
                     MenuRoute(onEvent = { e ->
                         when (e) {
-                            is MenuScreenEvent.TabSelect -> navigator.navigateToTab(e.tab)
-                            MenuScreenEvent.AreaClick -> navigator.navigateToTab(EcoBottomTab.AREA)
-                            MenuScreenEvent.ApplicationResultClick -> navigator.push(EcoGuardDestination.Recruitment)
-                            MenuScreenEvent.AppealHistoryClick -> navigator.push(EcoGuardDestination.AppealHistory)
-                            MenuScreenEvent.NoticeClick -> navigator.push(EcoGuardDestination.Notices)
-                            MenuScreenEvent.LogoutConfirm -> onSignOut()
-                            MenuScreenEvent.WithdrawalSucceeded -> onWithdrawalSuccess()
-                            MenuScreenEvent.CameraClick -> camera()
-                            else -> Unit
+                            is MenuScreenEvent.TabSelect -> {
+                                navigator.navigateToTab(e.tab)
+                            }
+
+                            MenuScreenEvent.AreaClick -> {
+                                navigator.navigateToTab(EcoBottomTab.AREA)
+                            }
+
+                            MenuScreenEvent.ApplicationResultClick -> {
+                                navigator.push(EcoGuardDestination.Recruitment)
+                            }
+
+                            MenuScreenEvent.AppealHistoryClick -> {
+                                navigator.push(EcoGuardDestination.AppealHistory)
+                            }
+
+                            MenuScreenEvent.NoticeClick -> {
+                                navigator.push(EcoGuardDestination.Notices)
+                            }
+
+                            MenuScreenEvent.CleaningNotificationSettingsClick -> {
+                                navigator.push(EcoGuardDestination.NotificationSettings)
+                            }
+
+                            MenuScreenEvent.LogoutConfirm -> {
+                                onSignOut()
+                            }
+
+                            MenuScreenEvent.WithdrawalSucceeded -> {
+                                onWithdrawalSuccess()
+                            }
+
+                            MenuScreenEvent.CameraClick -> {
+                                camera()
+                            }
+
+                            else -> {
+                                Unit
+                            }
                         }
                     })
                 }
 
                 EcoGuardDestination.Notifications -> {
                     NotificationRoute(
-                        NotificationUiState.NotIntegrated,
                         navigationState.selectedTab,
                         navigator::goBack,
                         navigator::navigateToTab,
                         ::camera,
-                        { false },
                     )
+                }
+
+                EcoGuardDestination.NotificationSettings -> {
+                    NotificationSettingsRoute(onBack = navigator::goBack)
                 }
 
                 EcoGuardDestination.Notices -> {

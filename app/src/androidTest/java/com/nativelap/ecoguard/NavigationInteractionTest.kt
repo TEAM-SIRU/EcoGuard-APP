@@ -28,7 +28,8 @@ import com.nativelap.ecoguard.feature.notice.view.NoticeListScreen
 import com.nativelap.ecoguard.feature.notice.viewmodel.NoticeDetailUiState
 import com.nativelap.ecoguard.feature.notice.viewmodel.NoticeScreenEvent
 import com.nativelap.ecoguard.feature.notice.viewmodel.NoticeUiState
-import com.nativelap.ecoguard.feature.notification.view.NotificationRoute
+import com.nativelap.ecoguard.feature.notification.view.NotificationScreen
+import com.nativelap.ecoguard.feature.notification.viewmodel.NotificationScreenEvent
 import com.nativelap.ecoguard.feature.notification.viewmodel.NotificationUiState
 import com.nativelap.ecoguard.navigation.EcoGuardDestination
 import com.nativelap.ecoguard.navigation.EcoGuardMainNavigator
@@ -99,7 +100,7 @@ class NavigationInteractionTest {
     }
 
     @Test
-    fun notificationNotIntegratedScreenReturnsToHome() {
+    fun notificationEmptyScreenReturnsToHome() {
         composeRule.activityRule.scenario.onActivity { it.enableEdgeToEdge() }
         composeRule.setContent {
             val navigationState = rememberEcoGuardMainNavigationState()
@@ -108,13 +109,14 @@ class NavigationInteractionTest {
             EcoGuardTheme {
                 when (navigationState.currentBackStack.last()) {
                     EcoGuardDestination.Notifications -> {
-                        NotificationRoute(
-                            uiState = NotificationUiState.NotIntegrated,
+                        NotificationScreen(
+                            uiState = NotificationUiState.Empty,
                             selectedTab = navigationState.selectedTab,
-                            onBack = navigator::goBack,
-                            onTab = navigator::navigateToTab,
-                            onCamera = {},
-                            onOpenNotification = { false },
+                            onEvent = { event ->
+                                if (event == NotificationScreenEvent.BackClick) {
+                                    navigator.goBack()
+                                }
+                            },
                         )
                     }
 
@@ -129,7 +131,7 @@ class NavigationInteractionTest {
             }
         }
 
-        composeRule.onNodeWithText("알림 기능을 아직 연결하지 않았어요").assertIsDisplayed()
+        composeRule.onNodeWithText("새로운 알림이 없어요").assertIsDisplayed()
         composeRule.onNodeWithContentDescription("뒤로 가기").performClick()
         composeRule.onNodeWithText("홈").assertIsDisplayed()
     }
