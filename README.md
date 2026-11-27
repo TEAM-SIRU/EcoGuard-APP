@@ -33,20 +33,21 @@
 | `activity` | 활동 기록, 월 선택 다이얼로그 |
 | `menu` | 전체 메뉴, 로그아웃·회원탈퇴 확인 다이얼로그 |
 | `notice` | 공지 목록·상세, 빈 상태·로딩·불러오기 실패·누락된 공지 안내 |
-| `notification` | 알림 화면 UI (현재 서버 미연동 상태 표시) |
+| `notification` | 알림함 목록·읽음 처리·전체 읽음·서버 알림 설정 |
 
 앱 시작 시 시스템 스플래시(흰 배경과 새싹 아이콘)를 표시합니다. 플랫폼 제약으로 Figma의 '환경지킴이' 글자는 스플래시에 표시하지 않습니다.
 
-OAuth staging 로그인은 서버와 도메인 설정이 완료되어야 검증할 수 있습니다. 서버의 `POST /api/v1/auth/authorize`, `POST /api/v1/auth/exchange`, callback의 `handoff_challenge` 전달 계약과 앱 링크 도메인의 `assetlinks.json`은 아직 배포·검증되지 않았습니다. 이 조건이 갖춰지기 전까지 end-to-end 로그인을 확인할 수 없습니다. 알림과 이용안내 등 일부 기능의 추가 연동 범위와 일정은 **확인 필요**입니다.
+OAuth 로그인은 서버와 도메인 설정이 완료되어야 검증할 수 있습니다. 공개 Swagger에는 `POST /api/v1/auth/login`과 `GET /api/v1/auth/callback`이 정의되어 있지만, 앱이 사용하는 `POST /api/v1/auth/authorize`는 명세에서 확인되지 않았습니다. Swagger의 login API에 임시 `authCode`를 넣어 단일 요청을 보냈을 때 `401 OAUTH_FAILED` 및 `허용되지 않은 redirectUri 입니다.` 응답을 확인했습니다. 이는 실제 계정 로그인 재현이나 end-to-end 확인이 아닙니다. 서버의 허용 redirect URI, callback/App Link 설정과 `assetlinks.json`은 배포 담당자가 확인해야 합니다. 도움말 서버 API는 확인되지 않아 기존 비활성 동작을 유지합니다.
 
 ### 인증 및 서버 연동
 
-- 인증 시작: 앱이 `POST /api/v1/auth/authorize`에 PKCE S256 challenge를 보내고, 응답의 DataGSM 인증 URL을 Android Custom Tab으로 엽니다.
-- callback handoff: 서버 callback이 DataGSM 인증을 처리한 뒤 `https://ecoguard.https.gsmsv.site/auth/mobile-callback` App Link로 일회용 `handoff_code`와 이를 요청한 `handoff_challenge`를 전달하는 계약을 전제로 합니다. 앱은 challenge가 현재 로그인 시도와 일치하는지 확인한 뒤 `POST /api/v1/auth/exchange`로 코드를 교환합니다.
+- 인증 시작: 현재 앱은 `POST /api/v1/auth/authorize`에 PKCE S256 challenge를 보내는 흐름을 구현했지만, 이 endpoint와 요청/응답 스키마는 공개 Swagger에서 확인되지 않았습니다.
+- callback handoff: 앱은 `https://ecoguard.https.gsmsv.site/auth/mobile-callback` App Link에서 `handoff_code`와 `handoff_challenge`를 처리한 뒤 `POST /api/v1/auth/login`에 `authCode`와 `redirectUri`를 보냅니다. Swagger에는 callback 경로가 `GET /api/v1/auth/callback`으로만 정의되어 있어 운영 callback 경로·query 계약과 앱 흐름의 일치 여부는 미확인입니다. 서버는 요청 `redirectUri`를 등록된 값으로 제한합니다.
 - 세션: Access/Refresh Token은 Android Keystore로 보호되는 암호화 저장소에 보관하고, `SessionManager`가 세션 상태와 토큰 제공을 담당합니다. 앱 시작 시 저장된 세션을 복원합니다.
 - 보호 API 요청은 공통 Bearer interceptor를 사용합니다. 인증 실패 시 unauthenticated Retrofit으로 refresh를 한 번 수행하고, 성공하면 원 요청을 재시도합니다. Refresh 실패 시 로컬 세션을 만료시킵니다.
 - 로그아웃은 로컬 세션을 먼저 제거하고 서버 logout API를 호출합니다. 서버 요청 실패 여부는 앱 상태에서 별도로 처리합니다.
-- `authorize`·`exchange`·callback handoff는 현재 서버 Swagger에 계약이 완전히 정의되어 있지 않은 client 측 전제입니다. 서버 구현 및 Android App Link 도메인의 서명 지문을 포함한 `assetlinks.json` 배포가 필요합니다.
+- 알림함은 `GET /api/v1/notifications?limit=50`, 읽음 처리는 `PATCH /api/v1/notifications/{notificationId}/read`와 `PATCH /api/v1/notifications/read-all`, 설정은 `GET /api/v1/notifications/settings`와 `PUT /api/v1/notifications/settings`를 사용합니다. FCM/Firebase token 등록은 별도 설정이 필요해 이 앱 범위에는 포함하지 않았습니다.
+- `authorize`·`handoff`·callback의 앱/서버 계약과 허용 redirect URI는 아직 대조되지 않았습니다. Android App Link 도메인의 서명 지문을 포함한 `assetlinks.json` 배포 확인이 필요합니다.
 
 ## 기술 스택
 
@@ -150,9 +151,9 @@ EcoGuard-APP/
 - 홈·청소구역·활동 기록·마이페이지는 각각 독립된 back stack을 유지합니다. 탭을 다시 선택해도 현재 화면을 유지하며 저장 가능한 입력·스크롤 상태를 보존하도록 구성합니다.
 - 청소 인증은 조건이 충족되면 인증 안내 → 기기 카메라 촬영 → 사진 확인 → 서버 제출 흐름으로 진행합니다. 재촬영할 수 있으며, 홈의 오늘 청소 카드에는 인증 불가 사유가 표시됩니다. 인증 ID가 있으면 홈에서 인증 상세를 열 수 있습니다.
 - 모집에서 신청과 신청 결과로, 활동 기록에서 인증 상세로 이동합니다. 홈에서 이의신청을 작성하면 제출 후 이의신청 내역으로 이동하며, 마이페이지에서도 내역과 항목별 결과를 열 수 있습니다.
-- 홈 알림 아이콘은 서버 미연동 상태를 표시하는 알림 화면으로 이동합니다. 홈의 공지 카드는 공지 상세로, 공지 목록 메뉴는 목록으로 이동합니다.
+- 홈 알림 아이콘은 서버 알림함으로 이동합니다. 마이페이지의 청소 알림 메뉴에서 서버 알림 수신 설정을 변경할 수 있습니다. 홈의 공지 카드는 공지 상세로, 공지 목록 메뉴는 목록으로 이동합니다.
 - 로그아웃과 회원탈퇴는 메뉴의 확인 다이얼로그를 거칩니다. 일부 결과·제한 화면과 월 선택 목적지는 현재 열리면 이전 화면으로 돌아갑니다. 뒤로가기는 현재 목적지를 닫고, 홈 이외 탭의 첫 화면에서는 홈으로 돌아갑니다. 홈 첫 화면에서는 앱을 종료합니다.
-- 이용안내와 청소 알림 설정은 현재 비활성화되어 있습니다.
+- 이용안내는 현재 비활성화되어 있습니다.
 
 내비게이션 변경은 [Issue #17](https://github.com/TEAM-SIRU/EcoGuard-APP/issues/17), `feature/#17-navigation` 브랜치에서 진행합니다. 빌드·테스트·화면별 검증 결과는 [내비게이션 검증 문서](docs/navigation-verification.md)를 참고하세요.
 

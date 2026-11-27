@@ -7,9 +7,9 @@ sealed interface NotificationUiState {
 
     data object Failed : NotificationUiState
 
-    data object NotIntegrated : NotificationUiState
-
     data class Content(
+        val unreadCount: Int,
         val notifications: List<NotificationUiModel>,
+        val isUpdatingReadState: Boolean = false,
     ) : NotificationUiState
 }

@@ -22,6 +22,7 @@ import com.nativelap.ecoguard.ui.theme.extraColors
 fun NotificationCard(
     notification: NotificationUiModel,
     onClick: () -> Unit,
+    isEnabled: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
     val readState =
@@ -36,7 +37,7 @@ fun NotificationCard(
                 MaterialTheme.colorScheme.surface
             },
         contentPadding = PaddingValues(horizontal = AppSpacing.md, vertical = AppSpacing.md),
-        onClick = onClick,
+        onClick = if (isEnabled) onClick else null,
     ) {
         Column(verticalArrangement = Arrangement.spacedBy(AppSpacing.xxs / 2)) {
             Text(
@@ -44,6 +45,13 @@ fun NotificationCard(
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurface,
                 maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+            Text(
+                notification.body,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
             )
             Text(

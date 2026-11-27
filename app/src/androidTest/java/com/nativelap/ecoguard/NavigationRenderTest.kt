@@ -14,6 +14,7 @@ import com.nativelap.ecoguard.feature.notice.view.NoticeListScreen
 import com.nativelap.ecoguard.feature.notice.viewmodel.NoticeDetailUiState
 import com.nativelap.ecoguard.feature.notice.viewmodel.NoticeUiState
 import com.nativelap.ecoguard.feature.notification.view.NotificationScreen
+import com.nativelap.ecoguard.feature.notification.viewmodel.NotificationUiModel
 import com.nativelap.ecoguard.feature.notification.viewmodel.NotificationUiState
 import com.nativelap.ecoguard.ui.component.EcoBottomTab
 import com.nativelap.ecoguard.ui.theme.EcoGuardTheme
@@ -46,14 +47,35 @@ class NavigationRenderTest {
     }
 
     @Test
-    fun rendersNotificationNotIntegratedStateWithoutSampleItems() {
+    fun rendersNotificationEmptyStateWithoutSampleItems() {
         composeRule.activityRule.scenario.onActivity { it.enableEdgeToEdge() }
         composeRule.setContent {
             EcoGuardTheme {
-                NotificationScreen(NotificationUiState.NotIntegrated, EcoBottomTab.HOME, {})
+                NotificationScreen(NotificationUiState.Empty, EcoBottomTab.HOME, {})
             }
         }
-        composeRule.onNodeWithText("알림 기능을 아직 연결하지 않았어요").assertIsDisplayed()
+        composeRule.onNodeWithText("새로운 알림이 없어요").assertIsDisplayed()
+    }
+
+    @Test
+    fun rendersTotalNotificationCountSeparatelyFromUnreadCount() {
+        composeRule.activityRule.scenario.onActivity { it.enableEdgeToEdge() }
+        val notifications =
+            listOf(
+                NotificationUiModel(1, "NOTICE", "읽지 않은 알림", "내용", "11월 27일 09:00"),
+                NotificationUiModel(2, "NOTICE", "읽은 알림", "내용", "11월 26일 09:00", isRead = true),
+            )
+        composeRule.setContent {
+            EcoGuardTheme {
+                NotificationScreen(
+                    NotificationUiState.Content(unreadCount = 1, notifications = notifications),
+                    EcoBottomTab.HOME,
+                    {},
+                )
+            }
+        }
+
+        composeRule.onNodeWithText("전체 2건").assertIsDisplayed()
     }
 
     @Test

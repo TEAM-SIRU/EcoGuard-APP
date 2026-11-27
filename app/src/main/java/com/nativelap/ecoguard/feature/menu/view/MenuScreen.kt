@@ -129,9 +129,7 @@ fun MenuScreen(
                                 )
                                 MenuRow(
                                     title = stringResource(R.string.profile_cleaning_notification),
-                                    valueText = stringResource(R.string.help_later),
-                                    enabled = false,
-                                    onClick = {},
+                                    onClick = { onEvent(MenuScreenEvent.CleaningNotificationSettingsClick) },
                                 )
                                 MenuRow(
                                     title = stringResource(R.string.profile_appeal_history),

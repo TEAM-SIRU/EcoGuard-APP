@@ -7,6 +7,8 @@ sealed interface NotificationScreenEvent {
 
     data object RetryClick : NotificationScreenEvent
 
+    data object MarkAllReadClick : NotificationScreenEvent
+
     data object CameraClick : NotificationScreenEvent
 
     data class TabSelect(

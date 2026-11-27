@@ -7,9 +7,7 @@ sealed interface MenuScreenEvent {
 
     data object ApplicationResultClick : MenuScreenEvent
 
-    data class CleaningNotificationToggle(
-        val isEnabled: Boolean,
-    ) : MenuScreenEvent
+    data object CleaningNotificationSettingsClick : MenuScreenEvent
 
     data object AppealHistoryClick : MenuScreenEvent
 

@@ -19,6 +19,8 @@ sealed interface EcoGuardDestination : NavKey {
 
     @Serializable data object Notifications : EcoGuardDestination
 
+    @Serializable data object NotificationSettings : EcoGuardDestination
+
     @Serializable data object Notices : EcoGuardDestination
 
     @Serializable data class NoticeDetail(

@@ -5,6 +5,8 @@ import com.nativelap.ecoguard.feature.appeal.module.data.dto.CreateAppealRequest
 import com.nativelap.ecoguard.feature.appeal.module.data.remote.AppealApiService
 import com.nativelap.ecoguard.feature.cleaningarea.module.data.remote.CleaningAreaApiService
 import com.nativelap.ecoguard.feature.notice.module.data.remote.NoticeApiService
+import com.nativelap.ecoguard.feature.notification.module.data.dto.UpdateNotificationSettingRequestDto
+import com.nativelap.ecoguard.feature.notification.module.data.remote.NotificationApiService
 import com.nativelap.ecoguard.feature.recruitment.module.data.remote.RecruitmentApiService
 import com.nativelap.ecoguard.feature.user.module.data.remote.UserApiService
 import com.nativelap.ecoguard.feature.verification.module.data.remote.VerificationApiService
@@ -31,6 +33,7 @@ import retrofit2.http.Header
 import retrofit2.http.Multipart
 import retrofit2.http.PATCH
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -191,6 +194,37 @@ class FeatureApiServiceTest {
             assertTrue(payload.contains("name=\"photos\""))
         }
 
+    @Test
+    fun `notification service maps list read all and settings operations`() =
+        runSuspendTest {
+            val callFactory = RecordingCallFactory(body = "{\"unreadCount\":0,\"notifications\":[]}")
+            val service = createService<NotificationApiService>(callFactory)
+
+            service.getNotifications(limit = 50)
+            val listRequest = checkNotNull(callFactory.lastRequest)
+            assertEquals("GET", listRequest.method)
+            assertEquals("/api/v1/notifications", listRequest.url.encodedPath)
+            assertEquals("50", listRequest.url.queryParameter("limit"))
+
+            service.markRead(notificationId = 42)
+            val readRequest = checkNotNull(callFactory.lastRequest)
+            assertEquals("PATCH", readRequest.method)
+            assertEquals("/api/v1/notifications/42/read", readRequest.url.encodedPath)
+
+            service.markAllRead()
+            val readAllRequest = checkNotNull(callFactory.lastRequest)
+            assertEquals("PATCH", readAllRequest.method)
+            assertEquals("/api/v1/notifications/read-all", readAllRequest.url.encodedPath)
+
+            service.updateSetting(UpdateNotificationSettingRequestDto("VERIFICATION", false))
+            val settingRequest = checkNotNull(callFactory.lastRequest)
+            assertEquals("PUT", settingRequest.method)
+            assertEquals("/api/v1/notifications/settings", settingRequest.url.encodedPath)
+            val payload = Buffer()
+            checkNotNull(settingRequest.body).writeTo(payload)
+            assertEquals("{\"category\":\"VERIFICATION\",\"enabled\":false}", payload.readUtf8())
+        }
+
     private inline fun <reified T : Any> createService(callFactory: RecordingCallFactory): T {
         val json =
             Json {
@@ -214,6 +248,7 @@ class FeatureApiServiceTest {
                     is GET -> "GET" to annotation.value
                     is POST -> "POST" to annotation.value
                     is PATCH -> "PATCH" to annotation.value
+                    is PUT -> "PUT" to annotation.value
                     is DELETE -> "DELETE" to annotation.value
                     else -> null
                 }
@@ -261,6 +296,7 @@ class FeatureApiServiceTest {
                 AppealApiService::class.java,
                 CleaningAreaApiService::class.java,
                 NoticeApiService::class.java,
+                NotificationApiService::class.java,
                 RecruitmentApiService::class.java,
                 UserApiService::class.java,
                 VerificationApiService::class.java,
@@ -342,6 +378,39 @@ class FeatureApiServiceTest {
                     "PATCH",
                     "api/v1/notices/{noticeId}",
                     "Path:noticeId",
+                    "Body",
+                ),
+                contract(
+                    "NotificationApiService",
+                    "getNotifications",
+                    "GET",
+                    "api/v1/notifications",
+                    "Query:limit",
+                ),
+                contract(
+                    "NotificationApiService",
+                    "markRead",
+                    "PATCH",
+                    "api/v1/notifications/{notificationId}/read",
+                    "Path:notificationId",
+                ),
+                contract(
+                    "NotificationApiService",
+                    "markAllRead",
+                    "PATCH",
+                    "api/v1/notifications/read-all",
+                ),
+                contract(
+                    "NotificationApiService",
+                    "getSettings",
+                    "GET",
+                    "api/v1/notifications/settings",
+                ),
+                contract(
+                    "NotificationApiService",
+                    "updateSetting",
+                    "PUT",
+                    "api/v1/notifications/settings",
                     "Body",
                 ),
                 contract(
